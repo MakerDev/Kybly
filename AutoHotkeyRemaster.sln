@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHotkeyRemaster.UI", "AutoHotkeyRemaster.UI\AutoHotkeyRemaster.UI.csproj", "{7810FB05-FFB8-4A89-9B4B-4FD43DD4C8CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHotkeyRemaster.Services", "AutoHotkeyRemaster.Services\AutoHotkeyRemaster.Services.csproj", "{7DBA6F7E-F701-4ABC-A190-E8FC69B9EC89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHotkeyRemaster.Models", "AutoHotkeyRemaster.Models\AutoHotkeyRemaster.Models.csproj", "{9E37229E-4A09-42D4-A6D6-8F02559FE9B8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7810FB05-FFB8-4A89-9B4B-4FD43DD4C8CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7810FB05-FFB8-4A89-9B4B-4FD43DD4C8CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7810FB05-FFB8-4A89-9B4B-4FD43DD4C8CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7810FB05-FFB8-4A89-9B4B-4FD43DD4C8CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DBA6F7E-F701-4ABC-A190-E8FC69B9EC89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DBA6F7E-F701-4ABC-A190-E8FC69B9EC89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DBA6F7E-F701-4ABC-A190-E8FC69B9EC89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DBA6F7E-F701-4ABC-A190-E8FC69B9EC89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E37229E-4A09-42D4-A6D6-8F02559FE9B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E37229E-4A09-42D4-A6D6-8F02559FE9B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E37229E-4A09-42D4-A6D6-8F02559FE9B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E37229E-4A09-42D4-A6D6-8F02559FE9B8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BA9599C8-18AB-48E8-955F-625DC3E567F5}
+	EndGlobalSection
+EndGlobal
