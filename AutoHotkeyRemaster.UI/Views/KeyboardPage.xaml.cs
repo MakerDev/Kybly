@@ -8,16 +8,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace AutoHotkeyRemaster.UI.Views
 {
     /// <summary>
-    /// Interaction logic for ShellView.xaml
+    /// Interaction logic for KeyboardPage.xaml
     /// </summary>
-    public partial class ShellView : Window
+    public partial class KeyboardPage : Page
     {
-        public ShellView()
+        public KeyboardPage()
         {
             InitializeComponent();
         }
