@@ -5,17 +5,20 @@ using System.Text.Json.Serialization;
 using System.Text;
 using System.Text.Json;
 using System.Windows.Xps;
+using System.Runtime.Serialization.Json;
 
 namespace AutoHotkeyRemaster.Models
 {
     public class HotkeyProfile
     {
         public const int MAX_HOTKEY = 60;
-        public readonly int ProfileNum;
 
         public string ProfileName { get; set; } = null;
         public List<Hotkey> Hotkeys { get; private set; } = new List<Hotkey>();
 
+
+        [JsonIgnore]
+        public int ProfileNum { get; private set; }
         [JsonIgnore]
         public int HotkeyCount
         {
@@ -23,9 +26,15 @@ namespace AutoHotkeyRemaster.Models
             private set { }
         }
 
-        public HotkeyProfile(int profileNum)
+        private HotkeyProfile() { }
+
+        public static HotkeyProfile CreateNewProfile(int profileNum, string profileName = null)
         {
-            ProfileNum = profileNum;
+            HotkeyProfile profile = new HotkeyProfile();
+            profile.ProfileNum = profileNum;
+            profile.ProfileName = profileName;
+
+            return profile;
         }
 
         /// <summary>
@@ -110,6 +119,7 @@ namespace AutoHotkeyRemaster.Models
 
             string jsonString = File.ReadAllText(path);
             HotkeyProfile profile = JsonSerializer.Deserialize<HotkeyProfile>(jsonString);
+            profile.ProfileNum = profileNum;
 
             return profile;
         }

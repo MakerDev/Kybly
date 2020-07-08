@@ -8,7 +8,7 @@ namespace AutoHotkeyRemaster.Services
     public class ProfileManager
     {
         public const int MAX_PROFILE_NUM = 10;
-        
+
         //Need to activate proper profile to window hook
         private readonly WindowsHookManager _windowsHookManager;
 
@@ -26,8 +26,25 @@ namespace AutoHotkeyRemaster.Services
         public ProfileManager(WindowsHookManager windowsHookManager)
         {
             _windowsHookManager = windowsHookManager;
-            
+
             LoadAllProfiles();
+        }
+
+        public HotkeyProfile CreateNewProfile(string profileName = null)
+        {
+            HotkeyProfile profile = HotkeyProfile.CreateNewProfile(ProfileCount + 1, profileName);
+
+            Profiles.Add(profile);
+
+            return profile;
+        }
+
+        public void SaveAllProfiles()
+        {
+            foreach (var profile in Profiles)
+            {
+                profile.Save($"profile{profile.ProfileNum}");
+            }
         }
 
         private void LoadAllProfiles()

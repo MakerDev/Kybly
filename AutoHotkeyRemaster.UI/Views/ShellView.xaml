@@ -55,17 +55,17 @@
 
             <!--right side of the main page-->
             <StackPanel
-              Visibility="Visible"
-              HorizontalAlignment="Left"              
-              Height="431" Margin="330,0,0,0" 
-              VerticalAlignment="Top" 
-              Width="340">
+                 Visibility="Visible"
+                 HorizontalAlignment="Left"              
+                 Height="431" Margin="330,0,0,0" 
+                 VerticalAlignment="Top" 
+                 Width="340">
                 <Label
+                     x:Name="CurrentProfileName"
                      Content="Profile selected : "
                      HorizontalAlignment ="Center"
                      FontSize="25"
                      Margin="0, 55, 0, 0" BorderThickness="0,3,0,0" FontWeight="Bold"/>
-
 
                 <Button
                     Content="Edit Profile" 
