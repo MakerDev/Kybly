@@ -5,10 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
         xmlns:vm="clr-namespace:AutoHotkeyRemaster.UI.ViewModels"
-        xmlns:local="clr-namespace:AutoHotkeyRemaster.UI.Views"
-        d:DataContext="{d:DesignInstance Type=vm:ShellViewModel, IsDesignTimeCreatable=True}"
         cal:Bind.AtDesignTime="True"
-        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:ShellViewModel, IsDesignTimeCreatable=True}"
+        mc:Ignorable="d"       
         Title="AutoHotkey" Height="465" Width="680" >
 
     <StackPanel>
@@ -60,11 +59,12 @@
                  Height="431" Margin="330,0,0,0" 
                  VerticalAlignment="Top" 
                  Width="340">
-                <Label
+                <TextBox
                      x:Name="CurrentProfileName"
-                     Content="Profile selected : "
+                     Text="Profile selected : "
                      HorizontalAlignment ="Center"
                      FontSize="25"
+                     IsEnabled="{Binding CanEditProfileName}"
                      Margin="0, 55, 0, 0" BorderThickness="0,3,0,0" FontWeight="Bold"/>
 
                 <Button

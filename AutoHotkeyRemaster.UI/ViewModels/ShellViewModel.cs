@@ -25,10 +25,25 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             {
                 _currentProfile = value;
 
+                NotifyOfPropertyChange(() => CanEditProfileName);
                 NotifyOfPropertyChange(() => CurrentProfile);
                 NotifyOfPropertyChange(() => CurrentProfileName);
             }
         }
+
+
+        public bool CanEditProfileName
+        {
+            get
+            {
+                if (CurrentProfile == null)
+                    return false;
+
+                return true;
+            }
+            private set { }
+        }
+
 
         public string CurrentProfileName
         {
@@ -39,7 +54,13 @@ namespace AutoHotkeyRemaster.UI.ViewModels
                 else
                     return CurrentProfile.ProfileName ?? $"profile{CurrentProfile.ProfileNum}";
             }
-            private set { }
+            set
+            {
+                CurrentProfile.ProfileName = value;
+                ProfileBtns[CurrentProfile.ProfileNum - 1].Content = value;
+                CurrentProfile.Save($"profile{CurrentProfile.ProfileNum}");
+                NotifyOfPropertyChange(() => CurrentProfileName);
+            }
         }
 
         public BindableCollection<Button> ProfileBtns

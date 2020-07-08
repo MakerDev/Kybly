@@ -18,7 +18,7 @@ namespace AutoHotkeyRemaster.Models
 
 
         [JsonIgnore]
-        public int ProfileNum { get; private set; }
+        public int ProfileNum { get; set; }
         [JsonIgnore]
         public int HotkeyCount
         {
@@ -73,7 +73,7 @@ namespace AutoHotkeyRemaster.Models
             return false;
         }
 
-        public bool Save(string filename)
+        public void Save(string filename)
         {
             string path = Environment.CurrentDirectory + "/SaveFiles/" + filename + ".json";
 
@@ -96,8 +96,16 @@ namespace AutoHotkeyRemaster.Models
 
             string jsonString = JsonSerializer.Serialize(this, options);
             File.WriteAllText(path, jsonString);
+        }
 
-            return true;
+        public void Delete(string filename)
+        {
+            string path = Environment.CurrentDirectory + "/SaveFiles/" + filename + ".json";
+
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
         }
 
         public static HotkeyProfile LoadFromFile(int profileNum)

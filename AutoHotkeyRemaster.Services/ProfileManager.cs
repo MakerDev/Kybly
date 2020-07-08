@@ -39,6 +39,23 @@ namespace AutoHotkeyRemaster.Services
             return profile;
         }
 
+        public void DeleteProfile(int profileNum)
+        {
+            foreach (var profile in Profiles)
+            {
+                profile.Delete($"profile{profileNum}");
+            }
+
+            Profiles.RemoveAt(profileNum - 1);
+
+            for (int i = profileNum - 1; i < ProfileCount; i++)
+            {
+                Profiles[i].ProfileNum -= 1;
+            }
+
+            SaveAllProfiles();
+        }
+
         public void SaveAllProfiles()
         {
             foreach (var profile in Profiles)
