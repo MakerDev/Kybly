@@ -10,6 +10,14 @@
         mc:Ignorable="d"       
         Title="AutoHotkey" Height="465" Width="680" >
 
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/MainPanel.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
     <StackPanel>
         <Grid>
             <StackPanel Tag="Menu">
@@ -56,7 +64,7 @@
             <StackPanel
                  Visibility="Visible"
                  HorizontalAlignment="Left"              
-                 Height="431" Margin="330,0,0,0" 
+                 Height="431" Margin="330,15,0,0" 
                  VerticalAlignment="Top" 
                  Width="340">
                 <TextBox

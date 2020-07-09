@@ -77,7 +77,7 @@ namespace AutoHotkeyRemaster.Services
             UnhookWindowsHookEx(_hookId);
         }
 
-        private void AddtriggerHotkeyPair(int input, Hotkey hotkey)
+        private void AddTriggerHotkeyPair(int input, Hotkey hotkey)
         {
             _triggerHotkeyPairs.Add(input, hotkey);
             _isAlreadyPressed.Add(input, false);
@@ -88,18 +88,6 @@ namespace AutoHotkeyRemaster.Services
         {
             _triggerHotkeyPairs.Clear();
             _isAlreadyPressed.Clear();
-        }
-
-        private int ConvertVkcodeToProperValue(int vkCode)
-        {
-            int code;
-
-            if (vkCode == 164 || vkCode == 165) { code = Modifiers.Alt; return code; }    //LEFT RIGHT ALT를 그냥 ALT로
-            if (vkCode == 162 || vkCode == 163) { code = Modifiers.Ctrl; return code; }  //Control
-            if (vkCode == 91 || vkCode == 92) { code = Modifiers.Win; return code; }
-            if (vkCode == 160 || vkCode == 161) { code = Modifiers.Shift; return code; }
-
-            return vkCode;
         }
 
         private bool IsMouseEvent(int key)
@@ -143,18 +131,27 @@ namespace AutoHotkeyRemaster.Services
 
                 vkCode = ConvertVkcodeToProperValue(vkCode);
 
-                //여기서 등록되지 않은 키일 경우를 처리했으므로 아래에서는 무조건 등록된 키에 대한 처리만 하면 됨.
-                //따라서 아래부터는 0이 아닌 값을 리턴해 버려야함.
                 if (!_triggerHotkeyPairs.ContainsKey(vkCode))
                     return CallNextHookEx(_hookId, nCode, wParam, lParam);
 
                 OnKeyUp(vkCode);
 
-                //0이 아닌 값을 리턴하면 입력을 중간에서 없애버릴 수 있다.
                 return new IntPtr(5);
             }
 
             return CallNextHookEx(_hookId, nCode, wParam, lParam);
+        }
+
+        private int ConvertVkcodeToProperValue(int vkCode)
+        {
+            int code;
+
+            if (vkCode == 164 || vkCode == 165) { code = Modifiers.Alt; return code; }    //LEFT RIGHT ALT를 그냥 ALT로
+            if (vkCode == 162 || vkCode == 163) { code = Modifiers.Ctrl; return code; }  //Control
+            if (vkCode == 91 || vkCode == 92) { code = Modifiers.Win; return code; }
+            if (vkCode == 160 || vkCode == 161) { code = Modifiers.Shift; return code; }
+
+            return vkCode;
         }
     }
 }
