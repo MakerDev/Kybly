@@ -9,10 +9,32 @@
     <UpgradeBackupLocation />
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Resources\Icons\Change Icon.png" />
+    <None Remove="Resources\Icons\Icon.png" />
+    <None Remove="Resources\Icons\KeyboardIcon.png" />
+    <None Remove="Resources\Icons\OptionIcon.png" />
+    <None Remove="Resources\Icons\ScreenKeyboardIcon.png" />
+    <None Remove="Resources\Icons\TempBackgroundImg.png" />
+    <None Remove="Resources\Icons\To Icon.png" />
+    <None Remove="Resources\Icons\ToggleDefault.png" />
+    <None Remove="Resources\Icons\ToggleMouseOver.png" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.136-rc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AutoHotkeyRemaster.Models\AutoHotkeyRemaster.Models.csproj" />
     <ProjectReference Include="..\AutoHotkeyRemaster.Services\AutoHotkeyRemaster.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Change Icon.png" />
+    <Resource Include="Resources\Icons\Icon.png" />
+    <Resource Include="Resources\Icons\KeyboardIcon.png" />
+    <Resource Include="Resources\Icons\OptionIcon.png" />
+    <Resource Include="Resources\Icons\ScreenKeyboardIcon.png" />
+    <Resource Include="Resources\Icons\TempBackgroundImg.png" />
+    <Resource Include="Resources\Icons\To Icon.png" />
+    <Resource Include="Resources\Icons\ToggleDefault.png" />
+    <Resource Include="Resources\Icons\ToggleMouseOver.png" />
   </ItemGroup>
 </Project>

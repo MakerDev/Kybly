@@ -4,6 +4,7 @@ using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 
@@ -29,11 +30,7 @@ namespace AutoHotkeyRemaster.UI
                 .Singleton<ProfileSwitchKeyTable>()
                 .Singleton<WindowsHookManager>()
                 .Singleton<ProfileManager>();
-                
 
-            //RegisterPerRequest는 요청이 A라는 타입의 클래스가 요청되면 정말 그 클래스 객체를 생성하도록 등록한다.
-            //PerRequest는 어떤 인터페이스나 부모클래스가 요청받았을 때, 그를 구현하거나 상속받은 클래스가 생성되도록 등록하는 차이가 있다.
-            //컨테이너에 뷰모델도 등록하는 듯.
             GetType().Assembly.GetTypes()
                 .Where(type => type.IsClass)
                 .Where(type => type.Name.EndsWith("ViewModel"))
@@ -47,7 +44,6 @@ namespace AutoHotkeyRemaster.UI
         {
             DisplayRootViewFor<ShellViewModel>();
         }
-
 
         //아래들은 프레임워크에 컨테이너를 ServiceLocator로 등록하는 과정이라고 보면 될듯.
         protected override IEnumerable<object> GetAllInstances(Type service)

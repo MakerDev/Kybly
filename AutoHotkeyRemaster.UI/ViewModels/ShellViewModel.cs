@@ -1,5 +1,7 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services;
+using AutoHotkeyRemaster.UI.Views;
+using AutoHotkeyRemaster.UI.Views.CustomControls;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -8,12 +10,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace AutoHotkeyRemaster.UI.ViewModels
 {
     public class ShellViewModel : Conductor<object>
     {
-        private BindableCollection<Button> _profileBtns = new BindableCollection<Button>();
+        private readonly IWindowManager _windowManager;
         private readonly ProfileManager _profileManager;
 
         private HotkeyProfile _currentProfile = null;
@@ -31,7 +35,6 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             }
         }
 
-
         public bool CanEditProfileName
         {
             get
@@ -43,7 +46,6 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             }
             private set { }
         }
-
 
         public string CurrentProfileName
         {
@@ -57,73 +59,73 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             set
             {
                 CurrentProfile.ProfileName = value;
-                ProfileBtns[CurrentProfile.ProfileNum - 1].Content = value;
                 CurrentProfile.Save($"profile{CurrentProfile.ProfileNum}");
                 NotifyOfPropertyChange(() => CurrentProfileName);
             }
         }
 
-        public BindableCollection<Button> ProfileBtns
+        private BindableCollection<ProfileListViewItem> _profileItems = new BindableCollection<ProfileListViewItem>();
+
+        public BindableCollection<ProfileListViewItem> ProfileItems
         {
-            get { return _profileBtns; }
+            get { return _profileItems; }
             set
             {
-                _profileBtns = value;
-                NotifyOfPropertyChange(() => ProfileBtns);
+                _profileItems = value;
+                NotifyOfPropertyChange(() => ProfileItems);
             }
         }
 
-        public ShellViewModel(ProfileManager profileManager)
+
+        public ShellViewModel(IWindowManager windowManager, ProfileManager profileManager)
         {
+            _windowManager = windowManager;
             _profileManager = profileManager;
 
-            SetProfileButtons();
+            SetProfileListItems();
         }
 
-        private void SetProfileButtons()
+        private void SetProfileListItems()
         {
-            ProfileBtns.Clear();
+            ProfileItems.Clear();
 
             var profiles = _profileManager.Profiles;
 
             foreach (var profile in profiles)
             {
-                ProfileBtns.Add(CreateProfileButton(profile));
+                ProfileItems.Add(CreateProfileListViewItem(profile));
             }
+        }
 
-            Button createProfileBtn = new Button();
+        private ProfileListViewItem CreateProfileListViewItem(HotkeyProfile profile)
+        {
+            ProfileListViewItem profileItem = new ProfileListViewItem();
 
-            //TODO : ICommand로 대체. 최대 갯수에서 disable하기 위해
-            createProfileBtn.Margin = new Thickness(0, 0, 0, 5);
-            createProfileBtn.Width = 330;
-            createProfileBtn.Height = 35;
-            createProfileBtn.Content = "Create New";
-            createProfileBtn.Click += (s, e) =>
+            profileItem.MouseDoubleClick += (s, e) =>
             {
-                _profileManager.CreateNewProfile();
-                _profileManager.SaveAllProfiles();
-                SetProfileButtons();
+                ProfileEditorView profileEditorView = new ProfileEditorView(this);
+                profileEditorView.ShowDialog();
             };
 
+            profileItem.PreviewMouseDown += OnProfileItemPreviewMouseDown;
+            profileItem.DataContext = this;
+            profileItem.Tag = profile.ProfileNum;
 
-            ProfileBtns.Add(createProfileBtn);
+            var listViewItemContent = (profileItem.Content as ListViewItem);
+            listViewItemContent.DataContext = profile;
+
+            listViewItemContent.Content = new EditableTextbox();
+
+            return profileItem;
         }
 
-        private Button CreateProfileButton(HotkeyProfile profile)
+        private void OnProfileItemPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            Button profileBtn = new Button();
-
-            profileBtn.Content = profile.ProfileName ?? $"profile{profile.ProfileNum}";
-            profileBtn.Tag = profile.ProfileNum.ToString();
-            profileBtn.Margin = new Thickness(0, 0, 0, 5);
-            profileBtn.Width = 330;
-            profileBtn.Height = 35;
-            profileBtn.Click += OnProfileClicked;
-
-            return profileBtn;
+            ProfileListViewItem profileItem = sender as ProfileListViewItem;
+            CurrentProfile = _profileManager.Profiles[int.Parse(profileItem.Tag.ToString()) - 1];
         }
 
-        private void OnProfileClicked(object sender, RoutedEventArgs e)
+        private void OnProfileSelected(object sender, RoutedEventArgs e)
         {
             Button profileBtn = sender as Button;
             int profileNum = int.Parse(profileBtn.Tag.ToString());

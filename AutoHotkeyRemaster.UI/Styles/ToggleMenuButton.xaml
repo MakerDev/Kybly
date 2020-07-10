@@ -1,27 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"       
-                    xmlns:icons="clr-namespace:AutoHotkeyRemaster.UI.Resources.Icons"
-                    xmlns:local="clr-namespace:AutoHotkeyRemaster.UI.Styles">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--// Toggle Button Style Template //-->
     <ImageBrush x:Key="ToggleBtnMouseOver"
-                    ImageSource="icons:ToggleDeault.png"/>
-
-    <!--// Text font style //-->
-    <Style x:Key="DefaultFontStyle" TargetType="TextBlock">
-        <Setter Property="VerticalAlignment"
-                    Value="Center"/>
-
-        <Setter Property="HorizontalAlignment"
-                    Value="Left"/>
-
-        <Setter Property="Foreground"
-                    Value="White"/>
-
-        <Setter Property="FontSize"
-                    Value="20"/>
-    </Style>
-
+                    ImageSource="../Resources/Icons/ToggleMouseOver.png"/>
 
     <Style x:Key="ToggleBtnStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Template">
@@ -60,7 +42,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 
     <!--// Tooltip Style Template //-->
     <Style TargetType="ToolTip" x:Key="ToolTipStyle">

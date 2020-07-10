@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoHotkeyRemaster.UI.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -12,14 +13,12 @@ using System.Windows.Shapes;
 
 namespace AutoHotkeyRemaster.UI.Views
 {
-    /// <summary>
-    /// Interaction logic for ProfileEditor.xaml
-    /// </summary>
-    public partial class ProfileEditor : Window
+    public partial class ProfileEditorView : Window
     {
-        public ProfileEditor()
+        public ProfileEditorView(ShellViewModel shellViewModel)
         {
             InitializeComponent();
+            DataContext = shellViewModel;
         }
     }
 }

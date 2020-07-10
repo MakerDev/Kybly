@@ -8,87 +8,262 @@
         cal:Bind.AtDesignTime="True"
         d:DataContext="{d:DesignInstance Type=vm:ShellViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"       
-        Title="AutoHotkey" Height="465" Width="680" >
+        Title="AutoHotkey" 
+        WindowStyle="None"
+        ResizeMode="NoResize"    
+        WindowStartupLocation="CenterScreen"
+        Height="800" Width="980" >
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Styles/MainPanel.xaml" />
+                <ResourceDictionary Source="../Styles/ToggleMenuButton.xaml" />
+                <ResourceDictionary Source="../Styles/PanelItemStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Color x:Key="ProfilePanelBg">#333333</Color>
         </ResourceDictionary>
     </Window.Resources>
-    
-    <StackPanel>
-        <Grid>
-            <StackPanel Tag="Menu">
-                <Menu IsMainMenu="True" VerticalContentAlignment="Center" >
-                    <MenuItem
-                    Margin="8, 0, 0, 0"
-                    Header="Options">
-                        <MenuItem Header="_Set Options" />
-                        <Separator/>
 
-                        <MenuItem Header="_Exit"/>
-                    </MenuItem>
-                    <MenuItem                   
-                        Margin="8,0,0,0"
-                        Header="_Setting">
-                        <MenuItem                          
-                        Tag="-1"
-                        Header="_Set Deactivating Key"
-                        />
-                        <MenuItem
-                        Tag="0"
-                        Header="_Set All Profile Changing Key" 
-                        
-                        />
-                    </MenuItem>
-                    <MenuItem
-                        Margin="8, 0, 0, 0"
-                        Header="Help">
-                        <MenuItem Header="_Tips"/>
-                    </MenuItem>
-                </Menu>
-            </StackPanel>
-
-            <ScrollViewer 
-                HorizontalAlignment="Left" 
-                Height="412" 
-                HorizontalContentAlignment="Left"
-                VerticalAlignment="Top" 
-                Width="330" Margin="0,19,0,0" BorderThickness="0,0,0,13">
-                <ItemsControl ItemsSource="{Binding ProfileBtns}" />
-            </ScrollViewer>
-
-            <!--right side of the main page-->
-            <StackPanel
-                 Visibility="Visible"
-                 HorizontalAlignment="Left"              
-                 Height="431" Margin="330,15,0,0" 
-                 VerticalAlignment="Top" 
-                 Width="340">
-                <TextBox
-                     x:Name="CurrentProfileName"
-                     Text="Profile selected : "
-                     HorizontalAlignment ="Center"
-                     FontSize="25"
-                     IsEnabled="{Binding CanEditProfileName}"
-                     Margin="0, 55, 0, 0" BorderThickness="0,3,0,0" FontWeight="Bold"/>
-
-                <Button
-                    Content="Edit Profile" 
-                    Width="250" Height="35" 
-                    Margin="0, 150, 0 ,0"
-                    FontSize="20" 
-                    />
-
-                <Button
-                    Content="Delete Profile" 
-                    Width="250" Height="35" 
-                    Margin="0, 15, 0 ,0"
-                    FontSize="20" 
-                    />
-            </StackPanel>
+    <DockPanel>
+        <Grid DockPanel.Dock="Top">
+            <Button Content="Title Bar" Height="25"/>
         </Grid>
-    </StackPanel>
+
+        <!--// Background Color //-->
+        <Grid 
+            DockPanel.Dock="Left"
+            Background="Black">
+            <!--// Background Image //-->
+            <Grid x:Name="BackgroundGrid" 
+                  PreviewMouseLeftButtonDown="BG_PreviewMouseLeftButtonDown">
+                <Grid.Background>
+                    <ImageBrush x:Name="BackgroundImage"
+                                ImageSource="/Resources/Icons/TempBackgroundImg.png"
+                                Stretch="Fill"/>
+
+                </Grid.Background>
+            </Grid>
+
+            <!--// Navigation Panel //-->
+            <Grid   x:Name="NavPanel"
+                    HorizontalAlignment="Left"
+                    Width="480"
+                    Background="#494949">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="230" />
+                    <ColumnDefinition Width="250"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Main Panel-->
+                <StackPanel x:Name="MainPanel" Grid.Row="0" Grid.Column="0" >
+                    <!--// Grid for the Menu Toggle Button //-->
+                    <Grid Height="90"
+                          Margin="0 0 0 10">
+                        <!--// Menu title text //-->
+                        <TextBlock  Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="73,-20,0,0"
+                                    Text="M E N U"
+                                    Foreground="White"
+                                    FontSize="22"
+                                    Background="Transparent"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource DefaultFontStyle}">
+                            
+                            <!--// Shadow Effect //-->
+                            <TextBlock.Effect>
+                                <DropShadowEffect  BlurRadius="10"
+                                                   ShadowDepth="1"
+                                                   Direction="-90"
+                                                   Color="White"/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+
+                        <!--// Toggle Button //-->
+                        <ToggleButton x:Name="ToggleButton"
+                                      Grid.Column="0"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Left"
+                                      Margin="18,-20,0,0"
+                                      Height="30"
+                                      Width="30"
+                                      BorderThickness="0"
+                                      Style="{StaticResource ToggleBtnStyle}" 
+                                      Unchecked="Tg_Btn_Unchecked" 
+                                      Checked="Tg_Btn_Checked">
+
+                            <!--// Toggle button default background image //-->
+                            <ToggleButton.Background>
+                                <ImageBrush ImageSource="../Resources/Icons/ToggleDefault.png"
+                                            Stretch="None"/>
+                            </ToggleButton.Background>
+
+                            <!--// Toggle Button - Checked, Unchecked events //-->
+                            <ToggleButton.Triggers>
+                                <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                    <BeginStoryboard>
+                                        <Storyboard x:Name="HideStackPanel">
+                                            <DoubleAnimation                                                  
+                                                Storyboard.TargetName="NavPanel"
+                                                Storyboard.TargetProperty="Width"
+                                                BeginTime="0:0:0"                                                
+                                                To="65"
+                                                Duration="0:0:0.2">
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+
+                                <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                    <BeginStoryboard>
+                                        <Storyboard x:Name="ShowStackPanel">
+                                            <DoubleAnimation                                              
+                                                Storyboard.TargetName="NavPanel"
+                                                Storyboard.TargetProperty="Width"
+                                                BeginTime="0:0:0"
+                                                From="65" To="230"
+                                                Duration="0:0:0.3">
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </ToggleButton.Triggers>
+                        </ToggleButton>
+                    </Grid>
+
+                    <!--// ListView with menu list items //-->
+                    <ListView  x:Name="MenuList"
+                               VerticalContentAlignment="Center"                      
+                               Background="Transparent"
+                               BorderBrush="Transparent"
+                               Width="240"
+                               ItemContainerStyle="{StaticResource ListItemStyle}"
+                               ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                               >
+
+                        <!--// Keyboard Profile //-->
+                        <ListViewItem HorizontalAlignment="Left"
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,0,15"                                       
+                                      PreviewMouseDown="ListViewItem_PreviewMouseDown"
+                                      Width="230" 
+                                      >
+                            <StackPanel Orientation="Horizontal"
+                                        Width="230"
+                                        VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <Image 
+                                    Margin="7 0 0 0"
+                                    Source="/Resources/Icons/KeyboardIcon.png" 
+                                    Height="27" Width="38" />
+
+                                <TextBlock 
+                                    Style="{StaticResource DefaultFontStyle}"
+                                    Margin="20 0 0 0"
+                                    VerticalAlignment="Center" Text="Keyboard Profile" />
+
+                            </StackPanel>
+                        </ListViewItem>
+
+                        <!--//Screen Keyboard Profile //-->
+                        <ListViewItem HorizontalAlignment="Left"
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,0,15">
+                            <StackPanel Orientation="Horizontal"
+                                        Width="230"
+                                        VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <Image 
+                                    Margin="7 0 0 0"
+                                    Source="/Resources/Icons/ScreenKeyboardIcon.png" Height="27" Width="38" />
+
+                                <TextBlock 
+                                    Style="{StaticResource DefaultFontStyle}"
+                                    Margin="20 0 0 0"
+                                    VerticalAlignment="Center" Text="ScrKeyboard" />
+
+                            </StackPanel>
+                        </ListViewItem>
+
+                        <!--// Listview items style template //-->
+                    </ListView>
+                </StackPanel>
+
+                <DockPanel      
+                    x:Name="BottomToggles"
+                    Grid.Row="1"
+                    Width="230"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom" 
+                    LastChildFill="False">
+
+                    <ListView VerticalContentAlignment="Center"   
+                              HorizontalContentAlignment="Left"
+                              Background="Transparent"
+                              BorderBrush="Transparent"
+                              Width="240"
+                              DockPanel.Dock="Bottom"
+                              ItemContainerStyle="{StaticResource ListItemStyle}"
+                              
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"  >
+
+                        <ListViewItem                            
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+
+                            <StackPanel 
+                                Orientation="Horizontal"
+                                Width="230"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                                
+                                <Image          
+                                    Margin="5 0 0 0"
+                                    Source="/Resources/Icons/OptionIcon.png" 
+                                    Height="40" Width="40" />
+
+                                <TextBlock 
+                                    Style="{StaticResource DefaultFontStyle}"
+                                    Margin="20 0 0 0"
+                                    VerticalAlignment="Center" 
+                                    Text="Options" />
+                            </StackPanel>
+
+                        </ListViewItem>
+                    </ListView>
+
+                </DockPanel>
+
+                <Grid                      
+                    x:Name="ProfilePanel"
+                    Grid.RowSpan="2"                    
+                    Grid.Column="1"
+                    Width="250" >
+                    <Grid.Background>
+                        <SolidColorBrush Color="{StaticResource ProfilePanelBg}"/>
+                    </Grid.Background>
+
+                    <!--Profiles-->
+                    <ListView  x:Name="ProfilesPanel"
+                               HorizontalAlignment="Center"
+                               HorizontalContentAlignment="Left"
+                               Background="Transparent"    
+                               BorderBrush="Transparent"
+                               Width="260"
+                               BorderThickness="0"
+                               ItemContainerStyle="{StaticResource ListItemStyle}"
+                               ItemsSource="{Binding ProfileItems}"
+                               ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                               >
+                    </ListView>
+
+                </Grid>
+
+            </Grid>
+        </Grid>
+    </DockPanel>
 </Window>

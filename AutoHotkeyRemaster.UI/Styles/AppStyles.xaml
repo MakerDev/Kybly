@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:AutoHotkeyRemaster.UI.Styles">
+    
+    <Color x:Key="DefaultBackgroundColor">#333333</Color>
+    <Color x:Key="DefaultSelectColor">#797979</Color>
+    
+    <!--// Text font style //-->
+    <Style x:Key="DefaultFontStyle" TargetType="TextBlock">
+        <Setter Property="VerticalAlignment"
+                    Value="Center"/>
+        <Setter Property="HorizontalAlignment"
+                    Value="Left"/>
+        <Setter Property="Foreground"
+                    Value="White"/>
+        <Setter Property="FontSize"
+                    Value="20"/>
+    </Style>
+
+    <Style x:Key="DefaultStyleForTextBox" TargetType="TextBox">
+        <Setter Property="VerticalAlignment"
+                    Value="Center"/>
+        <Setter Property="HorizontalAlignment"
+                    Value="Left"/>
+        <Setter Property="BorderThickness"
+                    Value="0" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Foreground"
+                    Value="White"/>
+        <Setter Property="FontSize"
+                    Value="20"/>
+
+    </Style>
+</ResourceDictionary>

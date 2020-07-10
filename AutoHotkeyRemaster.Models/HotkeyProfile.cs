@@ -13,7 +13,16 @@ namespace AutoHotkeyRemaster.Models
     {
         public const int MAX_HOTKEY = 60;
 
-        public string ProfileName { get; set; } = null;
+        private string _profileName = null;
+        public string ProfileName
+        {
+            get
+            {
+                return _profileName ?? $"profile{ProfileNum}";
+
+            }
+            set { _profileName = value; }
+        }
         public List<Hotkey> Hotkeys { get; private set; } = new List<Hotkey>();
 
 
@@ -73,6 +82,23 @@ namespace AutoHotkeyRemaster.Models
             return false;
         }
 
+        public static HotkeyProfile LoadFromFile(int profileNum)
+        {
+            string filename = $"profile{profileNum}";
+            string path = Environment.CurrentDirectory + "/SaveFiles/" + filename + ".json";
+
+            if (!File.Exists(path))
+            {
+                return null;
+            }
+
+            string jsonString = File.ReadAllText(path);
+            HotkeyProfile profile = JsonSerializer.Deserialize<HotkeyProfile>(jsonString);
+            profile.ProfileNum = profileNum;
+
+            return profile;
+        }
+
         public void Save(string filename)
         {
             string path = Environment.CurrentDirectory + "/SaveFiles/" + filename + ".json";
@@ -81,13 +107,6 @@ namespace AutoHotkeyRemaster.Models
             {
                 File.Delete(path);
             }
-
-            //TODO : delete legacy code
-            //using (FileStream filestream = File.OpenWrite(path))
-            //{
-            //    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(List<Hotkey>));
-            //    serializer.WriteObject(filestream, Hotkeys);
-            //}
 
             var options = new JsonSerializerOptions
             {
@@ -108,28 +127,5 @@ namespace AutoHotkeyRemaster.Models
             }
         }
 
-        public static HotkeyProfile LoadFromFile(int profileNum)
-        {
-            string filename = $"profile{profileNum}";
-            string path = Environment.CurrentDirectory + "/SaveFiles/" + filename + ".json";
-
-            if (!File.Exists(path))
-            {
-                return null;
-            }
-
-            //TODO : delete legacy code 
-            //using (FileStream filestream = File.OpenRead(path))
-            //{
-            //    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(List<Hotkey>));
-            //    profile.Hotkeys = serializer.ReadObject(filestream) as List<Hotkey>;
-            //}
-
-            string jsonString = File.ReadAllText(path);
-            HotkeyProfile profile = JsonSerializer.Deserialize<HotkeyProfile>(jsonString);
-            profile.ProfileNum = profileNum;
-
-            return profile;
-        }
     }
 }
