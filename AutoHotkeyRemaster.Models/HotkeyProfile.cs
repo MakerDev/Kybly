@@ -23,6 +23,7 @@ namespace AutoHotkeyRemaster.Models
             }
             set { _profileName = value; }
         }
+
         public List<Hotkey> Hotkeys { get; private set; } = new List<Hotkey>();
 
 
@@ -97,6 +98,11 @@ namespace AutoHotkeyRemaster.Models
             profile.ProfileNum = profileNum;
 
             return profile;
+        }
+
+        public void Save()
+        {
+            Save($"profile{ProfileNum}");
         }
 
         public void Save(string filename)

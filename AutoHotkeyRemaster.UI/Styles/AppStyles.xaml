@@ -30,6 +30,5 @@
                     Value="White"/>
         <Setter Property="FontSize"
                     Value="20"/>
-
     </Style>
 </ResourceDictionary>

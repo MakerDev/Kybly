@@ -1,10 +1,12 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services;
+using AutoHotkeyRemaster.UI.Models;
 using AutoHotkeyRemaster.UI.Views;
 using AutoHotkeyRemaster.UI.Views.CustomControls;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,22 +31,9 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             {
                 _currentProfile = value;
 
-                NotifyOfPropertyChange(() => CanEditProfileName);
                 NotifyOfPropertyChange(() => CurrentProfile);
                 NotifyOfPropertyChange(() => CurrentProfileName);
             }
-        }
-
-        public bool CanEditProfileName
-        {
-            get
-            {
-                if (CurrentProfile == null)
-                    return false;
-
-                return true;
-            }
-            private set { }
         }
 
         public string CurrentProfileName
@@ -64,18 +53,29 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             }
         }
 
-        private BindableCollection<ProfileListViewItem> _profileItems = new BindableCollection<ProfileListViewItem>();
+        private ProfileStateModel _selectedProfile;
 
-        public BindableCollection<ProfileListViewItem> ProfileItems
+        public ProfileStateModel SelectedProfile
         {
-            get { return _profileItems; }
+            get { return _selectedProfile; }
             set
             {
-                _profileItems = value;
-                NotifyOfPropertyChange(() => ProfileItems);
+                _selectedProfile = value;
+                NotifyOfPropertyChange(() => SelectedProfile);
             }
         }
 
+        private BindingList<ProfileStateModel> _profileStates = new BindingList<ProfileStateModel>();
+
+        public BindingList<ProfileStateModel> ProfileStates
+        {
+            get { return _profileStates; }
+            set
+            {
+                _profileStates = value;
+                NotifyOfPropertyChange(() => ProfileStates);
+            }
+        }
 
         public ShellViewModel(IWindowManager windowManager, ProfileManager profileManager)
         {
@@ -87,50 +87,13 @@ namespace AutoHotkeyRemaster.UI.ViewModels
 
         private void SetProfileListItems()
         {
-            ProfileItems.Clear();
+            ProfileStates.Clear();
 
-            var profiles = _profileManager.Profiles;
-
-            foreach (var profile in profiles)
+            foreach (var profile in _profileManager.Profiles)
             {
-                ProfileItems.Add(CreateProfileListViewItem(profile));
+                ProfileStateModel profileState = new ProfileStateModel(profile);
+                ProfileStates.Add(profileState);
             }
-        }
-
-        private ProfileListViewItem CreateProfileListViewItem(HotkeyProfile profile)
-        {
-            ProfileListViewItem profileItem = new ProfileListViewItem();
-
-            profileItem.MouseDoubleClick += (s, e) =>
-            {
-                ProfileEditorView profileEditorView = new ProfileEditorView(this);
-                profileEditorView.ShowDialog();
-            };
-
-            profileItem.PreviewMouseDown += OnProfileItemPreviewMouseDown;
-            profileItem.DataContext = this;
-            profileItem.Tag = profile.ProfileNum;
-
-            var listViewItemContent = (profileItem.Content as ListViewItem);
-            listViewItemContent.DataContext = profile;
-
-            listViewItemContent.Content = new EditableTextbox();
-
-            return profileItem;
-        }
-
-        private void OnProfileItemPreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            ProfileListViewItem profileItem = sender as ProfileListViewItem;
-            CurrentProfile = _profileManager.Profiles[int.Parse(profileItem.Tag.ToString()) - 1];
-        }
-
-        private void OnProfileSelected(object sender, RoutedEventArgs e)
-        {
-            Button profileBtn = sender as Button;
-            int profileNum = int.Parse(profileBtn.Tag.ToString());
-
-            CurrentProfile = _profileManager.Profiles[profileNum - 1];
         }
     }
 }

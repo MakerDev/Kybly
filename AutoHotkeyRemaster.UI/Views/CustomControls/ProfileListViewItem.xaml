@@ -4,24 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AutoHotkeyRemaster.UI.Views.CustomControls"
-             mc:Ignorable="d"              
+             mc:Ignorable="d"   
+             Focusable="False"
+             PreviewMouseDoubleClick="OnDoubleClick"
              d:DesignHeight="450" d:DesignWidth="800">
+  
+    <TextBlock 
+        x:Name="txtBlock"    
+        Focusable="False"
+        Style="{StaticResource DefaultFontStyle}" 
+        Text="{Binding ProfileName, Mode=TwoWay}" />
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Styles/PanelItemStyle.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-    
-    <ListViewItem
-        HorizontalAlignment="Center"
-        HorizontalContentAlignment="Center"
-        VerticalAlignment="Center"
-        VerticalContentAlignment="Center"
-        Width="250"        
-        Style="{StaticResource ListItemStyle}"
-        Margin="0 0 0 15">
-    </ListViewItem>
 </UserControl>

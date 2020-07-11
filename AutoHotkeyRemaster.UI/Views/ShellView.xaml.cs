@@ -39,7 +39,8 @@ namespace AutoHotkeyRemaster.UI.Views
 
         private void Tg_Btn_Unchecked(object sender, RoutedEventArgs e)
         {
-            //TODO : 리스트뷰 선택된거 있으면 색깔들 다 원상복귀->초기화 루틴           
+            //TODO : 리스트뷰 선택된거 있으면 색깔들 다 원상복귀->초기화 루틴   
+            MenuList.SelectedItem = null;
             BackgroundImage.Opacity = 1;
         }
 
@@ -59,6 +60,22 @@ namespace AutoHotkeyRemaster.UI.Views
             //내용 바인딩은 ViewModel에서
             ToggleButton.IsChecked = true;
             _openProfilePanelStoryboard.Begin(NavPanel);
+        }
+
+        private void PreventKeyboardNavigation(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void OnDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ListViewItem listViewItem = sender as ListViewItem;
+            TextBlock txtBlock = listViewItem.Content as TextBlock;
+
+            ProfileEditor profileEditor = new ProfileEditor(txtBlock.Text);
+            profileEditor.ShowDialog();
+
+            txtBlock.Text = profileEditor.ChangedName;
         }
     }
 }

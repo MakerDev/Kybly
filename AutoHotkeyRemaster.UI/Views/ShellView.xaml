@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
         xmlns:vm="clr-namespace:AutoHotkeyRemaster.UI.ViewModels"
+        xmlns:custom="clr-namespace:AutoHotkeyRemaster.UI.Views.CustomControls"
         cal:Bind.AtDesignTime="True"
         d:DataContext="{d:DesignInstance Type=vm:ShellViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"       
@@ -17,8 +18,8 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Styles/ToggleMenuButton.xaml" />
-                <ResourceDictionary Source="../Styles/PanelItemStyle.xaml" />
+                <ResourceDictionary Source="/Styles/ToggleMenuButton.xaml" />
+                <ResourceDictionary Source="/Styles/PanelItemStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <Color x:Key="ProfilePanelBg">#333333</Color>
@@ -143,6 +144,7 @@
                                Background="Transparent"
                                BorderBrush="Transparent"
                                Width="240"
+                               KeyDown="PreventKeyboardNavigation"
                                ItemContainerStyle="{StaticResource ListItemStyle}"
                                ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                                >
@@ -220,7 +222,7 @@
                                 Width="230"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
-                                
+
                                 <Image          
                                     Margin="5 0 0 0"
                                     Source="/Resources/Icons/OptionIcon.png" 
@@ -250,15 +252,23 @@
                     <!--Profiles-->
                     <ListView  x:Name="ProfilesPanel"
                                HorizontalAlignment="Center"
-                               HorizontalContentAlignment="Left"
+                               HorizontalContentAlignment="Center"
                                Background="Transparent"    
                                BorderBrush="Transparent"
-                               Width="260"
                                BorderThickness="0"
-                               ItemContainerStyle="{StaticResource ListItemStyle}"
-                               ItemsSource="{Binding ProfileItems}"
-                               ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                               >
+                               Width="260"
+                               PreviewKeyDown="PreventKeyboardNavigation"
+                               ItemContainerStyle="{StaticResource ListItemStyle}"                              
+                               ItemsSource="{Binding ProfileStates}"                               
+                               SelectedItem="{Binding SelectedProfile}"      
+                               ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <custom:ProfileListViewItem/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
 
                 </Grid>
