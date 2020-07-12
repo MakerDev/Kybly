@@ -13,7 +13,7 @@
         WindowStyle="None"
         ResizeMode="NoResize"    
         WindowStartupLocation="CenterScreen"
-        Height="800" Width="980" >
+        Height="800" Width="1290" >
 
     <Window.Resources>
         <ResourceDictionary>
@@ -27,23 +27,23 @@
     </Window.Resources>
 
     <DockPanel>
-        <Grid DockPanel.Dock="Top">
+        <Grid x:Name="Header" DockPanel.Dock="Top">
             <Button Content="Title Bar" Height="25"/>
         </Grid>
 
-        <!--// Background Color //-->
+        <!--// Background //-->
         <Grid 
             DockPanel.Dock="Left"
             Background="Black">
             <!--// Background Image //-->
             <Grid x:Name="BackgroundGrid" 
                   PreviewMouseLeftButtonDown="BG_PreviewMouseLeftButtonDown">
-                <Grid.Background>
-                    <ImageBrush x:Name="BackgroundImage"
-                                ImageSource="/Resources/Icons/TempBackgroundImg.png"
-                                Stretch="Fill"/>
+                <StackPanel 
+                    Margin="55 0 0 0">
+                    <ItemsControl x:Name="Items"/>
+                </StackPanel>
 
-                </Grid.Background>
+                <Grid x:Name="ContentMask" Background="Black" Opacity="0.3" Visibility="Collapsed" />
             </Grid>
 
             <!--// Navigation Panel //-->
@@ -249,31 +249,50 @@
                         <SolidColorBrush Color="{StaticResource ProfilePanelBg}"/>
                     </Grid.Background>
 
-                    <!--Profiles-->
-                    <ListView  x:Name="ProfilesPanel"
-                               HorizontalAlignment="Center"
-                               HorizontalContentAlignment="Center"
-                               Background="Transparent"    
-                               BorderBrush="Transparent"
-                               BorderThickness="0"
-                               Width="260"
-                               PreviewKeyDown="PreventKeyboardNavigation"
-                               ItemContainerStyle="{StaticResource ListItemStyle}"                              
-                               ItemsSource="{Binding ProfileStates}"                               
-                               SelectedItem="{Binding SelectedProfile}"      
-                               ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <custom:ProfileListViewItem/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                    <DockPanel LastChildFill="False">
+                        <!--Profiles-->
+                        <ListView  
+                            DockPanel.Dock="Top"
+                            x:Name="ProfilesPanel"                               
+                            HorizontalAlignment="Center"
+                            HorizontalContentAlignment="Center"
+                            Background="Transparent"    
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Width="260"
+                            PreviewKeyDown="PreventKeyboardNavigation"
+                            ItemContainerStyle="{StaticResource ListItemStyle}"                              
+                            ItemsSource="{Binding ProfileStates}"                               
+                            SelectedItem="{Binding SelectedProfile}"      
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel                                    
+                                    HorizontalAlignment="Center">
+                                        <custom:ProfileListViewItem/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <Button 
+                            x:Name="AddNewProfile"
+                            DockPanel.Dock="Bottom"
+                            Height="60"
+                            Content="Add Profile" />
+
+                    </DockPanel>
+                    
+
 
                 </Grid>
 
             </Grid>
         </Grid>
+
+
+
+
+
     </DockPanel>
 </Window>

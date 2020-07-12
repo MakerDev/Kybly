@@ -5,13 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AutoHotkeyRemaster.UI.Views.CustomControls"
              mc:Ignorable="d"   
-             Focusable="False"
+             Focusable="False"        
              PreviewMouseDoubleClick="OnDoubleClick"
              d:DesignHeight="450" d:DesignWidth="800">
   
     <TextBlock 
         x:Name="txtBlock"    
         Focusable="False"
+        Width="230"
+        Height="50"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
         Style="{StaticResource DefaultFontStyle}" 
         Text="{Binding ProfileName, Mode=TwoWay}" />
 

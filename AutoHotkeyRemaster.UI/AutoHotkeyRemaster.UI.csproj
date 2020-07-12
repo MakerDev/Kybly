@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\Icons\Change Icon.png" />
+    <None Remove="Resources\Icons\DisabledToggleSwitchOff.png" />
+    <None Remove="Resources\Icons\DisabledToggleSwitchOn.png" />
     <None Remove="Resources\Icons\Icon.png" />
     <None Remove="Resources\Icons\KeyboardIcon.png" />
     <None Remove="Resources\Icons\OptionIcon.png" />
@@ -18,6 +20,12 @@
     <None Remove="Resources\Icons\To Icon.png" />
     <None Remove="Resources\Icons\ToggleDefault.png" />
     <None Remove="Resources\Icons\ToggleMouseOver.png" />
+    <None Remove="Resources\Icons\ToggleSwitchOff.png" />
+    <None Remove="Resources\Icons\ToggleSwitchOn.png" />
+    <None Remove="Resources\Images\Keyboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Remove="Styles\PanelItemStyle.xaml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.136-rc" />
@@ -28,6 +36,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\Change Icon.png" />
+    <Resource Include="Resources\Icons\DisabledToggleSwitchOff.png" />
+    <Resource Include="Resources\Icons\DisabledToggleSwitchOn.png" />
     <Resource Include="Resources\Icons\Icon.png" />
     <Resource Include="Resources\Icons\KeyboardIcon.png" />
     <Resource Include="Resources\Icons\OptionIcon.png" />
@@ -36,5 +46,9 @@
     <Resource Include="Resources\Icons\To Icon.png" />
     <Resource Include="Resources\Icons\ToggleDefault.png" />
     <Resource Include="Resources\Icons\ToggleMouseOver.png" />
+    <Resource Include="Resources\Icons\ToggleSwitchOff.png" />
+    <Resource Include="Resources\Icons\ToggleSwitchOn.png" />
+    <Resource Include="Resources\Images\Keyboard.png" />
+    <Resource Include="Styles\PanelItemStyle.xaml" />
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
                     xmlns:local="clr-namespace:AutoHotkeyRemaster.UI.Styles">
     
     <Color x:Key="DefaultBackgroundColor">#333333</Color>
+    <SolidColorBrush x:Key="DefaultBackgroundBrush" Color="{StaticResource DefaultBackgroundColor}" />
     <Color x:Key="DefaultSelectColor">#797979</Color>
     
     <!--// Text font style //-->

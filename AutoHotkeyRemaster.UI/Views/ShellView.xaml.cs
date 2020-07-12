@@ -32,21 +32,21 @@ namespace AutoHotkeyRemaster.UI.Views
             Storyboard.SetTargetProperty(openProfilePanelAnimation, new PropertyPath(Grid.WidthProperty));
 
             _openProfilePanelStoryboard.Children.Add(openProfilePanelAnimation);
-
-            //TODO : delete this
-            NavPanel.Width = 65;
         }
 
         private void Tg_Btn_Unchecked(object sender, RoutedEventArgs e)
         {
-            //TODO : 리스트뷰 선택된거 있으면 색깔들 다 원상복귀->초기화 루틴   
-            MenuList.SelectedItem = null;
-            BackgroundImage.Opacity = 1;
+            if(ProfilesPanel.SelectedItem == null && MenuList.SelectedItem != null)
+            {
+                MenuList.SelectedItem = null;
+            }
+
+            ContentMask.Visibility = Visibility.Collapsed;
         }
 
         private void Tg_Btn_Checked(object sender, RoutedEventArgs e)
         {
-            BackgroundImage.Opacity = 0.3;
+            ContentMask.Visibility = Visibility.Visible;
         }
 
         private void BG_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -56,8 +56,6 @@ namespace AutoHotkeyRemaster.UI.Views
 
         private void ListViewItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //TODO : sender 정보 이용해서 누구한테 색칠해줘야할지 파악.
-            //내용 바인딩은 ViewModel에서
             ToggleButton.IsChecked = true;
             _openProfilePanelStoryboard.Begin(NavPanel);
         }
@@ -77,5 +75,6 @@ namespace AutoHotkeyRemaster.UI.Views
 
             txtBlock.Text = profileEditor.ChangedName;
         }
+
     }
 }

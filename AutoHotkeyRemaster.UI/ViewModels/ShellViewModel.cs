@@ -1,5 +1,6 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services;
+using AutoHotkeyRemaster.UI.Events;
 using AutoHotkeyRemaster.UI.Models;
 using AutoHotkeyRemaster.UI.Views;
 using AutoHotkeyRemaster.UI.Views.CustomControls;
@@ -17,41 +18,12 @@ using System.Windows.Media;
 
 namespace AutoHotkeyRemaster.UI.ViewModels
 {
-    public class ShellViewModel : Conductor<object>
+    public class ShellViewModel : Conductor<object>.Collection.AllActive
     {
-        private readonly IWindowManager _windowManager;
         private readonly ProfileManager _profileManager;
-
-        private HotkeyProfile _currentProfile = null;
-
-        public HotkeyProfile CurrentProfile
-        {
-            get { return _currentProfile; }
-            set
-            {
-                _currentProfile = value;
-
-                NotifyOfPropertyChange(() => CurrentProfile);
-                NotifyOfPropertyChange(() => CurrentProfileName);
-            }
-        }
-
-        public string CurrentProfileName
-        {
-            get
-            {
-                if (CurrentProfile == null)
-                    return "Select profile";
-                else
-                    return CurrentProfile.ProfileName ?? $"profile{CurrentProfile.ProfileNum}";
-            }
-            set
-            {
-                CurrentProfile.ProfileName = value;
-                CurrentProfile.Save($"profile{CurrentProfile.ProfileNum}");
-                NotifyOfPropertyChange(() => CurrentProfileName);
-            }
-        }
+        private readonly IEventAggregator _eventAggregator;
+        private readonly KeyboardViewModel _keyboardViewModel;
+        private readonly HotkeyEditViewModel _hotkeyEditViewModel;
 
         private ProfileStateModel _selectedProfile;
 
@@ -61,6 +33,17 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             set
             {
                 _selectedProfile = value;
+                //INFO : If somthing goes wrong, consider to change this synchronous
+                if (_selectedProfile != null)
+                {
+                    _eventAggregator.PublishOnUIThreadAsync(new ProfileChangedEvent { Profile = _selectedProfile.Profile });
+                }
+                else
+                {
+                    _eventAggregator.PublishOnUIThreadAsync(new ProfileChangedEvent { Profile = null });
+                }
+
+
                 NotifyOfPropertyChange(() => SelectedProfile);
             }
         }
@@ -77,12 +60,36 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             }
         }
 
-        public ShellViewModel(IWindowManager windowManager, ProfileManager profileManager)
+        public ShellViewModel(IWindowManager windowManager, ProfileManager profileManager, IEventAggregator eventAggregator,
+            KeyboardViewModel keyboardViewModel, HotkeyEditViewModel hotkeyEditViewModel)
         {
-            _windowManager = windowManager;
             _profileManager = profileManager;
+            _eventAggregator = eventAggregator;
+            _keyboardViewModel = keyboardViewModel;
+            _hotkeyEditViewModel = hotkeyEditViewModel;
+
+            _eventAggregator.SubscribeOnUIThread(this);
 
             SetProfileListItems();
+
+            Items.AddRange(new Screen[] { _hotkeyEditViewModel, _keyboardViewModel });
+        }
+
+
+        public void AddNewProfile(object sender, RoutedEventArgs e)
+        {
+            _profileManager.CreateNewProfile().Save();
+
+            SetProfileListItems();
+        }
+
+
+        protected override async void OnViewReady(object view)
+        {
+            base.OnViewReady(view);
+
+            await ActivateItemAsync(_hotkeyEditViewModel);
+            await ActivateItemAsync(_keyboardViewModel);
         }
 
         private void SetProfileListItems()

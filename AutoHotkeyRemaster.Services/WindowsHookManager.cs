@@ -37,7 +37,6 @@ namespace AutoHotkeyRemaster.Services
         }
 
         #region DllImports
-        //TODO : 추후에 훅 이벤트도 이 클래스로 리펙토링 하기
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]

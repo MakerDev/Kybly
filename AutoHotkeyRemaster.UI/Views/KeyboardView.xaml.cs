@@ -17,11 +17,17 @@ namespace AutoHotkeyRemaster.UI.Views
     /// <summary>
     /// Interaction logic for KeyboardPage.xaml
     /// </summary>
-    public partial class KeyboardPage : Page
+    public partial class KeyboardView : UserControl
     {
-        public KeyboardPage()
+        public KeyboardView()
         {
             InitializeComponent();
+        }
+
+        //TODO : remove this and relpace with Command
+        private void OnKeyClicked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

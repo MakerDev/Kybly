@@ -26,7 +26,6 @@ namespace AutoHotkeyRemaster.Models
 
         public List<Hotkey> Hotkeys { get; private set; } = new List<Hotkey>();
 
-
         [JsonIgnore]
         public int ProfileNum { get; set; }
         [JsonIgnore]
@@ -86,7 +85,7 @@ namespace AutoHotkeyRemaster.Models
         public static HotkeyProfile LoadFromFile(int profileNum)
         {
             string filename = $"profile{profileNum}";
-            string path = Environment.CurrentDirectory + "/SaveFiles/" + filename + ".json";
+            string path = Environment.CurrentDirectory + "/savefiles/" + filename + ".json";
 
             if (!File.Exists(path))
             {
@@ -107,7 +106,14 @@ namespace AutoHotkeyRemaster.Models
 
         public void Save(string filename)
         {
-            string path = Environment.CurrentDirectory + "/SaveFiles/" + filename + ".json";
+            string saveFolderPath = Path.Combine(Environment.CurrentDirectory, "savefiles");
+            string path = Path.Combine(saveFolderPath, filename + ".json");
+
+
+            if(!Directory.Exists(saveFolderPath))
+            {
+                Directory.CreateDirectory(saveFolderPath);
+            }
 
             if (File.Exists(path))
             {
@@ -125,7 +131,7 @@ namespace AutoHotkeyRemaster.Models
 
         public void Delete(string filename)
         {
-            string path = Environment.CurrentDirectory + "/SaveFiles/" + filename + ".json";
+            string path = Environment.CurrentDirectory + "/savefiles/" + filename + ".json";
 
             if (File.Exists(path))
             {
