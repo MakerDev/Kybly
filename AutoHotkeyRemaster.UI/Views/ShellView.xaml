@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:AutoHotkeyRemaster.UI.ViewModels"
         xmlns:custom="clr-namespace:AutoHotkeyRemaster.UI.Views.CustomControls"
         cal:Bind.AtDesignTime="True"
-        d:DataContext="{d:DesignInstance Type=vm:ShellViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=vm:ShellViewModel, IsDesignTimeCreatable=False}"
         mc:Ignorable="d"       
         Title="AutoHotkey" 
         WindowStyle="None"
@@ -209,8 +209,7 @@
                               BorderBrush="Transparent"
                               Width="240"
                               DockPanel.Dock="Bottom"
-                              ItemContainerStyle="{StaticResource ListItemStyle}"
-                              
+                              ItemContainerStyle="{StaticResource ListItemStyle}"                              
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"  >
 
                         <ListViewItem                            
@@ -267,19 +266,31 @@
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel                                    
-                                        HorizontalAlignment="Center">
-                                        <custom:ProfileListViewItem/>
+                                    <StackPanel>
+                                        <custom:ProfileListViewItem VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
 
-                        <Button 
-                            x:Name="AddNewProfile"
-                            DockPanel.Dock="Bottom"
-                            Height="60"
-                            Content="+new profile" />
+                        <StackPanel                             
+                            DockPanel.Dock="Bottom">
+                            <Button 
+                                x:Name="AddNewProfile"
+                                Height="60"
+                                Content="+new profile" />
+
+                            <Button 
+                                x:Name="DeleteProfile"
+                                Margin="0 2 0 0"
+                                Height="60"
+                                Visibility="{Binding CanDeleteProfile, 
+                                    Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Content="-delete profile" 
+                                Background="#FFC13333" 
+                                Foreground="White" />
+
+                        </StackPanel>
 
                     </DockPanel>
                     

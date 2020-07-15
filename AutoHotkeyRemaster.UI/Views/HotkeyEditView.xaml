@@ -276,14 +276,6 @@
                     HorizontalAlignment="Center"
                     Text="{Binding CurrentProfile.ProfileName, 
                         FallbackValue='Select a profile'}"/>
-
-                <Button 
-                    x:Name="DeleteProfile"
-                    Content="Delete Profile"
-                    Foreground="White"
-                    Background="Red"
-                    Width="120"
-                    Height="40" />
             </StackPanel>
         </StackPanel>
 

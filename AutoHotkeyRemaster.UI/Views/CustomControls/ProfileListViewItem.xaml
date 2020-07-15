@@ -11,12 +11,11 @@
   
     <TextBlock 
         x:Name="txtBlock"    
-        Focusable="False"
         Width="230"
-        Height="50"
         HorizontalAlignment="Center"
-        VerticalAlignment="Center"
+        VerticalAlignment="Center"        
         Style="{StaticResource DefaultFontStyle}" 
-        Text="{Binding ProfileName, Mode=TwoWay}" />
+        Text="{Binding ProfileName, Mode=TwoWay, FallbackValue='test'}" 
+        TextAlignment="Left" TextWrapping="Wrap" />
 
 </UserControl>

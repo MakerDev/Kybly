@@ -19,7 +19,7 @@ using System.Windows.Media;
 
 namespace AutoHotkeyRemaster.UI.ViewModels
 {
-    public class ShellViewModel : Conductor<object>.Collection.AllActive, IHandle<ProfileDeletedEvent>
+    public class ShellViewModel : Conductor<object>.Collection.AllActive
     {
         private readonly ProfileManager _profileManager;
         private readonly IEventAggregator _eventAggregator;
@@ -41,6 +41,7 @@ namespace AutoHotkeyRemaster.UI.ViewModels
                 }
 
                 NotifyOfPropertyChange(() => SelectedProfile);
+                NotifyOfPropertyChange(() => CanDeleteProfile);
             }
         }
 
@@ -97,12 +98,37 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             }
         }
 
-        public Task HandleAsync(ProfileDeletedEvent message, CancellationToken cancellationToken)
+        public bool CanDeleteProfile
         {
-            SelectedProfile = null;
-            SetProfileListItems();
+            get
+            {
+                if (SelectedProfile != null)
+                    return true;
 
-            return Task.CompletedTask;
+                return false;
+            }
+            set { }
+        }
+
+        public async void DeleteProfile()
+        {
+            var currentProfile = SelectedProfile.Profile;
+
+            CustomDialogBox dialogBox = new CustomDialogBox($"Are you sure to close {currentProfile.ProfileName}");
+            dialogBox.ShowDialog();
+
+            if (dialogBox.DialogResult.HasValue && dialogBox.DialogResult.Value)
+            {
+                HotkeyProfile deletedProfile = _profileManager.DeleteProfile(currentProfile.ProfileNum);
+
+                SelectedProfile = null;
+                SetProfileListItems();
+
+                await _eventAggregator.PublishOnUIThreadAsync(new ProfileDeletedEvent
+                {
+                    DeletedProfile = deletedProfile
+                });
+            }
         }
     }
 }

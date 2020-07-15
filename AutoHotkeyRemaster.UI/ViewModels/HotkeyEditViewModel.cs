@@ -15,10 +15,25 @@ using WindowsInput.Native;
 
 namespace AutoHotkeyRemaster.UI.ViewModels
 {
-    public class HotkeyEditViewModel : Screen, IHandle<ProfileChangedEvent>, IHandle<KeySelectedEvent>
+    public class HotkeyEditViewModel : Screen, IHandle<ProfileChangedEvent>, IHandle<KeySelectedEvent>, IHandle<ProfileDeletedEvent>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly ProfileManager _profileManager;
+
+
+        private HotkeyProfile _currentProfile;
+
+        public HotkeyProfile CurrentProfile
+        {
+            get { return _currentProfile; }
+            set
+            {
+                _currentProfile = value;
+
+                NotifyOfPropertyChange(() => CanEdit);
+                NotifyOfPropertyChange(() => CurrentProfile);
+            }
+        }
 
         //TODO : 더 깔끔하게 해놓을 방법 없나..?
         public string Explanation
@@ -26,7 +41,7 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             get
             {
                 if (CurrentHotkey == null)
-                    return null;
+                    return "";
 
                 return CurrentHotkey.Explanation;
             }
@@ -61,7 +76,6 @@ namespace AutoHotkeyRemaster.UI.ViewModels
         }
 
         private KeyInfo _hotkeyAction;
-
         public KeyInfo HotkeyAction
         {
             get { return _hotkeyAction; }
@@ -107,19 +121,6 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             }
         }
 
-        private HotkeyProfile _currentProfile;
-
-        public HotkeyProfile CurrentProfile
-        {
-            get { return _currentProfile; }
-            set
-            {
-                _currentProfile = value;
-
-                NotifyOfPropertyChange(() => CanEdit);
-                NotifyOfPropertyChange(() => CurrentProfile);
-            }
-        }
 
         #region MODIFIERS
         public bool Control
@@ -217,29 +218,9 @@ namespace AutoHotkeyRemaster.UI.ViewModels
                 });
             }
 
-            //TODO : 예외처리
-            CurrentHotkey = null;
-            HotkeyAction = null;
-        }
-
-        public void DeleteProfile()
-        {
-            CustomDialogBox dialogBox = new CustomDialogBox($"Are you sure to close {CurrentProfile.ProfileName}");
-            dialogBox.ShowDialog();
-
-            if(dialogBox.DialogResult.HasValue && dialogBox.DialogResult.Value)
-            {
-                HotkeyProfile deletedProfile = _profileManager.DeleteProfile(CurrentProfile.ProfileNum);
-
-                CurrentProfile = null;
-                CurrentHotkey = null;
-                HotkeyAction = null;
-
-                _eventAggregator.PublishOnUIThreadAsync(new ProfileDeletedEvent
-                {
-                    DeletedProfile = deletedProfile
-                });
-            }            
+            //TODO : result 예외처리
+            //HotkeyAction = null;
+            //CurrentHotkey = null;
         }
 
         public void CancelClick()
@@ -255,6 +236,16 @@ namespace AutoHotkeyRemaster.UI.ViewModels
 
             _eventAggregator.SubscribeOnUIThread(this);
         }
+
+        public Task HandleAsync(ProfileDeletedEvent message, CancellationToken cancellationToken)
+        {
+            CurrentHotkey = null;
+            HotkeyAction = null;
+            CurrentProfile = null;
+
+            return Task.CompletedTask;
+        }
+
 
         public Task HandleAsync(ProfileChangedEvent message, CancellationToken cancellationToken)
         {
@@ -273,7 +264,8 @@ namespace AutoHotkeyRemaster.UI.ViewModels
                 Modifier = CurrentHotkey.Action.Modifier
             };
 
-            //TODO : 현재 상태로 세팅해두거나 delete만 나오게 패널바꿔놓도록
+            NotifyOfPropertyChange(() => HotkeyActionKeyDisplay);
+
             CanEdit = message.IsNew;
 
             return Task.CompletedTask;
@@ -289,9 +281,8 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             }
 
             //TODO : 입력기가 기본 윈도우 입력기가 아닌 경우 e.Key 값이 이상한 경우가 있다. 나중에 확인 필요
-            ((TextBox)sender).Text = e.Key.ToString();
-
             HotkeyAction.Key = int.Parse(KeyInterop.VirtualKeyFromKey(e.Key).ToString());
+            NotifyOfPropertyChange(() => HotkeyActionKeyDisplay);
         }
     }
 }
