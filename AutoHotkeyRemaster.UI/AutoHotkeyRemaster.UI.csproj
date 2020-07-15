@@ -51,4 +51,7 @@
     <Resource Include="Resources\Images\Keyboard.png" />
     <Resource Include="Styles\PanelItemStyle.xaml" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands\" />
+  </ItemGroup>
 </Project>

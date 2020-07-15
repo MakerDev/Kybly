@@ -9,7 +9,6 @@
              cal:Bind.AtDesignTime="True"
              d:DataContext="{d:DesignInstance Type=vm:HotkeyEditViewModel, IsDesignTimeCreatable=False}"
              mc:Ignorable="d" 
-
              Height="430"
              d:DesignHeight="430" d:DesignWidth="1200">
 
@@ -55,7 +54,7 @@
                             </Setter.Value>
                         </Setter>
                     </MultiTrigger>
-                    
+
                     <!--Enabled & switch off-->
                     <MultiTrigger>
                         <MultiTrigger.Conditions>
@@ -81,7 +80,7 @@
                             <Setter.Value>
                                 <ImageBrush ImageSource="/Resources/Icons/DisabledToggleSwitchOn.png"/>
                             </Setter.Value>
-                        </Setter>                    
+                        </Setter>
                     </MultiTrigger>
 
                     <!--Disabled & switch off-->
@@ -115,15 +114,30 @@
 
     <Grid>
         <Grid 
-            Panel.ZIndex="0"
-            Visibility="{Binding CanEdit, Converter={StaticResource BooleanToVisibilityConverter}}"
-            Opacity="0.1"
-            Background="Black">
-            
+            Panel.ZIndex="100"
+            Background="Transparent"
+            HorizontalAlignment="Left"
+            Visibility="{Binding CanEdit, 
+                Converter={StaticResource BooleanToInvertedVisibilityConverter}}" 
+            Width="356">
         </Grid>
+
         <StackPanel
             Orientation="Horizontal">
-            <StackPanel Width="150"/>
+            <StackPanel 
+                Margin="80 0 0 0"
+                Width="150">
+                <TextBlock 
+                    Style="{StaticResource TitleTextBlock}"
+                    Text="Trigger"/>
+                <TextBlock
+                    Style="{StaticResource DefaultFontStyle}"
+                    Text="{Binding CurrentHotkey.Trigger, 
+                        Converter={StaticResource InstanceToStringConverter}}"
+                    />
+            </StackPanel>
+
+
             <StackPanel x:Name="Modifiers" Width="150">
                 <TextBlock Style="{StaticResource TitleTextBlock}"
                            Text="Modifier"/>
@@ -135,9 +149,10 @@
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"   
                     Tag="Control"
+                    IsChecked="{Binding Control}"
                     Style="{StaticResource ToggleSwitchStyle}" />
 
-                
+
                 <!--Alt-->
                 <TextBlock Style="{StaticResource DefaultFontStyle}"
                            Margin="0 30 0 0"
@@ -147,9 +162,10 @@
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"
                     Tag="Alt"
+                    IsChecked="{Binding Alt}"
                     Style="{StaticResource ToggleSwitchStyle}" />
-                
-                
+
+
                 <!--Shift-->
                 <TextBlock Style="{StaticResource DefaultFontStyle}"
                            Margin="0 30 0 0"
@@ -159,9 +175,10 @@
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"
                     Tag="Shift"
+                    IsChecked="{Binding Shift}"
                     Style="{StaticResource ToggleSwitchStyle}" />
-                
-                
+
+
                 <!--Win-->
                 <TextBlock Style="{StaticResource DefaultFontStyle}"
                            Margin="0 30 0 0"
@@ -171,29 +188,36 @@
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"
                     Tag="Win"
+                    IsChecked="{Binding Win}"
                     Style="{StaticResource ToggleSwitchStyle}" />
             </StackPanel>
-            
+
             <StackPanel 
-                x:Name="OutputKeySelecter"
                 Width="150">
-                
+
                 <TextBlock 
                     Style="{StaticResource TitleTextBlock}" 
                     HorizontalAlignment="Center"
                     Text="Key"/>
 
                 <TextBox
-                    cal:Message.Attach="[Event PreviewKeyDown] = [Action OnPreviewKeyDown($source, $eventArgs)]"
                     Style="{StaticResource DefaultStyleForTextBox}"
                     HorizontalContentAlignment="Center"
                     HorizontalAlignment="Center"
                     Background="#FF717B83"
                     Width="120" 
-                    Height="30"/>
-                <Button 
+                    Height="30"
+                    Text="{Binding HotkeyActionKeyDisplay, Mode=OneWay}"
+                    IsReadOnly="{Binding CanEdit, 
+                        Converter={StaticResource BooleanInvertingConverter}}"
+                    cal:Message.Attach="[Event PreviewKeyDown] = [Action OnPreviewKeyDown($source, $eventArgs)]"
+                    />
+
+                <ToggleButton 
                     Margin="0 10 0 0"
                     Width="120" 
+                    Visibility="{Binding CanEdit, 
+                        Converter={StaticResource BooleanToVisibilityConverter}}"
                     Height="28" 
                     Content="Select Key" />
 
@@ -207,11 +231,14 @@
                     HorizontalContentAlignment="Center"
                     HorizontalAlignment="Center"
                     Background="#FFBECAD3"
+                    IsReadOnly="{Binding CanEdit, Converter={StaticResource BooleanInvertingConverter}}"
                     Text="{Binding Explanation}"
-                    Width="250" 
-                    Height="70"/>
+                    Width="150" 
+                    Height="70" AcceptsReturn="True" TextWrapping="Wrap"/>
 
                 <StackPanel
+                    Visibility="{Binding CanEdit, 
+                        Converter={StaticResource BooleanToVisibilityConverter}}"
                     HorizontalAlignment="Center"
                     Margin="0 10 0 0"
                     Orientation="Horizontal">
@@ -228,7 +255,18 @@
                         Content="Cancel" />
                 </StackPanel>
 
+                <Button
+                    x:Name="EditClick"
+                    Width="160"
+                    Height="30"
+                    Margin="0 10 0 0"
+                    HorizontalContentAlignment="Center"
+                    Visibility="{Binding CanEdit,
+                        Converter={StaticResource BooleanToInvertedVisibilityConverter}}"
+                    Content="Edit" />
+
             </StackPanel>
+
             <StackPanel 
                 x:Name="ProfileInfo"
                 Width="300">
@@ -236,11 +274,16 @@
                 <TextBlock 
                     Style="{StaticResource TitleTextBlock}" 
                     HorizontalAlignment="Center"
-                    Text="{Binding ProfileName}"/>
+                    Text="{Binding CurrentProfile.ProfileName, 
+                        FallbackValue='Select a profile'}"/>
 
-                
-                
-
+                <Button 
+                    x:Name="DeleteProfile"
+                    Content="Delete Profile"
+                    Foreground="White"
+                    Background="Red"
+                    Width="120"
+                    Height="40" />
             </StackPanel>
         </StackPanel>
 

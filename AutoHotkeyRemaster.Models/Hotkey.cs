@@ -12,6 +12,16 @@ namespace AutoHotkeyRemaster.Models
         public KeyInfo Action { get; set; }
         public KeyInfo EndingAction { get; set; }
 
+        /// <summary>
+        /// This is just for json.net to work. Don't use this.
+        /// </summary>
+        public Hotkey()
+        {
+            Trigger = null;
+            Action = null;
+            EndingAction = null;
+        }
+
         public Hotkey(KeyInfo trigger, KeyInfo action, KeyInfo endingAction = null)
         {
             Trigger = trigger;

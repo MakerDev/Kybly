@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="Profile Editor"
+        ResizeMode="NoResize"
         Height="250" Width="400">
     <Grid>
         <Grid.Background>
@@ -21,8 +23,7 @@
             <Border
                 BorderThickness="1"
                 BorderBrush="White"
-                Margin="0 0 0 15"
-                />
+                Margin="0 0 0 15" />
 
             <TextBox
                 x:Name="ProfileName"

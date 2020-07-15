@@ -24,7 +24,7 @@ namespace AutoHotkeyRemaster.Models
             set { _profileName = value; }
         }
 
-        public List<Hotkey> Hotkeys { get; private set; } = new List<Hotkey>();
+        public List<Hotkey> Hotkeys { get; set; } = new List<Hotkey>();
 
         [JsonIgnore]
         public int ProfileNum { get; set; }
@@ -75,7 +75,7 @@ namespace AutoHotkeyRemaster.Models
         {
             foreach (var hotkey in Hotkeys)
             {
-                if (hotkeyToCheck == hotkey)
+                if (hotkeyToCheck.Trigger == hotkey.Trigger)
                     return true;
             }
 
@@ -110,7 +110,7 @@ namespace AutoHotkeyRemaster.Models
             string path = Path.Combine(saveFolderPath, filename + ".json");
 
 
-            if(!Directory.Exists(saveFolderPath))
+            if (!Directory.Exists(saveFolderPath))
             {
                 Directory.CreateDirectory(saveFolderPath);
             }
@@ -127,6 +127,11 @@ namespace AutoHotkeyRemaster.Models
 
             string jsonString = JsonSerializer.Serialize(this, options);
             File.WriteAllText(path, jsonString);
+        }
+
+        public void Delete()
+        {
+            Delete($"profile{ProfileNum}");
         }
 
         public void Delete(string filename)

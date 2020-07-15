@@ -39,8 +39,10 @@ namespace AutoHotkeyRemaster.Services
             return profile;
         }
 
-        public void DeleteProfile(int profileNum)
+        public HotkeyProfile DeleteProfile(int profileNum)
         {
+            HotkeyProfile deletedProfile = Profiles[profileNum - 1];
+
             foreach (var profile in Profiles)
             {
                 profile.Delete($"profile{profileNum}");
@@ -54,6 +56,8 @@ namespace AutoHotkeyRemaster.Services
             }
 
             SaveAllProfiles();
+
+            return deletedProfile;
         }
 
         public void SaveAllProfiles()

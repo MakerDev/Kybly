@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,7 +19,7 @@ using System.Windows.Media;
 
 namespace AutoHotkeyRemaster.UI.ViewModels
 {
-    public class ShellViewModel : Conductor<object>.Collection.AllActive
+    public class ShellViewModel : Conductor<object>.Collection.AllActive, IHandle<ProfileDeletedEvent>
     {
         private readonly ProfileManager _profileManager;
         private readonly IEventAggregator _eventAggregator;
@@ -26,23 +27,18 @@ namespace AutoHotkeyRemaster.UI.ViewModels
         private readonly HotkeyEditViewModel _hotkeyEditViewModel;
 
         private ProfileStateModel _selectedProfile;
-
         public ProfileStateModel SelectedProfile
         {
             get { return _selectedProfile; }
             set
             {
                 _selectedProfile = value;
+
                 //INFO : If somthing goes wrong, consider to change this synchronous
                 if (_selectedProfile != null)
                 {
                     _eventAggregator.PublishOnUIThreadAsync(new ProfileChangedEvent { Profile = _selectedProfile.Profile });
                 }
-                else
-                {
-                    _eventAggregator.PublishOnUIThreadAsync(new ProfileChangedEvent { Profile = null });
-                }
-
 
                 NotifyOfPropertyChange(() => SelectedProfile);
             }
@@ -83,7 +79,6 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             SetProfileListItems();
         }
 
-
         protected override async void OnViewReady(object view)
         {
             base.OnViewReady(view);
@@ -98,9 +93,16 @@ namespace AutoHotkeyRemaster.UI.ViewModels
 
             foreach (var profile in _profileManager.Profiles)
             {
-                ProfileStateModel profileState = new ProfileStateModel(profile);
-                ProfileStates.Add(profileState);
+                ProfileStates.Add(new ProfileStateModel(profile));
             }
+        }
+
+        public Task HandleAsync(ProfileDeletedEvent message, CancellationToken cancellationToken)
+        {
+            SelectedProfile = null;
+            SetProfileListItems();
+
+            return Task.CompletedTask;
         }
     }
 }

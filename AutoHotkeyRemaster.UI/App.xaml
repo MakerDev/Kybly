@@ -1,6 +1,7 @@
 ﻿<Application x:Class="AutoHotkeyRemaster.UI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:AutoHotkeyRemaster.UI.Converters"
              xmlns:local="clr-namespace:AutoHotkeyRemaster.UI">
     <Application.Resources>
         <ResourceDictionary>
@@ -12,6 +13,10 @@
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converters:BooleanToInvertedVisibilityConverter x:Key="BooleanToInvertedVisibilityConverter" />
+            <converters:ReferenceToInvertedVisibilityConverter x:Key="ReferenceToInvertedVisibilityConverter" />
+            <converters:BooleanInvertingConverter x:Key="BooleanInvertingConverter"/>
+            <converters:InstanceToStringConverter x:Key="InstanceToStringConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

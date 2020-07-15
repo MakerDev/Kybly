@@ -21,6 +21,7 @@ namespace AutoHotkeyRemaster.UI.Views
         public HotkeyEditView()
         {
             InitializeComponent();
+
         }
 
        

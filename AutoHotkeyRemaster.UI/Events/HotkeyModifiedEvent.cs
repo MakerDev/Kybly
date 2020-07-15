@@ -5,9 +5,16 @@ using System.Text;
 
 namespace AutoHotkeyRemaster.UI.Events
 {
-    public class KeySelectedEvent
+    public enum EHotkeyModifiedEvent
     {
-        public bool IsNew { get; set; }
+        Added,
+        Modified,
+        Deleted,
+    }
+
+    public class HotkeyModifiedEvent
+    {
+        public EHotkeyModifiedEvent ModifiedEvent { get; set; }
         public Hotkey Hotkey { get; set; }
     }
 }

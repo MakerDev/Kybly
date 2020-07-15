@@ -12,6 +12,16 @@ namespace AutoHotkeyRemaster.Models
         public int Key { get; set; }    //윈도우 virtualKeyCode값
         public int Modifier { get; set; } //Modifiers 값
 
+
+        /// <summary>
+        /// This is just for json.net to work. Don't use this.
+        /// </summary>
+        public KeyInfo()
+        {
+            Key = -1;
+            Modifier = 0;
+        }
+
         public KeyInfo(int key, int modifier)
         {
             Key = key;

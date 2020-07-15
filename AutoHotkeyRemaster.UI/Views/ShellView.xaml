@@ -268,7 +268,7 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel                                    
-                                    HorizontalAlignment="Center">
+                                        HorizontalAlignment="Center">
                                         <custom:ProfileListViewItem/>
                                     </StackPanel>
                                 </DataTemplate>
@@ -279,7 +279,7 @@
                             x:Name="AddNewProfile"
                             DockPanel.Dock="Bottom"
                             Height="60"
-                            Content="Add Profile" />
+                            Content="+new profile" />
 
                     </DockPanel>
                     

@@ -32,6 +32,9 @@ namespace AutoHotkeyRemaster.UI.Views
             Storyboard.SetTargetProperty(openProfilePanelAnimation, new PropertyPath(Grid.WidthProperty));
 
             _openProfilePanelStoryboard.Children.Add(openProfilePanelAnimation);
+
+            //TODO : delete this
+            NavPanel.Width = 65;
         }
 
         private void Tg_Btn_Unchecked(object sender, RoutedEventArgs e)

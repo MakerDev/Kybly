@@ -5,9 +5,8 @@ using System.Text;
 
 namespace AutoHotkeyRemaster.UI.Events
 {
-    public class KeySelectedEvent
+    public class ProfileDeletedEvent
     {
-        public bool IsNew { get; set; }
-        public Hotkey Hotkey { get; set; }
+        public HotkeyProfile DeletedProfile { get; set; }
     }
 }
