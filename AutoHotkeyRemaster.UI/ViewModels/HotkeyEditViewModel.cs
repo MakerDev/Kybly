@@ -5,6 +5,7 @@ using AutoHotkeyRemaster.UI.Views.CustomControls;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,8 +19,6 @@ namespace AutoHotkeyRemaster.UI.ViewModels
     public class HotkeyEditViewModel : Screen, IHandle<ProfileChangedEvent>, IHandle<KeySelectedEvent>, IHandle<ProfileDeletedEvent>
     {
         private readonly IEventAggregator _eventAggregator;
-        private readonly ProfileManager _profileManager;
-
 
         private HotkeyProfile _currentProfile;
 
@@ -35,7 +34,7 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             }
         }
 
-        //TODO : 더 깔끔하게 해놓을 방법 없나..?
+        //INFO : 요청으로 현재는 사용하지 않음
         public string Explanation
         {
             get
@@ -54,7 +53,6 @@ namespace AutoHotkeyRemaster.UI.ViewModels
                 }
             }
         }
-
 
         private bool _canEdit = false;
         public bool CanEdit
@@ -121,7 +119,6 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             }
         }
 
-
         #region MODIFIERS
         public bool Control
         {
@@ -139,6 +136,7 @@ namespace AutoHotkeyRemaster.UI.ViewModels
                 NotifyOfPropertyChange(() => Control);
             }
         }
+
         public bool Alt
         {
             get
@@ -191,19 +189,21 @@ namespace AutoHotkeyRemaster.UI.ViewModels
         }
         #endregion
 
+
         public void OkClick()
         {
             //If key not set
-            if (HotkeyAction.Key < 0)
+            if (!IsActionSet())
             {
-                //TODO : Replace this with custom alert window
-                System.Windows.Forms.MessageBox.Show("Action key is not set!");
+                //TODO : 만약 기존에 존재하던 핫키였으면 지우고, 없었으면 그냥 생략
+                System.Windows.Forms.MessageBox.Show("Action is not set!");
 
                 return;
             }
 
             CurrentHotkey.Action = HotkeyAction;
 
+            //TODO : 만약 이미 있으면 수정하는 액션으로
             int result = CurrentProfile.AddHotkey(CurrentHotkey);
 
             if (result > 0)
@@ -219,8 +219,8 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             }
 
             //TODO : result 예외처리
-            //HotkeyAction = null;
-            //CurrentHotkey = null;
+            HotkeyAction = null;
+            CurrentHotkey = null;
         }
 
         public void CancelClick()
@@ -229,11 +229,9 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             //TODO : CancelEvent 발생시키기
         }
 
-        public HotkeyEditViewModel(IEventAggregator eventAggregator, ProfileManager profileManager)
+        public HotkeyEditViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            _profileManager = profileManager;
-
             _eventAggregator.SubscribeOnUIThread(this);
         }
 
@@ -245,7 +243,6 @@ namespace AutoHotkeyRemaster.UI.ViewModels
 
             return Task.CompletedTask;
         }
-
 
         public Task HandleAsync(ProfileChangedEvent message, CancellationToken cancellationToken)
         {
@@ -271,6 +268,17 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             return Task.CompletedTask;
         }
 
+        public void ClearActionKey(object sender, MouseEventArgs e)
+        {
+            e.Handled = true;
+
+            if (HotkeyAction == null)
+                return;
+
+            HotkeyAction.Key = -1;
+            NotifyOfPropertyChange(() => HotkeyActionKeyDisplay);
+        }
+
         public void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
@@ -280,9 +288,18 @@ namespace AutoHotkeyRemaster.UI.ViewModels
                 return;
             }
 
-            //TODO : 입력기가 기본 윈도우 입력기가 아닌 경우 e.Key 값이 이상한 경우가 있다. 나중에 확인 필요
-            HotkeyAction.Key = int.Parse(KeyInterop.VirtualKeyFromKey(e.Key).ToString());
+            Key key = e.ImeProcessedKey == Key.None ? e.Key : e.ImeProcessedKey;
+
+            HotkeyAction.Key = KeyInterop.VirtualKeyFromKey(key);
             NotifyOfPropertyChange(() => HotkeyActionKeyDisplay);
+        }
+
+        private bool IsActionSet()
+        {
+            if (Control || Alt || Win || Shift || HotkeyAction.Key != -1)
+                return true;
+
+            return false;
         }
     }
 }

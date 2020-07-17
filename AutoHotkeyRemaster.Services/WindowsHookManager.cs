@@ -28,7 +28,7 @@ namespace AutoHotkeyRemaster.Services
         public WindowsHookManager(ProfileSwitchKeyTable switchKeyTable)
         {
             _switchKeyTable = switchKeyTable;
-            _Proc = HookCallback;
+            _proc = HookCallback;
         }
 
         public void RegisterProfile(HotkeyProfile hotkeyProfile)
@@ -52,15 +52,17 @@ namespace AutoHotkeyRemaster.Services
 
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-        private LowLevelKeyboardProc _Proc;
+        private readonly LowLevelKeyboardProc _proc;
         private IntPtr _hookId = IntPtr.Zero;
 
         private IntPtr SetHook(LowLevelKeyboardProc proc)
         {
             using (Process curProcess = Process.GetCurrentProcess())
-            using (ProcessModule curModule = curProcess.MainModule)
             {
-                return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(curModule.ModuleName), 0);
+                using (ProcessModule curModule = curProcess.MainModule)
+                {
+                    return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(curModule.ModuleName), 0);
+                }
             }
         }
 
@@ -68,7 +70,7 @@ namespace AutoHotkeyRemaster.Services
 
         public void StartHookKeyboard()
         {
-            _hookId = SetHook(_Proc);
+            _hookId = SetHook(_proc);
         }
 
         public void UnHookKeyboard()

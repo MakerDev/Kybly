@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
+﻿using System.Text.Json.Serialization;
 
 namespace AutoHotkeyRemaster.Models
 {
     public class KeyInfo
     {
+        //Replace this with respect to WPF or UWP
+        [JsonIgnore]
+        public static IVirtualKeycodeToStringConverter VirtualKeycodeToStringConverter { get; set; }
+            = new VirtualKeycodeToStringConverter();
 
         //만약 key==0이라면 Z=Shift처럼 특수키 매핑인 것으로 간주함
         public int Key { get; set; }    //윈도우 virtualKeyCode값
         public int Modifier { get; set; } //Modifiers 값
 
-
-        /// <summary>
-        /// This is just for json.net to work. Don't use this.
-        /// </summary>
         public KeyInfo()
         {
             Key = -1;
@@ -44,10 +41,11 @@ namespace AutoHotkeyRemaster.Models
             else
             {
                 info += GetModifiersInfo(Modifier);
-                info += KeyInterop.KeyFromVirtualKey(Key).ToString();          
+                //INFO : .netstandard를 위해 이렇게 바꿨다. 호출자쪽에서 캐스팅해라.
+                info += VirtualKeycodeToStringConverter.Convert(Key);
             }
 
-           return info;
+            return info;
         }
 
         public override bool Equals(object obj)

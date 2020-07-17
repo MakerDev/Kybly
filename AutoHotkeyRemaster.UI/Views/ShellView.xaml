@@ -167,7 +167,7 @@
                                 <TextBlock 
                                     Style="{StaticResource DefaultFontStyle}"
                                     Margin="20 0 0 0"
-                                    VerticalAlignment="Center" Text="Keyboard Profile" />
+                                    VerticalAlignment="Center" Text="Keyboard" />
 
                             </StackPanel>
                         </ListViewItem>
@@ -186,7 +186,7 @@
                                 <TextBlock 
                                     Style="{StaticResource DefaultFontStyle}"
                                     Margin="20 0 0 0"
-                                    VerticalAlignment="Center" Text="ScrKeyboard" />
+                                    VerticalAlignment="Center" Text="Screen Keyboard" />
 
                             </StackPanel>
                         </ListViewItem>

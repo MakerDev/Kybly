@@ -24,7 +24,7 @@ namespace AutoHotkeyRemaster.Services
 
         private const int MAX_PROFILE = ProfileManager.MAX_PROFILE_NUM;
 
-        private int[][] _switchKeyTable = new int[MAX_PROFILE][];
+        private readonly int[][] _switchKeyTable = new int[MAX_PROFILE][];
 
         private int _escapeKey;
 

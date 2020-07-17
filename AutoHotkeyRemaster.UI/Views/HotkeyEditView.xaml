@@ -98,10 +98,12 @@
                     </MultiTrigger>
                 </Style.Triggers>
             </Style>
+
+
             <Style x:Key="TitleTextBlock" 
                    TargetType="TextBlock" 
                    BasedOn="{StaticResource DefaultFontStyle}">
-                <Setter Property="FontSize" Value="30"/>
+                <Setter Property="FontSize" Value="28"/>
                 <Setter Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="Margin" Value="0 0 0 30"/>
             </Style>
@@ -117,9 +119,9 @@
             Panel.ZIndex="100"
             Background="Transparent"
             HorizontalAlignment="Left"
-            Visibility="{Binding CanEdit, 
-                Converter={StaticResource BooleanToInvertedVisibilityConverter}}" 
-            Width="356">
+            Visibility="{Binding CurrentHotkey, 
+                Converter={StaticResource ReferenceToInvertedVisibilityConverter}}" 
+            Width="557">
         </Grid>
 
         <StackPanel
@@ -198,7 +200,7 @@
                 <TextBlock 
                     Style="{StaticResource TitleTextBlock}" 
                     HorizontalAlignment="Center"
-                    Text="Key"/>
+                    Text="Action"/>
 
                 <TextBox
                     Style="{StaticResource DefaultStyleForTextBox}"
@@ -207,63 +209,81 @@
                     Background="#FF717B83"
                     Width="120" 
                     Height="30"
+                    ContextMenu="{x:Null}"
                     Text="{Binding HotkeyActionKeyDisplay, Mode=OneWay}"
                     IsReadOnly="{Binding CanEdit, 
                         Converter={StaticResource BooleanInvertingConverter}}"
-                    cal:Message.Attach="[Event PreviewKeyDown] = [Action OnPreviewKeyDown($source, $eventArgs)]"
-                    />
+                    cal:Message.Attach="
+                        [Event PreviewKeyDown] 
+                            = [Action OnPreviewKeyDown($source, $eventArgs)];
+                        [Event PreviewMouseRightButtonDown] 
+                            = [Action ClearActionKey($source, $eventArgs)]" />
 
                 <ToggleButton 
                     Margin="0 10 0 0"
                     Width="120" 
-                    Visibility="{Binding CanEdit, 
-                        Converter={StaticResource BooleanToVisibilityConverter}}"
                     Height="28" 
                     Content="Select Key" />
 
-                <TextBlock Style="{StaticResource DefaultFontStyle}"
+                <Button 
+                    x:Name="ClearAction"
+                    Margin="0 10 0 0"
+                    Width="120"
+                    Height="28"
+                    Content="Clear"
+                    />
+
+                <StackPanel 
+                    x:Name="DetailAndOkButtons"
+                    Visibility="Collapsed"
+                    >
+
+                    <TextBlock Style="{StaticResource DefaultFontStyle}"
                            HorizontalAlignment="Center"
                            Margin="0 40 0 10"
                            Text="Hotkey Detail" />
 
-                <TextBox 
-                    Style="{StaticResource DefaultStyleForTextBox}"
-                    HorizontalContentAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Background="#FFBECAD3"
-                    IsReadOnly="{Binding CanEdit, Converter={StaticResource BooleanInvertingConverter}}"
-                    Text="{Binding Explanation}"
-                    Width="150" 
-                    Height="70" AcceptsReturn="True" TextWrapping="Wrap"/>
+                    <TextBox 
+                        Style="{StaticResource DefaultStyleForTextBox}"
+                        HorizontalContentAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Background="#FFBECAD3"
+                        IsReadOnly="{Binding CanEdit, Converter={StaticResource BooleanInvertingConverter}}"
+                        Text="{Binding Explanation}"
+                        Width="150" 
+                        Height="70" AcceptsReturn="True" TextWrapping="Wrap"/>
 
-                <StackPanel
-                    Visibility="{Binding CanEdit, 
-                        Converter={StaticResource BooleanToVisibilityConverter}}"
-                    HorizontalAlignment="Center"
-                    Margin="0 10 0 0"
-                    Orientation="Horizontal">
-                    <Button 
-                        x:Name="OkClick"
-                        Width="80"
+                    <StackPanel
+                        Visibility="{Binding CanEdit, 
+                            Converter={StaticResource BooleanToVisibilityConverter}}"
+                        HorizontalAlignment="Center"
+                        Margin="0 10 0 0"
+                        Orientation="Horizontal">
+                        <Button 
+                            x:Name="OkClick"
+                            Width="80"
+                            Height="30"
+                            Content="Ok" />
+                        <Button 
+                            x:Name="CancelClick"
+                            Width="80"
+                            Margin="10 0 0 0"
+                            Height="30"
+                            Content="Cancel" />
+                    </StackPanel>
+
+                    <Button
+                        x:Name="EditClick"
+                        Width="160"
                         Height="30"
-                        Content="Ok" />
-                    <Button 
-                        x:Name="CancelClick"
-                        Width="80"
-                        Margin="10 0 0 0"
-                        Height="30"
-                        Content="Cancel" />
+                        Margin="0 10 0 0"
+                        HorizontalContentAlignment="Center"
+                        Visibility="{Binding CanEdit,
+                            Converter={StaticResource BooleanToInvertedVisibilityConverter}}"
+                        Content="Edit" />
                 </StackPanel>
 
-                <Button
-                    x:Name="EditClick"
-                    Width="160"
-                    Height="30"
-                    Margin="0 10 0 0"
-                    HorizontalContentAlignment="Center"
-                    Visibility="{Binding CanEdit,
-                        Converter={StaticResource BooleanToInvertedVisibilityConverter}}"
-                    Content="Edit" />
+
 
             </StackPanel>
 

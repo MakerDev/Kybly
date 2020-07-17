@@ -18,22 +18,23 @@ namespace AutoHotkeyRemaster.UI.Views
     /// </summary>
     public partial class ShellView : Window
     {
-        private Storyboard _openProfilePanelStoryboard = new Storyboard();
+        private readonly Storyboard _openProfilePanelStoryboard = new Storyboard();
 
         public ShellView()
         {
             InitializeComponent();
 
-            DoubleAnimation openProfilePanelAnimation = new DoubleAnimation();
-            openProfilePanelAnimation.To = 230 + 250;
-            openProfilePanelAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(400));
+            DoubleAnimation openProfilePanelAnimation = new DoubleAnimation
+            {
+                To = 230 + 250,
+                Duration = new Duration(TimeSpan.FromMilliseconds(400))
+            };
 
             Storyboard.SetTargetName(openProfilePanelAnimation, NavPanel.Name);
             Storyboard.SetTargetProperty(openProfilePanelAnimation, new PropertyPath(Grid.WidthProperty));
 
             _openProfilePanelStoryboard.Children.Add(openProfilePanelAnimation);
 
-            //TODO : delete this
             NavPanel.Width = 65;
         }
 

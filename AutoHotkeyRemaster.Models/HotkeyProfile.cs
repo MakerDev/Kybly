@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json.Serialization;
-using System.Text;
 using System.Text.Json;
-using System.Windows.Xps;
-using System.Runtime.Serialization.Json;
+using System.Text.Json.Serialization;
 
 namespace AutoHotkeyRemaster.Models
 {
@@ -39,9 +36,11 @@ namespace AutoHotkeyRemaster.Models
 
         public static HotkeyProfile CreateNewProfile(int profileNum, string profileName = null)
         {
-            HotkeyProfile profile = new HotkeyProfile();
-            profile.ProfileNum = profileNum;
-            profile.ProfileName = profileName;
+            HotkeyProfile profile = new HotkeyProfile
+            {
+                ProfileNum = profileNum,
+                ProfileName = profileName
+            };
 
             return profile;
         }

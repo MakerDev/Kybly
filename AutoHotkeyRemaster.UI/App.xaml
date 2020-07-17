@@ -17,6 +17,7 @@
             <converters:ReferenceToInvertedVisibilityConverter x:Key="ReferenceToInvertedVisibilityConverter" />
             <converters:BooleanInvertingConverter x:Key="BooleanInvertingConverter"/>
             <converters:InstanceToStringConverter x:Key="InstanceToStringConverter" />
+            <converters:ReferenceToVisibilityConverter x:Key="ReferenceToVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

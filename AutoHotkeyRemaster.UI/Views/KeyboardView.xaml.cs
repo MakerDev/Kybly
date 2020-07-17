@@ -32,7 +32,7 @@ namespace AutoHotkeyRemaster.UI.Views
         }
 
         private bool _isDictInitialized = false;
-        private Dictionary<int, RadioButton> _keyButtonPairs = new Dictionary<int, RadioButton>();
+        private readonly Dictionary<int, RadioButton> _keyButtonPairs = new Dictionary<int, RadioButton>();
 
         private void OnProfileChanged(object sender, EventArgs e)
         {
@@ -58,8 +58,7 @@ namespace AutoHotkeyRemaster.UI.Views
 
         private void RegisterButtonsToDict()
         {
-            var buttonGrid = (Grid)FindName("xGridKeyButtons");
-            var children = buttonGrid.Children;
+            var children = xGridKeyButtons.Children;
 
             //TODO : 여기서 태그와 바인딩을 세팅하는 방법도 고려가능            
             foreach (var item in children)

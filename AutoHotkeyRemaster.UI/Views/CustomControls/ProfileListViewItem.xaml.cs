@@ -19,7 +19,6 @@ namespace AutoHotkeyRemaster.UI.Views.CustomControls
     public partial class ProfileListViewItem : UserControl
     {
         //TODO : 다이얼로그 말고 더블 클릭시 Textblock -> Textbox로 변경해서 바로 바꿀 수 있게하자...
-        //TODO : 정렬 문제 수정
         public ProfileListViewItem()
         {
             InitializeComponent();

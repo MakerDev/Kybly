@@ -1,5 +1,7 @@
-﻿using AutoHotkeyRemaster.Services;
+﻿using AutoHotkeyRemaster.Models;
+using AutoHotkeyRemaster.Services;
 using AutoHotkeyRemaster.UI.ViewModels;
+using AutoHotkeyRemaster.WPF.Helpers;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -14,7 +16,10 @@ namespace AutoHotkeyRemaster.UI
 {
     public class Bootstrapper : BootstrapperBase
     {
-        private readonly SimpleContainer _container = new SimpleContainer();
+        private readonly SimpleContainer _container 
+            = new SimpleContainer();
+        private readonly VirtualKeycodeToWpfKeyConverter _keyConverter 
+            = new VirtualKeycodeToWpfKeyConverter();
 
         public Bootstrapper()
         {
@@ -40,6 +45,8 @@ namespace AutoHotkeyRemaster.UI
                 .ForEach(viewModelType => _container.RegisterPerRequest(
                    viewModelType, viewModelType.ToString(), viewModelType
                    ));
+
+            KeyInfo.VirtualKeycodeToStringConverter = _keyConverter;
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
