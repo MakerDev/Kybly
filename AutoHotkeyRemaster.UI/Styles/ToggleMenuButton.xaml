@@ -25,18 +25,6 @@
                                     TargetName="border"
                                     Value="{StaticResource ToggleBtnMouseOver}"/>
                         </Trigger>
-
-                        <Trigger Property="IsChecked" Value="true">
-
-                            <Setter Property="Background"
-                                        TargetName="border"
-                                        Value="{StaticResource ToggleBtnMouseOver}"/>
-
-                            <Setter Property="BorderBrush"
-                                        TargetName="border"
-                                        Value="{StaticResource ToggleBtnMouseOver}"/>
-
-                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -56,7 +44,6 @@
         <Setter Property="PlacementRectangle" Value="60,0,0,0"/>
         <Setter Property="HorizontalOffset" Value="15"/>
         <Setter Property="VerticalOffset" Value="6"/>
-        <Setter Property="HasDropShadow" Value="True"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
     </Style>
 </ResourceDictionary>

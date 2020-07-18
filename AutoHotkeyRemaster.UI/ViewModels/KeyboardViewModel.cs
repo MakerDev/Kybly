@@ -1,9 +1,10 @@
 ﻿using AutoHotkeyRemaster.Models;
-using AutoHotkeyRemaster.UI.Events;
-using AutoHotkeyRemaster.UI.Helpers;
+using AutoHotkeyRemaster.WPF.Events;
+using AutoHotkeyRemaster.WPF.Helpers;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace AutoHotkeyRemaster.UI.ViewModels
+namespace AutoHotkeyRemaster.WPF.ViewModels
 {
     public class KeyboardViewModel : Screen, IHandle<ProfileChangedEvent>, IHandle<HotkeyModifiedEvent>, IHandle<ProfileDeletedEvent>
     {
@@ -90,10 +91,27 @@ namespace AutoHotkeyRemaster.UI.ViewModels
 
         public Task HandleAsync(HotkeyModifiedEvent message, CancellationToken cancellationToken)
         {
-            if (message.ModifiedEvent == EHotkeyModifiedEvent.Added)
+            switch (message.ModifiedEvent)
             {
-                _selectedButton.Tag = "True";
-                TriggerHotkeyPairs.Add(message.Hotkey.Trigger.Key, message.Hotkey);                
+                case EHotkeyModifiedEvent.Added:
+                    _selectedButton.Tag = "True";
+                    TriggerHotkeyPairs.Add(message.Hotkey.Trigger.Key, message.Hotkey);
+
+                    break;
+
+                case EHotkeyModifiedEvent.Modified:
+                    TriggerHotkeyPairs[message.Hotkey.Trigger.Key] = message.Hotkey;
+
+                    break;
+
+                case EHotkeyModifiedEvent.Deleted:
+                    _selectedButton.Tag = "False";
+                    TriggerHotkeyPairs.Remove(message.Hotkey.Trigger.Key);
+
+                    break;
+
+                default:
+                    break;
             }
 
             return Task.CompletedTask;

@@ -14,16 +14,13 @@ using System.Windows.Shapes;
 namespace AutoHotkeyRemaster.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for ProfileEditView.xaml
+    /// Interaction logic for OptionsView.xaml
     /// </summary>
-    public partial class HotkeyEditView : UserControl
+    public partial class OptionsView : UserControl
     {
-        public HotkeyEditView()
+        public OptionsView()
         {
             InitializeComponent();
-
         }
-
-       
     }
 }

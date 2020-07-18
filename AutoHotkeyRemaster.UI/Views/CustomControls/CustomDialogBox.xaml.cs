@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace AutoHotkeyRemaster.UI.Views.CustomControls
+namespace AutoHotkeyRemaster.WPF.Views.CustomControls
 {
     /// <summary>
     /// Interaction logic for CustomDialogBox.xaml

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -11,12 +12,12 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace AutoHotkeyRemaster.UI.Views
+namespace AutoHotkeyRemaster.WPF.Views
 {
     /// <summary>
     /// Interaction logic for ShellView.xaml
     /// </summary>
-    public partial class ShellView : Window
+    public partial class ShellView : MetroWindow
     {
         private readonly Storyboard _openProfilePanelStoryboard = new Storyboard();
 
@@ -36,11 +37,12 @@ namespace AutoHotkeyRemaster.UI.Views
             _openProfilePanelStoryboard.Children.Add(openProfilePanelAnimation);
 
             NavPanel.Width = 65;
+            OptionsPanel.Width = 0;
         }
 
         private void Tg_Btn_Unchecked(object sender, RoutedEventArgs e)
         {
-            if(ProfilesPanel.SelectedItem == null && MenuList.SelectedItem != null)
+            if (ProfilesPanel.SelectedItem == null && MenuList.SelectedItem != null)
             {
                 MenuList.SelectedItem = null;
             }
@@ -56,6 +58,7 @@ namespace AutoHotkeyRemaster.UI.Views
         private void BG_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ToggleButton.IsChecked = false;
+            OptionButton.IsChecked = false;
         }
 
         private void ListViewItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -79,6 +82,5 @@ namespace AutoHotkeyRemaster.UI.Views
 
             txtBlock.Text = profileEditor.ChangedName;
         }
-
     }
 }

@@ -1,5 +1,6 @@
-﻿using AutoHotkeyRemaster.UI.Models;
-using AutoHotkeyRemaster.UI.ViewModels;
+﻿using AutoHotkeyRemaster.WPF.Models;
+using AutoHotkeyRemaster.WPF.ViewModels;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,9 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace AutoHotkeyRemaster.UI.Views
+namespace AutoHotkeyRemaster.WPF.Views
 {
-    public partial class ProfileEditor : Window
+    public partial class ProfileEditor : MetroWindow
     {
         public string ChangedName
         {

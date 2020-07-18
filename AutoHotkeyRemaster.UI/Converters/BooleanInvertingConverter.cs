@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Text;
 using System.Windows.Data;
 
-namespace AutoHotkeyRemaster.UI.Converters
+namespace AutoHotkeyRemaster.WPF.Converters
 {
     public class BooleanInvertingConverter : IValueConverter
     {

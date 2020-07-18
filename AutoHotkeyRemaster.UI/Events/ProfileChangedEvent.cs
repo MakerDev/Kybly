@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AutoHotkeyRemaster.UI.Events
+namespace AutoHotkeyRemaster.WPF.Events
 {
     public class ProfileChangedEvent
     {

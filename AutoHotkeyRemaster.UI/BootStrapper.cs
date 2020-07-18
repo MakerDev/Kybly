@@ -1,6 +1,6 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services;
-using AutoHotkeyRemaster.UI.ViewModels;
+using AutoHotkeyRemaster.WPF.ViewModels;
 using AutoHotkeyRemaster.WPF.Helpers;
 using Caliburn.Micro;
 using System;
@@ -12,7 +12,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Navigation;
 
-namespace AutoHotkeyRemaster.UI
+namespace AutoHotkeyRemaster.WPF
 {
     public class Bootstrapper : BootstrapperBase
     {
@@ -35,8 +35,10 @@ namespace AutoHotkeyRemaster.UI
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
                 .Singleton<ProfileSwitchKeyTable>()
+                .Singleton<ApplicationModel>()
                 .Singleton<WindowsHookManager>()
                 .Singleton<ProfileManager>();
+                
 
             GetType().Assembly.GetTypes()
                 .Where(type => type.IsClass)

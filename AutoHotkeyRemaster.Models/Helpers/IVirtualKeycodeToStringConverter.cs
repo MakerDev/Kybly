@@ -1,4 +1,4 @@
-﻿namespace AutoHotkeyRemaster.Models
+﻿namespace AutoHotkeyRemaster.Models.Helpers
 {
     public interface IVirtualKeycodeToStringConverter
     {

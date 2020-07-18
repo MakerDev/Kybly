@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AutoHotkeyRemaster.UI.Views.CustomControls
+namespace AutoHotkeyRemaster.WPF.Views.CustomControls
 {
     /// <summary>
     /// Interaction logic for ProfileListViewItem.xaml

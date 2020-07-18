@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AutoHotkeyRemaster.UI.Helpers
+namespace AutoHotkeyRemaster.WPF.Helpers
 {
     public static class KeyConversionHelper
     {

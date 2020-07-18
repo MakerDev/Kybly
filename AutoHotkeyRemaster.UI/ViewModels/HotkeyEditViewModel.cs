@@ -1,7 +1,7 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services;
-using AutoHotkeyRemaster.UI.Events;
-using AutoHotkeyRemaster.UI.Views.CustomControls;
+using AutoHotkeyRemaster.WPF.Events;
+using AutoHotkeyRemaster.WPF.Views.CustomControls;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using WindowsInput.Native;
 
-namespace AutoHotkeyRemaster.UI.ViewModels
+namespace AutoHotkeyRemaster.WPF.ViewModels
 {
     public class HotkeyEditViewModel : Screen, IHandle<ProfileChangedEvent>, IHandle<KeySelectedEvent>, IHandle<ProfileDeletedEvent>
     {
@@ -54,7 +54,6 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             }
         }
 
-        private bool _canEdit = false;
         public bool CanEdit
         {
             get
@@ -64,12 +63,7 @@ namespace AutoHotkeyRemaster.UI.ViewModels
                     return false;
                 }
 
-                return _canEdit;
-            }
-            set
-            {
-                _canEdit = value;
-                NotifyOfPropertyChange(() => CanEdit);
+                return true;
             }
         }
 
@@ -105,6 +99,20 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             private set { }
         }
 
+        public int HotkeyActionKey
+        {
+            get
+            {
+                return HotkeyAction?.Key ?? -1;
+            }
+            set
+            {
+                HotkeyAction.Key = value;
+                Save();
+                NotifyOfPropertyChange(() => HotkeyActionKeyDisplay);
+            }
+        }
+
         private Hotkey _currenHotkey;
 
         public Hotkey CurrentHotkey
@@ -133,6 +141,7 @@ namespace AutoHotkeyRemaster.UI.ViewModels
                 else
                     HotkeyAction.Modifier &= ~Modifiers.Ctrl;
 
+                Save();
                 NotifyOfPropertyChange(() => Control);
             }
         }
@@ -150,6 +159,7 @@ namespace AutoHotkeyRemaster.UI.ViewModels
                 else
                     HotkeyAction.Modifier &= ~Modifiers.Alt;
 
+                Save();
                 NotifyOfPropertyChange(() => Alt);
             }
         }
@@ -166,6 +176,7 @@ namespace AutoHotkeyRemaster.UI.ViewModels
                 else
                     HotkeyAction.Modifier &= ~Modifiers.Shift;
 
+                Save();
                 NotifyOfPropertyChange(() => Shift);
             }
 
@@ -183,50 +194,25 @@ namespace AutoHotkeyRemaster.UI.ViewModels
                 else
                     HotkeyAction.Modifier &= ~Modifiers.Win;
 
+                Save();
                 NotifyOfPropertyChange(() => Win);
             }
 
         }
         #endregion
 
-
-        public void OkClick()
+        public void Save()
         {
-            //If key not set
-            if (!IsActionSet())
-            {
-                //TODO : 만약 기존에 존재하던 핫키였으면 지우고, 없었으면 그냥 생략
-                System.Windows.Forms.MessageBox.Show("Action is not set!");
-
-                return;
-            }
-
             CurrentHotkey.Action = HotkeyAction;
 
-            //TODO : 만약 이미 있으면 수정하는 액션으로
-            int result = CurrentProfile.AddHotkey(CurrentHotkey);
-
-            if (result > 0)
+            if (IsActionSet())
             {
-                CurrentProfile.Save();
-                CanEdit = false;
-
-                _eventAggregator.PublishOnUIThreadAsync(new HotkeyModifiedEvent
-                {
-                    Hotkey = CurrentHotkey,
-                    ModifiedEvent = EHotkeyModifiedEvent.Added
-                });
+                SaveOrEdit(CurrentHotkey);
             }
-
-            //TODO : result 예외처리
-            HotkeyAction = null;
-            CurrentHotkey = null;
-        }
-
-        public void CancelClick()
-        {
-            //TODO : 편집창 깨끗이
-            //TODO : CancelEvent 발생시키기
+            else
+            {
+                DeleteIfExists(CurrentHotkey);
+            }
         }
 
         public HotkeyEditViewModel(IEventAggregator eventAggregator)
@@ -246,8 +232,10 @@ namespace AutoHotkeyRemaster.UI.ViewModels
 
         public Task HandleAsync(ProfileChangedEvent message, CancellationToken cancellationToken)
         {
-            //TODO : 편집창 깨끗하게 다시 세팅
             CurrentProfile = message.Profile;
+            CurrentHotkey = null;
+            HotkeyAction = null;
+
             return Task.CompletedTask;
         }
 
@@ -263,11 +251,16 @@ namespace AutoHotkeyRemaster.UI.ViewModels
 
             NotifyOfPropertyChange(() => HotkeyActionKeyDisplay);
 
-            CanEdit = message.IsNew;
-
             return Task.CompletedTask;
         }
 
+        public void ClearAction()
+        {
+            HotkeyAction = new KeyInfo();
+            DeleteIfExists(CurrentHotkey);
+        }
+
+        //Trigger : PreviewMouseRightButtonDown
         public void ClearActionKey(object sender, MouseEventArgs e)
         {
             e.Handled = true;
@@ -275,8 +268,7 @@ namespace AutoHotkeyRemaster.UI.ViewModels
             if (HotkeyAction == null)
                 return;
 
-            HotkeyAction.Key = -1;
-            NotifyOfPropertyChange(() => HotkeyActionKeyDisplay);
+            HotkeyActionKey = -1;
         }
 
         public void OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -290,16 +282,60 @@ namespace AutoHotkeyRemaster.UI.ViewModels
 
             Key key = e.ImeProcessedKey == Key.None ? e.Key : e.ImeProcessedKey;
 
-            HotkeyAction.Key = KeyInterop.VirtualKeyFromKey(key);
-            NotifyOfPropertyChange(() => HotkeyActionKeyDisplay);
+            HotkeyActionKey = KeyInterop.VirtualKeyFromKey(key);
+        }
+
+        private void SaveOrEdit(Hotkey hotkey)
+        {
+            int result = CurrentProfile.AddOrEditHotkeyIfExisting(hotkey);
+
+            switch (result)
+            {
+                case -1:
+                    //TODO : replace this with custom alert
+                    MessageBox.Show("No more hotkey is available");
+                    break;
+
+                case 0:
+                    _eventAggregator.PublishOnUIThreadAsync(new HotkeyModifiedEvent
+                    {
+                        Hotkey = hotkey,
+                        ModifiedEvent = EHotkeyModifiedEvent.Modified
+                    });
+                    break;
+
+                case 1:
+                    _eventAggregator.PublishOnUIThreadAsync(new HotkeyModifiedEvent
+                    {
+                        Hotkey = hotkey,
+                        ModifiedEvent = EHotkeyModifiedEvent.Added
+                    });
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+
+        private void DeleteIfExists(Hotkey hotkey)
+        {
+            if (CurrentProfile.DeleteHotkeyIfExisting(hotkey))
+            {
+                _eventAggregator.PublishOnUIThreadAsync(new HotkeyModifiedEvent
+                {
+                    Hotkey = hotkey,
+                    ModifiedEvent = EHotkeyModifiedEvent.Deleted
+                });
+            }
         }
 
         private bool IsActionSet()
         {
-            if (Control || Alt || Win || Shift || HotkeyAction.Key != -1)
-                return true;
+            if (HotkeyAction.Modifier == 0 && HotkeyAction.Key == -1)
+                return false;
 
-            return false;
+            return true;
         }
     }
 }

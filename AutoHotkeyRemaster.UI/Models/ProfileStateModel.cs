@@ -1,5 +1,5 @@
 ﻿using AutoHotkeyRemaster.Models;
-using AutoHotkeyRemaster.UI.ViewModels;
+using AutoHotkeyRemaster.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
-namespace AutoHotkeyRemaster.UI.Models
+namespace AutoHotkeyRemaster.WPF.Models
 {
     public class ProfileStateModel : INotifyPropertyChanged
     {

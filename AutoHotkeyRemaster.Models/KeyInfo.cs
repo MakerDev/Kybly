@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using AutoHotkeyRemaster.Models.Helpers;
+using System.Text.Json.Serialization;
 
 namespace AutoHotkeyRemaster.Models
 {

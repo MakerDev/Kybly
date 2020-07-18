@@ -1,4 +1,5 @@
 ﻿using AutoHotkeyRemaster.Models;
+using AutoHotkeyRemaster.Models.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -8,9 +9,6 @@ namespace AutoHotkeyRemaster.Services
     public class ProfileManager
     {
         public const int MAX_PROFILE_NUM = 10;
-
-        //Need to activate proper profile to window hook
-        private readonly WindowsHookManager _windowsHookManager;
 
         public int ProfileCount
         {
@@ -23,16 +21,15 @@ namespace AutoHotkeyRemaster.Services
 
         public List<HotkeyProfile> Profiles { get; private set; } = new List<HotkeyProfile>();
 
-        public ProfileManager(WindowsHookManager windowsHookManager)
+        public ProfileManager()
         {
-            _windowsHookManager = windowsHookManager;
-
             LoadAllProfiles();
         }
 
         public HotkeyProfile CreateNewProfile(string profileName = null)
         {
-            HotkeyProfile profile = HotkeyProfile.CreateNewProfile(ProfileCount + 1, profileName);
+            HotkeyProfile profile = 
+                HotkeyProfile.CreateNewProfile(ProfileCount + 1, profileName);
 
             Profiles.Add(profile);
 
@@ -45,7 +42,7 @@ namespace AutoHotkeyRemaster.Services
 
             foreach (var profile in Profiles)
             {
-                profile.Delete($"profile{profileNum}");
+                profile.Delete($"profile{profile.ProfileNum}");
             }
 
             Profiles.RemoveAt(profileNum - 1);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoHotkeyRemaster.Models.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -15,7 +16,7 @@ namespace AutoHotkeyRemaster.Models
         {
             get
             {
-                return _profileName ?? $"profile{ProfileNum}";
+                return _profileName ?? $"Profile{ProfileNum}";
 
             }
             set { _profileName = value; }
@@ -56,7 +57,7 @@ namespace AutoHotkeyRemaster.Models
         ///</returns>
         public int AddHotkey(Hotkey hotkey)
         {
-            if (HotkeyCount > MAX_HOTKEY)
+            if (HotkeyCount >= MAX_HOTKEY)
             {
                 return -1;
             }
@@ -70,6 +71,56 @@ namespace AutoHotkeyRemaster.Models
             return HotkeyCount;
         }
 
+        /// <summary>
+        /// Add hotkey if it was not present in this profile. If it had an existing one,
+        /// replace it with the new hotkey
+        /// </summary>
+        /// <param name="hotkey"></param>
+        /// <returns> -1 : No more hotkey is available <para />
+        /// 0 : Existing hotkey is editted <para />
+        /// 1 : New hotkey is added <para />
+        /// </returns>
+        public int AddOrEditHotkeyIfExisting(Hotkey hotkey)
+        {
+            Hotkey hotkeyBefore = FindHotkeyOrNull(hotkey);
+
+            if (hotkeyBefore != null)
+            {
+                hotkeyBefore.Action = hotkey.Action;
+                hotkeyBefore.EndingAction = hotkey.EndingAction;
+
+                Save();
+
+                return 0;
+            }
+
+            if (HotkeyCount >= MAX_HOTKEY)
+            {
+                return -1;
+            }
+
+            Hotkeys.Add(hotkey);
+
+            Save();
+
+            return 1;
+        }
+
+        public bool DeleteHotkeyIfExisting(Hotkey hotkey)
+        {
+            Hotkey hotkeyBefore = FindHotkeyOrNull(hotkey);
+
+            if (hotkeyBefore == null)
+            {
+                return false;
+            }
+
+            Hotkeys.Remove(hotkeyBefore);
+            Save();
+
+            return true;
+        }
+
         public bool HasHotkey(Hotkey hotkeyToCheck)
         {
             foreach (var hotkey in Hotkeys)
@@ -81,19 +132,23 @@ namespace AutoHotkeyRemaster.Models
             return false;
         }
 
-        public static HotkeyProfile LoadFromFile(int profileNum)
+        public Hotkey FindHotkeyOrNull(Hotkey hotkeyToCheck)
         {
-            string filename = $"profile{profileNum}";
-            string path = Environment.CurrentDirectory + "/savefiles/" + filename + ".json";
-
-            if (!File.Exists(path))
+            foreach (var hotkey in Hotkeys)
             {
-                return null;
+                if (hotkeyToCheck.Trigger == hotkey.Trigger)
+                    return hotkey;
             }
 
-            string jsonString = File.ReadAllText(path);
-            HotkeyProfile profile = JsonSerializer.Deserialize<HotkeyProfile>(jsonString);
-            profile.ProfileNum = profileNum;
+            return null;
+        }
+
+        #region LOAD AND SAVE
+        public static HotkeyProfile LoadFromFile(int profileNum)
+        {
+            var profile = JsonFileManager.Load<HotkeyProfile>($"profile{profileNum}");
+            
+            if(profile!= null) profile.ProfileNum = profileNum;
 
             return profile;
         }
@@ -103,29 +158,9 @@ namespace AutoHotkeyRemaster.Models
             Save($"profile{ProfileNum}");
         }
 
-        public void Save(string filename)
+        public void Save(string filenameWithoutExtenstion)
         {
-            string saveFolderPath = Path.Combine(Environment.CurrentDirectory, "savefiles");
-            string path = Path.Combine(saveFolderPath, filename + ".json");
-
-
-            if (!Directory.Exists(saveFolderPath))
-            {
-                Directory.CreateDirectory(saveFolderPath);
-            }
-
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
-
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-            };
-
-            string jsonString = JsonSerializer.Serialize(this, options);
-            File.WriteAllText(path, jsonString);
+            JsonFileManager.Save(this, filenameWithoutExtenstion);
         }
 
         public void Delete()
@@ -135,13 +170,8 @@ namespace AutoHotkeyRemaster.Models
 
         public void Delete(string filename)
         {
-            string path = Environment.CurrentDirectory + "/savefiles/" + filename + ".json";
-
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
+            JsonFileManager.DeleteIfExists(filename);
         }
-
+        #endregion
     }
 }

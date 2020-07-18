@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AutoHotkeyRemaster.Models
+namespace AutoHotkeyRemaster.Models.Helpers
 {
     internal class VirtualKeycodeToStringConverter : IVirtualKeycodeToStringConverter
     {

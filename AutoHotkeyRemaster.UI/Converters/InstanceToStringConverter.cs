@@ -4,13 +4,13 @@ using System.Globalization;
 using System.Text;
 using System.Windows.Data;
 
-namespace AutoHotkeyRemaster.UI.Converters
+namespace AutoHotkeyRemaster.WPF.Converters
 {
     public class InstanceToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value==null ? "" : value.ToString();
+            return value == null ? "" : value.ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

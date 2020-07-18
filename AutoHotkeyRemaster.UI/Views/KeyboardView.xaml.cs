@@ -1,5 +1,5 @@
-﻿using AutoHotkeyRemaster.UI.Helpers;
-using AutoHotkeyRemaster.UI.ViewModels;
+﻿using AutoHotkeyRemaster.WPF.Helpers;
+using AutoHotkeyRemaster.WPF.ViewModels;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AutoHotkeyRemaster.UI.Views
+namespace AutoHotkeyRemaster.WPF.Views
 {
     /// <summary>
     /// Interaction logic for KeyboardPage.xaml
@@ -60,7 +60,7 @@ namespace AutoHotkeyRemaster.UI.Views
         {
             var children = xGridKeyButtons.Children;
 
-            //TODO : 여기서 태그와 바인딩을 세팅하는 방법도 고려가능            
+            //TODO : 여기서 태그와 바인딩을 세팅하는 방법도 고려가능. 바인딩을 통해 tag의 변경을 여기서 알림 받고, 백그라운드 색깔 표시를 위한 버튼과 동기화한다.
             foreach (var item in children)
             {
                 RadioButton button = item as RadioButton;

@@ -19,15 +19,21 @@ namespace AutoHotkeyRemaster.Services
         private const int WM_SYSKEYUP = 0x0105;
 
         #endregion
-        //Assume that trigger is not a combination but a single key
+
+        //Assume that trigger is not a combination but only a single key
         private Dictionary<int, Hotkey> _triggerHotkeyPairs { get; set; } = new Dictionary<int, Hotkey>();
         private Dictionary<int, bool> _isAlreadyPressed { get; set; } = new Dictionary<int, bool>();
 
         private readonly ProfileSwitchKeyTable _switchKeyTable;
+        private readonly ProfileManager _profileManager;
+        private readonly ApplicationModel _applicationModel;
 
-        public WindowsHookManager(ProfileSwitchKeyTable switchKeyTable)
+        public WindowsHookManager(ProfileSwitchKeyTable switchKeyTable, ApplicationModel applicationModel, ProfileManager profileManager)
         {
             _switchKeyTable = switchKeyTable;
+            _profileManager = profileManager;
+            _applicationModel = applicationModel;
+
             _proc = HookCallback;
         }
 
@@ -73,16 +79,11 @@ namespace AutoHotkeyRemaster.Services
             _hookId = SetHook(_proc);
         }
 
-        public void UnHookKeyboard()
+        public void StopHookKeyboard()
         {
             UnhookWindowsHookEx(_hookId);
         }
 
-        private void AddTriggerHotkeyPair(int input, Hotkey hotkey)
-        {
-            _triggerHotkeyPairs.Add(input, hotkey);
-            _isAlreadyPressed.Add(input, false);
-        }
 
         //TODO : rename this
         public void ClearKeys()
@@ -91,11 +92,11 @@ namespace AutoHotkeyRemaster.Services
             _isAlreadyPressed.Clear();
         }
 
-        private bool IsMouseEvent(int key)
+        private void AddTriggerHotkeyPair(int input, Hotkey hotkey)
         {
-            return (key >= 1 && key <= 4);
+            _triggerHotkeyPairs.Add(input, hotkey);
+            _isAlreadyPressed.Add(input, false);
         }
-
 
         private void OnKeyPressed(int vkCode)
         {
@@ -130,7 +131,7 @@ namespace AutoHotkeyRemaster.Services
             {
                 int vkCode = Marshal.ReadInt32(lParam);
 
-                vkCode = ConvertVkcodeToProperValue(vkCode);
+                vkCode = ConvertVkcodeToInternalValue(vkCode);
 
                 if (!_triggerHotkeyPairs.ContainsKey(vkCode))
                     return CallNextHookEx(_hookId, nCode, wParam, lParam);
@@ -142,15 +143,14 @@ namespace AutoHotkeyRemaster.Services
 
             return CallNextHookEx(_hookId, nCode, wParam, lParam);
         }
+        private bool IsMouseEvent(int key) => (key >= 1 && key <= 4);
 
-        private int ConvertVkcodeToProperValue(int vkCode)
+        private int ConvertVkcodeToInternalValue(int vkCode)
         {
-            int code;
-
-            if (vkCode == 164 || vkCode == 165) { code = Modifiers.Alt; return code; }    //LEFT RIGHT ALT를 그냥 ALT로
-            if (vkCode == 162 || vkCode == 163) { code = Modifiers.Ctrl; return code; }  //Control
-            if (vkCode == 91 || vkCode == 92) { code = Modifiers.Win; return code; }
-            if (vkCode == 160 || vkCode == 161) { code = Modifiers.Shift; return code; }
+            if (vkCode == 164 || vkCode == 165) { return Modifiers.Alt; }
+            if (vkCode == 162 || vkCode == 163) { return Modifiers.Ctrl; }
+            if (vkCode == 91 || vkCode == 92) { return Modifiers.Win; }
+            if (vkCode == 160 || vkCode == 161) { return Modifiers.Shift; }
 
             return vkCode;
         }

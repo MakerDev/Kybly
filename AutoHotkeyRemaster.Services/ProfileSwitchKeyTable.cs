@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Text;
+using AutoHotkeyRemaster.Models.Helpers;
 
 namespace AutoHotkeyRemaster.Services
 {
@@ -20,13 +19,10 @@ namespace AutoHotkeyRemaster.Services
     public class ProfileSwitchKeyTable
     {
         private const int VK_F1 = 112;
-        private const int VK_ESC = 27;
 
         private const int MAX_PROFILE = ProfileManager.MAX_PROFILE_NUM;
 
-        private readonly int[][] _switchKeyTable = new int[MAX_PROFILE][];
-
-        private int _escapeKey;
+        public int[][] SwitchKeyTable { get; set; } = new int[MAX_PROFILE][];
 
         public int this[int from, int to]
         {
@@ -37,7 +33,7 @@ namespace AutoHotkeyRemaster.Services
                     return -1;
                 }
 
-                return _switchKeyTable[from][to];
+                return SwitchKeyTable[from][to];
             }
 
             private set { }
@@ -47,7 +43,7 @@ namespace AutoHotkeyRemaster.Services
         {
             get
             {
-                return _switchKeyTable[profile];
+                return SwitchKeyTable[profile];
             }
 
             private set { }
@@ -57,23 +53,19 @@ namespace AutoHotkeyRemaster.Services
         {
             for (int i = 0; i < MAX_PROFILE; i++)
             {
-                _switchKeyTable[i] = new int[MAX_PROFILE];
+                SwitchKeyTable[i] = new int[MAX_PROFILE];
             }
 
-            if (!LoadFromFile())
+            var table = JsonFileManager.Load<ProfileSwitchKeyTable>("profile_switch_key_table");
+
+            if (table == null)
             {
                 ResetToDefault();
             }
-        }
-
-        public int GetEscapeKey()
-        {
-            return _escapeKey;
-        }
-
-        public void SetEscapeKey(int key)
-        {
-            _escapeKey = key;
+            else
+            {
+                SwitchKeyTable = table.SwitchKeyTable;
+            }
         }
 
         //키 중복등의 문제로 그 자리의 키를 기본전환키로 변경해야할 시
@@ -81,11 +73,11 @@ namespace AutoHotkeyRemaster.Services
         {
             if (from == to)
             {
-                _switchKeyTable[from][to] = -1;
+                SwitchKeyTable[from][to] = -1;
             }
             else
             {
-                _switchKeyTable[from][to] = VK_F1 + to;
+                SwitchKeyTable[from][to] = VK_F1 + to;
             }
         }
 
@@ -95,66 +87,14 @@ namespace AutoHotkeyRemaster.Services
             if (from == to)
                 return false;
 
-            _switchKeyTable[from][to] = newKey;
+            SwitchKeyTable[from][to] = newKey;
 
             return true;
         }
 
         public void SaveKeys()
         {
-            string path = Environment.CurrentDirectory + "/SaveFiles/" + "ProfileChangeKeys" + ".json";
-
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
-
-            List<int> keyList = new List<int>();
-
-            for (int i = 0; i < MAX_PROFILE; i++)
-            {
-                for (int j = 0; j < MAX_PROFILE; j++)
-                {
-                    keyList.Add(_switchKeyTable[i][j]);
-                }
-            }
-
-            keyList.Add(_escapeKey);
-
-            using (FileStream filestream = File.OpenWrite(path))
-            {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(List<int>));
-                serializer.WriteObject(filestream, keyList);
-            }
-        }
-
-        private bool LoadFromFile()
-        {
-            //파일 존재 여부 반드시 체크
-            string path = Environment.CurrentDirectory + "/SaveFiles/" + "ProfileChangeKeys" + ".json";
-
-            List<int> keyList;
-
-            if (!File.Exists(path))
-                return false;
-
-            using (FileStream filestream = File.OpenRead(path))
-            {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(List<int>));
-                keyList = serializer.ReadObject(filestream) as List<int>;
-            }
-
-            for (int i = 0; i < MAX_PROFILE; i++)
-            {
-                for (int j = 0; j < MAX_PROFILE; j++)
-                {
-                    _switchKeyTable[i][j] = keyList[10 * i + j];
-                }
-            }
-
-            _escapeKey = keyList[MAX_PROFILE * MAX_PROFILE];
-
-            return true;
+            JsonFileManager.Save(this, "profile_switch_key_table");
         }
 
         private void ResetToDefault()
@@ -165,17 +105,14 @@ namespace AutoHotkeyRemaster.Services
                 {
                     if (i == j)
                     {
-                        _switchKeyTable[i][i] = -1;  //자기 자신으로의 키는 -1로 설정해 둠.
+                        SwitchKeyTable[i][i] = -1;  //자기 자신으로의 키는 -1로 설정해 둠.
                     }
                     else
                     {
-                        _switchKeyTable[i][j] = VK_F1 + j;
+                        SwitchKeyTable[i][j] = VK_F1 + j;
                     }
                 }
             }
-
-            _escapeKey = VK_ESC;
         }
-
     }
 }

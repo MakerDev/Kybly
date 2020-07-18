@@ -1,13 +1,16 @@
-﻿<Window x:Class="AutoHotkeyRemaster.UI.Views.ProfileEditor"
+﻿<mah:MetroWindow x:Class="AutoHotkeyRemaster.WPF.Views.ProfileEditor"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Profile Editor"
+        WindowTransitionsEnabled="False"
         ResizeMode="NoResize"
-        Height="250" Width="400">
+        TitleBarHeight="25"
+        Height="180" Width="280">
     <Grid>
         <Grid.Background>
             <SolidColorBrush Color="{StaticResource DefaultBackgroundColor}" />
@@ -17,7 +20,7 @@
             HorizontalAlignment="Center"
             >
             <TextBlock 
-                Margin="0 30 0 5"
+                Margin="0 10 0 5"
                 Text="Change Profile Name "
                 Style="{StaticResource DefaultFontStyle}" />
             <Border
@@ -31,4 +34,4 @@
                 HorizontalAlignment="Center" />
         </StackPanel>
     </Grid>
-</Window>
+</mah:MetroWindow>
