@@ -1,0 +1,27 @@
+﻿<Window x:Class="AutoHotkeyRemaster.WPF.Views.InfoWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AutoHotkeyRemaster.WPF.Views"
+        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
+        xmlns:vm="clr-namespace:AutoHotkeyRemaster.WPF.ViewModels"
+        cal:Bind.AtDesignTime="True"
+        d:DataContext="{d:DesignInstance Type=vm:InfoWindowViewModel, IsDesignTimeCreatable=True}"
+        mc:Ignorable="d"
+        MouseDown="OnMouseDown"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Topmost="True"
+        BorderBrush="White"
+        BorderThickness="1"
+        Background="{StaticResource DefaultBackgroundBrush}"
+        Title="InfoWindowView" Height="24" MinWidth="80" MaxWidth="120">
+
+    <TextBlock 
+        Style="{StaticResource DefaultFontStyle}"
+        VerticalAlignment="Center"
+        HorizontalAlignment="Center"
+        FontSize="12"
+        Text="{Binding HookingProfileName}"/>
+</Window>

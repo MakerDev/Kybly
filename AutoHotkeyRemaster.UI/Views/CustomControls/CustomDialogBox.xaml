@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:AutoHotkeyRemaster.WPF.Views.CustomControls"
         mc:Ignorable="d"
         WindowStyle="None"
+        ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         Title="CustomDialogBox" Height="130" Width="300">
     <StackPanel 

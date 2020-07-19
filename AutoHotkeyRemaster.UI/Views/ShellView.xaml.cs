@@ -40,7 +40,7 @@ namespace AutoHotkeyRemaster.WPF.Views
             OptionsPanel.Width = 0;
         }
 
-        private void Tg_Btn_Unchecked(object sender, RoutedEventArgs e)
+        private void ToggleMenuBtnUnchecked(object sender, RoutedEventArgs e)
         {
             if (ProfilesPanel.SelectedItem == null && MenuList.SelectedItem != null)
             {
@@ -50,18 +50,18 @@ namespace AutoHotkeyRemaster.WPF.Views
             ContentMask.Visibility = Visibility.Collapsed;
         }
 
-        private void Tg_Btn_Checked(object sender, RoutedEventArgs e)
+        private void ToggleMenuBtnChecked(object sender, RoutedEventArgs e)
         {
             ContentMask.Visibility = Visibility.Visible;
         }
 
-        private void BG_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void OnBackgroundPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ToggleButton.IsChecked = false;
             OptionButton.IsChecked = false;
         }
 
-        private void ListViewItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void ListViewItemPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ToggleButton.IsChecked = true;
             _openProfilePanelStoryboard.Begin(NavPanel);
@@ -81,6 +81,28 @@ namespace AutoHotkeyRemaster.WPF.Views
             profileEditor.ShowDialog();
 
             txtBlock.Text = profileEditor.ChangedName;
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            switch (WindowState)
+            {
+                case WindowState.Normal:
+                    Activate();
+                    break;
+
+                case WindowState.Minimized:
+                    Hide();
+                    break;
+
+                //Never happens
+                case WindowState.Maximized:
+                    break;
+                default:
+                    break;
+            }
+
+            base.OnStateChanged(e);
         }
     }
 }

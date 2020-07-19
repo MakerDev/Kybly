@@ -1,5 +1,6 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services;
+using AutoHotkeyRemaster.Services.Events;
 using AutoHotkeyRemaster.WPF.Events;
 using AutoHotkeyRemaster.WPF.Models;
 using AutoHotkeyRemaster.WPF.Views;
@@ -20,12 +21,14 @@ using System.Windows.Media;
 
 namespace AutoHotkeyRemaster.WPF.ViewModels
 {
-    public class ShellViewModel : Conductor<object>.Collection.AllActive
+    public class ShellViewModel : Conductor<object>.Collection.AllActive, IHandle<HookStateChangeEvent>
     {
         private readonly ProfileManager _profileManager;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IWindowManager _windowManager;
         private readonly ApplicationModel _application;
         private readonly KeyboardViewModel _keyboardViewModel;
+        private readonly WindowsHookManager _windowsHookManager;
         private readonly HotkeyEditViewModel _hotkeyEditViewModel;
         private readonly OptionsViewModel _optionsViewModel;
         private ProfileStateModel _selectedProfile;
@@ -48,6 +51,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         }
 
         private BindingList<ProfileStateModel> _profileStates = new BindingList<ProfileStateModel>();
+        private bool _hookActivated;
+
         public BindingList<ProfileStateModel> ProfileStates
         {
             get { return _profileStates; }
@@ -67,27 +72,33 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             private set { }
         }
 
-
-        public bool HotkeyActivated
+        public bool HookActivated
         {
-            get
+            get { return _hookActivated; }
+            set
             {
-                return _application.ApplicationState == ApplicationState.Activated;
+                _hookActivated = value;
+                NotifyOfPropertyChange(() => HookActivated);
             }
-            private set { }
         }
 
-        public ShellViewModel(ProfileManager profileManager, IEventAggregator eventAggregator, ApplicationModel application,
-            KeyboardViewModel keyboardViewModel, HotkeyEditViewModel hotkeyEditViewModel, OptionsViewModel optionsViewModel)
+        public ShellViewModel(ProfileManager profileManager, IEventAggregator eventAggregator, IWindowManager windowManager,
+            ApplicationModel application, KeyboardViewModel keyboardViewModel, WindowsHookManager windowsHookManager,
+            HotkeyEditViewModel hotkeyEditViewModel, OptionsViewModel optionsViewModel,
+            InfoWindowViewModel infoWindowViewModel)
         {
             _profileManager = profileManager;
             _eventAggregator = eventAggregator;
+            _windowManager = windowManager;
             _application = application;
             _keyboardViewModel = keyboardViewModel;
+            _windowsHookManager = windowsHookManager;
             _hotkeyEditViewModel = hotkeyEditViewModel;
             _optionsViewModel = optionsViewModel;
 
             _eventAggregator.SubscribeOnUIThread(this);
+
+            _windowManager.ShowWindowAsync(infoWindowViewModel);
 
             SetProfileListItems();
 
@@ -166,6 +177,23 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                     DeletedProfile = deletedProfile
                 });
             }
+        }
+
+        public Task HandleAsync(HookStateChangeEvent message, CancellationToken cancellationToken)
+        {
+            if (message.HookState == HookState.Hooking)
+                HookActivated = true;
+            else
+                HookActivated = false;
+
+            return Task.CompletedTask;
+        }
+
+        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+        {
+            _windowsHookManager.Shutdown();
+
+            return base.OnDeactivateAsync(close, cancellationToken);
         }
     }
 }

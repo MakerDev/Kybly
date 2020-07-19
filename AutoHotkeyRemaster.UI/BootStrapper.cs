@@ -19,7 +19,7 @@ namespace AutoHotkeyRemaster.WPF
         private readonly SimpleContainer _container 
             = new SimpleContainer();
         private readonly VirtualKeycodeToWpfKeyConverter _keyConverter 
-            = new VirtualKeycodeToWpfKeyConverter();
+            = new VirtualKeycodeToWpfKeyConverter();        
 
         public Bootstrapper()
         {

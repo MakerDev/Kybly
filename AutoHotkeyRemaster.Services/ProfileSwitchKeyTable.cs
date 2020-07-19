@@ -68,7 +68,21 @@ namespace AutoHotkeyRemaster.Services
             }
         }
 
-        //키 중복등의 문제로 그 자리의 키를 기본전환키로 변경해야할 시
+        public bool HasKey(int key)
+        {
+            for (int i = 0; i < MAX_PROFILE; i++)
+            {
+                for (int j = 0; j < MAX_PROFILE; j++)
+                {
+                    if (SwitchKeyTable[i][j] == key)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        //키 중복등의 문제로 그 자리의 키를 기본전환키로 변경해야할시
         public void SetToDefaultByIndex(int from, int to)
         {
             if (from == to)

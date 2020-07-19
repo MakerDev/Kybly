@@ -106,7 +106,9 @@
 
                 <TextBox
                     Style="{StaticResource KeyInputTextBoxStyle}"
-                    Text="{Binding HotkeyActionKeyDisplay, Mode=OneWay}"
+                    Text="{Binding HotkeyActionKey, Mode=OneWay, 
+                        Converter={StaticResource KeycodeToStringConverter}, 
+                        FallbackValue='', TargetNullValue=''}"
                     IsReadOnly="{Binding CanEdit, 
                         Converter={StaticResource BooleanInvertingConverter}}"
                     cal:Message.Attach="

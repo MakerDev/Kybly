@@ -1,5 +1,6 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services;
+using AutoHotkeyRemaster.Services.Events;
 using AutoHotkeyRemaster.WPF.Events;
 using AutoHotkeyRemaster.WPF.Views.CustomControls;
 using Caliburn.Micro;
@@ -79,24 +80,9 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 NotifyOfPropertyChange(() => Alt);
                 NotifyOfPropertyChange(() => Shift);
                 NotifyOfPropertyChange(() => Win);
-                NotifyOfPropertyChange(() => HotkeyActionKeyDisplay);
+                NotifyOfPropertyChange(() => HotkeyActionKey);
                 NotifyOfPropertyChange(() => HotkeyAction);
             }
-        }
-
-        //TODO : Consider to replace this with converter
-        public string HotkeyActionKeyDisplay
-        {
-            get
-            {
-                if (HotkeyAction == null || HotkeyAction.Key == -1)
-                {
-                    return "";
-                }
-
-                return KeyInterop.KeyFromVirtualKey(HotkeyAction.Key).ToString();
-            }
-            private set { }
         }
 
         public int HotkeyActionKey
@@ -109,7 +95,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             {
                 HotkeyAction.Key = value;
                 Save();
-                NotifyOfPropertyChange(() => HotkeyActionKeyDisplay);
+                NotifyOfPropertyChange(() => HotkeyActionKey);
             }
         }
 
@@ -248,8 +234,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 Key = CurrentHotkey.Action.Key,
                 Modifier = CurrentHotkey.Action.Modifier
             };
-
-            NotifyOfPropertyChange(() => HotkeyActionKeyDisplay);
 
             return Task.CompletedTask;
         }

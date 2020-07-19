@@ -25,6 +25,7 @@
             <converters:BooleanInvertingConverter x:Key="BooleanInvertingConverter"/>
             <converters:InstanceToStringConverter x:Key="InstanceToStringConverter" />
             <converters:ReferenceToVisibilityConverter x:Key="ReferenceToVisibilityConverter"/>
+            <converters:KeycodeToStringConverter x:Key="KeycodeToStringConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

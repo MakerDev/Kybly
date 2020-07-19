@@ -1,158 +1,239 @@
 ﻿using AutoHotkeyRemaster.Models;
+using AutoHotkeyRemaster.Services.Events;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
+using WindowsInput;
+using WindowsInput.Native;
 
 namespace AutoHotkeyRemaster.Services
 {
+    public enum HookState
+    {
+        Hooking,   //A profile is being hooked
+        UnHooking, //Only activation key is enabled
+    }
+
+    /// <summary>
+    /// Register keys to WindowsHookhandler. 
+    /// Process hotkey is triggerd by WindowsHookhandler
+    /// </summary>
     public class WindowsHookManager
     {
-        #region Hook Constants
-        public const int HOTKEY_ID = 9000;
+        public HookState HookState { get; set; } = HookState.UnHooking;
 
-        private const int WH_KEYBOARD_LL = 13;
-        private const int WM_KEYDOWN = 0x0100;
-        private const int WM_SYSKEYDOWN = 0x0104;
-        private const int WM_KEYUP = 0x0101;
-        private const int WM_SYSKEYUP = 0x0105;
-
-        #endregion
-
-        //Assume that trigger is not a combination but only a single key
-        private Dictionary<int, Hotkey> _triggerHotkeyPairs { get; set; } = new Dictionary<int, Hotkey>();
-        private Dictionary<int, bool> _isAlreadyPressed { get; set; } = new Dictionary<int, bool>();
-
-        private readonly ProfileSwitchKeyTable _switchKeyTable;
-        private readonly ProfileManager _profileManager;
+        private readonly IEventAggregator _eventAggregator;
         private readonly ApplicationModel _applicationModel;
+        private readonly ProfileManager _profileManager;
+        private readonly ProfileSwitchKeyTable _profileSwitchKeyTable;
+        private readonly WindowsKeyboardHooker _keyboardHooker = new WindowsKeyboardHooker();
+        private readonly InputSimulator _inputSimulator = new InputSimulator();
+        
+        private int _activationKey => _applicationModel.Options.ActivationKey;
+        private readonly Dictionary<int, int> _swtichKeys = new Dictionary<int, int>(); //Key : switch keycode, Value : profile to switch
+        private readonly Dictionary<int, Hotkey> _profileHotkeys = new Dictionary<int, Hotkey>();  //Key : trigger, Value : Hotkey
 
-        public WindowsHookManager(ProfileSwitchKeyTable switchKeyTable, ApplicationModel applicationModel, ProfileManager profileManager)
+        private HotkeyProfile _currentHookingProfile = null;
+        private int _lastHookedProfileNum = -1;
+
+        public WindowsHookManager(IEventAggregator eventAggregator,
+            ApplicationModel applicationModel, ProfileManager profileManager, ProfileSwitchKeyTable profileSwitchKeyTable)
         {
-            _switchKeyTable = switchKeyTable;
-            _profileManager = profileManager;
+            _eventAggregator = eventAggregator;
             _applicationModel = applicationModel;
+            _profileManager = profileManager;
+            _profileSwitchKeyTable = profileSwitchKeyTable;
 
-            _proc = HookCallback;
+            _keyboardHooker.KeyHooked += HandleHookedEvent;
+
+            _keyboardHooker.StartHook(_activationKey, null);
         }
 
-        public void RegisterProfile(HotkeyProfile hotkeyProfile)
+        //Used to clean all key strokes. Useful in case of unexpected bugs
+        public void Shutdown()
         {
-            int[] currentSwitchKeys = _switchKeyTable[hotkeyProfile.ProfileNum];
+            _keyboardHooker.StopHook();
+
+            _inputSimulator.Keyboard.KeyUp(VirtualKeyCode.SHIFT);
+            _inputSimulator.Keyboard.KeyUp(VirtualKeyCode.MENU);
+            _inputSimulator.Keyboard.KeyUp(VirtualKeyCode.CONTROL);
+            _inputSimulator.Keyboard.KeyUp(VirtualKeyCode.LWIN);
         }
 
-        #region DllImports
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool UnhookWindowsHookEx(IntPtr hhk);
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        #endregion
-
-        #region WINDOWS_HOOK Properties & functions
-        private static extern IntPtr GetModuleHandle(string lpModuleName);
-
-        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
-
-        private readonly LowLevelKeyboardProc _proc;
-        private IntPtr _hookId = IntPtr.Zero;
-
-        private IntPtr SetHook(LowLevelKeyboardProc proc)
+        private void ChangeHookState()
         {
-            using (Process curProcess = Process.GetCurrentProcess())
+            if (HookState == HookState.UnHooking)
             {
-                using (ProcessModule curModule = curProcess.MainModule)
+                HookState = HookState.Hooking;
+
+                Activate(_lastHookedProfileNum);
+
+                return;
+            }
+
+            HookState = HookState.UnHooking;
+
+            Deactivate();
+
+            return;
+        }
+
+        private void Deactivate()
+        {
+            _keyboardHooker.StopHook();
+
+            _lastHookedProfileNum = _currentHookingProfile.ProfileNum;
+
+            //Delete cache for case where user modified profile hotkeys while deactivated
+            _profileHotkeys.Clear();
+            _swtichKeys.Clear();
+            _currentHookingProfile = null;
+
+            //Only enables activation key            
+            _keyboardHooker.StartHook(_activationKey, null);
+
+            _eventAggregator.PublishOnUIThreadAsync(new HookStateChangeEvent
+            {
+                HookState = HookState.UnHooking,
+            });
+        }
+
+        /// <summary>
+        /// On the first activation, activates default profile. (profile1)
+        /// </summary>
+        /// <returns>Activated profile</returns>
+        private void Activate(int profileNum)
+        {
+            _currentHookingProfile = _profileManager.FindProfileOrDefault(profileNum);
+
+            var switchKeys = _profileSwitchKeyTable[_currentHookingProfile.ProfileNum-1];
+
+            for (int i = 1; i <= _profileManager.ProfileCount; i++)
+            {
+                if (i == _currentHookingProfile.ProfileNum)
+                    continue;
+
+                _swtichKeys.Add(switchKeys[i-1], i);
+            }
+
+            foreach (var hotkey in _currentHookingProfile.Hotkeys)
+            {
+                _profileHotkeys.Add(hotkey.Trigger.Key, hotkey);
+            }
+
+            var registeredKeys = CreateRegisteredKeyDictionary();
+
+            _keyboardHooker.StartHook(registeredKeys);
+
+            _eventAggregator.PublishOnUIThreadAsync(new HookStateChangeEvent
+            {
+                HookState = HookState.Hooking,
+                HotkeyProfile = _currentHookingProfile
+            });
+        }
+
+        private Dictionary<int, KeyInfo> CreateRegisteredKeyDictionary()
+        {
+            Dictionary<int, KeyInfo> registeredKeys = new Dictionary<int, KeyInfo>();
+
+            //Registraion order : activation key -> switichkey -> profile hotkeys
+            registeredKeys.Add(_applicationModel.Options.ActivationKey, null);
+
+            foreach (var key in _swtichKeys.Keys)
+            {
+                if (!registeredKeys.ContainsKey(key)) registeredKeys.Add(key, null);
+            }
+
+            foreach (var trigger in _profileHotkeys.Keys)
+            {
+                if (!registeredKeys.ContainsKey(trigger)) registeredKeys.Add(trigger, _profileHotkeys[trigger].Action);
+            }
+
+            return registeredKeys;
+        }
+
+        private void SwtichProfile(int toProfileNum)
+        {
+            Deactivate();
+            Activate(toProfileNum);
+        }
+
+        private void ProcessHotkeyAction(Hotkey hotkey, bool isPressed)
+        {
+            var modifiers = GetModifierList(hotkey.Action.Modifier);
+
+            _keyboardHooker.StopHookKeyboard();
+
+            if (isPressed)
+            {
+                foreach (var modifier in modifiers)
                 {
-                    return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(curModule.ModuleName), 0);
+                    _inputSimulator.Keyboard.KeyDown(modifier);
                 }
+
+                _inputSimulator.Keyboard.KeyDown((VirtualKeyCode)hotkey.Action.Key);
+
+                return;
             }
-        }
 
-        #endregion
-
-        public void StartHookKeyboard()
-        {
-            _hookId = SetHook(_proc);
-        }
-
-        public void StopHookKeyboard()
-        {
-            UnhookWindowsHookEx(_hookId);
-        }
-
-
-        //TODO : rename this
-        public void ClearKeys()
-        {
-            _triggerHotkeyPairs.Clear();
-            _isAlreadyPressed.Clear();
-        }
-
-        private void AddTriggerHotkeyPair(int input, Hotkey hotkey)
-        {
-            _triggerHotkeyPairs.Add(input, hotkey);
-            _isAlreadyPressed.Add(input, false);
-        }
-
-        private void OnKeyPressed(int vkCode)
-        {
-
-        }
-
-        private void OnKeyUp(int vkCode)
-        {
-
-        }
-
-        private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
-        {
-            if (_triggerHotkeyPairs.Count == 0)
-                return CallNextHookEx(_hookId, nCode, wParam, lParam);
-
-            if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN)
+            foreach (var modifier in modifiers)
             {
-                int vkCode = Marshal.ReadInt32(lParam);
-
-                if (!_triggerHotkeyPairs.ContainsKey(vkCode))
-                    return CallNextHookEx(_hookId, nCode, wParam, lParam);
-
-                if (_isAlreadyPressed[vkCode] && IsMouseEvent(_triggerHotkeyPairs[vkCode].Action.Key))
-                    return new IntPtr(5);
-
-                OnKeyPressed(vkCode);
-
-                return new IntPtr(5);
+                _inputSimulator.Keyboard.KeyUp(modifier);
             }
-            else if (nCode >= 0 && (wParam == (IntPtr)WM_KEYUP || wParam == (IntPtr)WM_SYSKEYUP))
+
+            _inputSimulator.Keyboard.KeyUp((VirtualKeyCode)hotkey.Action.Key);
+
+            if (hotkey.EndingAction != null)
             {
-                int vkCode = Marshal.ReadInt32(lParam);
+                modifiers = GetModifierList(hotkey.EndingAction.Modifier);
 
-                vkCode = ConvertVkcodeToInternalValue(vkCode);
-
-                if (!_triggerHotkeyPairs.ContainsKey(vkCode))
-                    return CallNextHookEx(_hookId, nCode, wParam, lParam);
-
-                OnKeyUp(vkCode);
-
-                return new IntPtr(5);
+                _inputSimulator.Keyboard.ModifiedKeyStroke(modifiers, (VirtualKeyCode)hotkey.EndingAction.Key);
             }
 
-            return CallNextHookEx(_hookId, nCode, wParam, lParam);
+            _keyboardHooker.StartHookKeyboard();
         }
-        private bool IsMouseEvent(int key) => (key >= 1 && key <= 4);
-
-        private int ConvertVkcodeToInternalValue(int vkCode)
+        private List<VirtualKeyCode> GetModifierList(int modifier)
         {
-            if (vkCode == 164 || vkCode == 165) { return Modifiers.Alt; }
-            if (vkCode == 162 || vkCode == 163) { return Modifiers.Ctrl; }
-            if (vkCode == 91 || vkCode == 92) { return Modifiers.Win; }
-            if (vkCode == 160 || vkCode == 161) { return Modifiers.Shift; }
+            List<VirtualKeyCode> modifiers = new List<VirtualKeyCode>();
 
-            return vkCode;
+            if ((modifier & Modifiers.Ctrl) != 0) { modifiers.Add(VirtualKeyCode.CONTROL); }
+            if ((modifier & Modifiers.Shift) != 0) { modifiers.Add(VirtualKeyCode.SHIFT); }
+            if ((modifier & Modifiers.Alt) != 0) { modifiers.Add(VirtualKeyCode.MENU); }
+            if ((modifier & Modifiers.Win) != 0) { modifiers.Add(VirtualKeyCode.LWIN); }
+
+            return modifiers;
+        }
+        private void HandleHookedEvent(KeyHookedArgs args)
+        {
+            int keycode = args.VkCode;
+
+            if (args.IsPressed)
+            {
+                if (keycode == _activationKey)
+                {
+                    ChangeHookState();
+
+                    return;
+                }
+
+                if (_swtichKeys.ContainsKey(keycode))
+                {
+                    SwtichProfile(_swtichKeys[keycode]);
+
+                    return;
+                }
+
+                ProcessHotkeyAction(_profileHotkeys[keycode], true);
+
+                return;
+            }
+
+            if (keycode == _activationKey || _swtichKeys.ContainsKey(keycode))
+                return;
+
+            ProcessHotkeyAction(_profileHotkeys[keycode], false);
         }
     }
 }

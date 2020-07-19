@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AutoHotkeyRemaster.Models
+namespace AutoHotkeyRemaster.Services
 {
     public enum ApplicationState
     {
@@ -18,9 +18,14 @@ namespace AutoHotkeyRemaster.Models
         public delegate void AppStateChangeHandler(ApplicationState applicationState);
         public event AppStateChangeHandler ApplicationStateChange;
 
-        public Options Options { get; set; }
+        public delegate void ActivationKeyChangeHandler(int newKey);
+        public event ActivationKeyChangeHandler ActivationKeyChange;
+
+        public Options Options { get; private set; }
 
         private ApplicationState _applicationState;
+        private readonly ProfileSwitchKeyTable _switchKeyTable;
+
         public ApplicationState ApplicationState
         {
             get { return _applicationState; }
@@ -30,9 +35,24 @@ namespace AutoHotkeyRemaster.Models
             }
         }
 
-        public ApplicationModel()
+        public ApplicationModel(ProfileSwitchKeyTable switchKeyTable)
         {
             Options = JsonFileManager.Load<Options>(Options.SAVE_NAME) ?? new Options();
-        }        
+            _switchKeyTable = switchKeyTable;
+        }
+
+        public bool SetActivationKey(int key)
+        {
+            if(_switchKeyTable.HasKey(key))
+            {
+                return false;
+            }
+
+            Options.ActivationKey = key;
+            ActivationKeyChange?.Invoke(key);
+
+            return true;
+        }
+
     }
 }

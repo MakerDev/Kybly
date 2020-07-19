@@ -55,7 +55,4 @@
         <Setter Property="Height" Value="30"/>
         <Setter Property="ContextMenu" Value="{x:Null}"/>
     </Style>
-    
-
-
 </ResourceDictionary>

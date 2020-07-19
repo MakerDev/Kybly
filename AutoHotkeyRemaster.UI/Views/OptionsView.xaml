@@ -49,7 +49,15 @@
 
         <TextBox 
             Style="{StaticResource KeyInputTextBoxStyle}"
+            Text="{Binding ActivationKey, Mode=OneWay, 
+                Converter={StaticResource KeycodeToStringConverter}, 
+                FallbackValue='', TargetNullValue=''}"
+            ContextMenu="{x:Null}"
+            cal:Message.Attach="
+                [Event PreviewKeyDown] 
+                    = [Action OnPreviewKeyDown($source, $eventArgs)]"
             Margin="0 10 0 0"
             HorizontalAlignment="Left" />
+        
     </StackPanel>
 </UserControl>

@@ -16,7 +16,7 @@
         BorderThickness="0"
         WindowTransitionsEnabled="False"
         TitleBarHeight="30"
-        GlowBrush="{StaticResource MahApps.Brushes.Gray}"      
+        GlowBrush="{StaticResource MahApps.Brushes.Gray}"                    
         WindowStartupLocation="CenterScreen"        
         Height="805" Width="1290">
 
@@ -71,12 +71,13 @@
             Background="Black">
 
             <Grid x:Name="ActivatedMask" 
-                      Panel.ZIndex="100"
-                      Background="Black" 
-                      Opacity="0.4" 
-                      Visibility="{Binding HotkeyActivated, 
-                        Converter={StaticResource BooleanToVisibilityConverter}, 
-                        FallbackValue='Collapsed'}" >
+                Panel.ZIndex="1000"
+                Background="Black" 
+                Opacity="0.4" 
+                Visibility="{Binding HookActivated, 
+                    Converter={StaticResource BooleanToVisibilityConverter}, 
+                    FallbackValue='Collapsed'}" >
+                
                 <TextBlock 
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -87,7 +88,7 @@
             
             <!--// Background Image //-->
             <Grid x:Name="BackgroundGrid" 
-                  PreviewMouseLeftButtonDown="BG_PreviewMouseLeftButtonDown">
+                  PreviewMouseLeftButtonDown="OnBackgroundPreviewMouseLeftButtonDown">
                 <StackPanel 
                     Margin="55 0 0 0">
                     <ItemsControl x:Name="Items"/>
@@ -146,8 +147,8 @@
                                       Width="30"
                                       BorderThickness="0"
                                       Style="{StaticResource ToggleBtnStyle}" 
-                                      Unchecked="Tg_Btn_Unchecked" 
-                                      Checked="Tg_Btn_Checked">
+                                      Unchecked="ToggleMenuBtnUnchecked" 
+                                      Checked="ToggleMenuBtnChecked">
 
                                 <!--// Toggle button default background image //-->
                                 <ToggleButton.Background>
@@ -203,7 +204,7 @@
                             <ListViewItem HorizontalAlignment="Left"
                                       VerticalAlignment="Center"
                                       Margin="0,0,0,0"                                       
-                                      PreviewMouseDown="ListViewItem_PreviewMouseDown"
+                                      PreviewMouseDown="ListViewItemPreviewMouseDown"
                                       Width="230" 
                                       >
                                 <StackPanel Orientation="Horizontal"
@@ -242,18 +243,17 @@
 
                                 </StackPanel>
                             </ListViewItem>
-
                             <!--// Listview items style template //-->
                         </ListView>
                     </StackPanel>
 
                     <DockPanel      
-                    x:Name="BottomToggles"
-                    Grid.Row="1"
-                    Width="230"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom" 
-                    LastChildFill="False">
+                        x:Name="BottomToggles"
+                        Grid.Row="1"
+                        Width="230"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom" 
+                        LastChildFill="False">
 
                         <ToggleButton
                             x:Name="OptionButton"
@@ -315,10 +315,10 @@
                     </DockPanel>
 
                     <Grid                      
-                    x:Name="ProfilePanel"
-                    Grid.RowSpan="2"                    
-                    Grid.Column="1"
-                    Width="250" >
+                        x:Name="ProfilePanel"
+                        Grid.RowSpan="2"                    
+                        Grid.Column="1"
+                        Width="250" >
                         <Grid.Background>
                             <SolidColorBrush Color="{StaticResource ProfilePanelBg}"/>
                         </Grid.Background>
@@ -326,19 +326,19 @@
                         <DockPanel LastChildFill="False">
                             <!--Profiles-->
                             <ListView  
-                            DockPanel.Dock="Top"
-                            x:Name="ProfilesPanel"                               
-                            HorizontalAlignment="Center"
-                            HorizontalContentAlignment="Center"
-                            Background="Transparent"    
-                            BorderBrush="Transparent"
-                            BorderThickness="0"
-                            Width="260"
-                            PreviewKeyDown="PreventKeyboardNavigation"
-                            ItemContainerStyle="{StaticResource ListItemStyle}"                              
-                            ItemsSource="{Binding ProfileStates}"                               
-                            SelectedItem="{Binding SelectedProfile}"      
-                            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                DockPanel.Dock="Top"
+                                x:Name="ProfilesPanel"                               
+                                HorizontalAlignment="Center"
+                                HorizontalContentAlignment="Center"
+                                Background="Transparent"    
+                                BorderBrush="Transparent"
+                                BorderThickness="0"
+                                Width="260"
+                                PreviewKeyDown="PreventKeyboardNavigation"
+                                ItemContainerStyle="{StaticResource ListItemStyle}"                              
+                                ItemsSource="{Binding ProfileStates}"                               
+                                SelectedItem="{Binding SelectedProfile}"      
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel>

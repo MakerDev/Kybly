@@ -26,10 +26,25 @@ namespace AutoHotkeyRemaster.Services
             LoadAllProfiles();
         }
 
+        public HotkeyProfile FindProfileOrDefault(int profileNum)
+        {
+            if (profileNum < 0)
+                return Profiles[0];
+
+            foreach (var profile in Profiles)
+            {
+                if (profile.ProfileNum == profileNum)
+                    return profile;
+            }
+
+            //TODO : 디폴트 프로필 커스터마이징 가능하도록 하기
+            return Profiles[0];
+        }
+
         public HotkeyProfile CreateNewProfile(string profileName = null)
         {
-            HotkeyProfile profile = 
-                HotkeyProfile.CreateNewProfile(ProfileCount + 1, profileName);
+            HotkeyProfile profile =
+                HotkeyProfile.CreateNewProfile(ProfileCount+1, profileName);
 
             Profiles.Add(profile);
 
@@ -38,16 +53,18 @@ namespace AutoHotkeyRemaster.Services
 
         public HotkeyProfile DeleteProfile(int profileNum)
         {
-            HotkeyProfile deletedProfile = Profiles[profileNum - 1];
+            int profileIdx = profileNum - 1;
+
+            HotkeyProfile deletedProfile = Profiles[profileIdx];
 
             foreach (var profile in Profiles)
             {
                 profile.Delete($"profile{profile.ProfileNum}");
             }
 
-            Profiles.RemoveAt(profileNum - 1);
+            Profiles.RemoveAt(profileIdx);
 
-            for (int i = profileNum - 1; i < ProfileCount; i++)
+            for (int i = profileIdx; i < ProfileCount; i++)
             {
                 Profiles[i].ProfileNum -= 1;
             }
@@ -67,9 +84,9 @@ namespace AutoHotkeyRemaster.Services
 
         private void LoadAllProfiles()
         {
-            for (int i = 1; i <= MAX_PROFILE_NUM; i++)
+            for (int i = 0; i < MAX_PROFILE_NUM; i++)
             {
-                HotkeyProfile profile = HotkeyProfile.LoadFromFile(i);
+                HotkeyProfile profile = HotkeyProfile.LoadFromFile(i + 1);
 
                 if (profile == null)
                     break;
