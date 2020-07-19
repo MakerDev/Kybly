@@ -42,11 +42,19 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 //INFO : If somthing goes wrong, consider to change this synchronous
                 if (_selectedProfile != null)
                 {
-                    _eventAggregator.PublishOnUIThreadAsync(new ProfileChangedEvent { Profile = _selectedProfile.Profile });
+                    _eventAggregator.PublishOnUIThreadAsync(new ProfileChangedEvent { Profile = _selectedProfile.Profile })
+                        .ContinueWith((task) => 
+                        {
+                            NotifyOfPropertyChange(() => SelectedProfile);
+                            NotifyOfPropertyChange(() => CanDeleteProfile);
+                        });
+                }
+                else
+                {
+                    NotifyOfPropertyChange(() => SelectedProfile);
+                    NotifyOfPropertyChange(() => CanDeleteProfile);
                 }
 
-                NotifyOfPropertyChange(() => SelectedProfile);
-                NotifyOfPropertyChange(() => CanDeleteProfile);
             }
         }
 

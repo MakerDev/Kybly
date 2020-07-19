@@ -7,8 +7,10 @@
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
         xmlns:vm="clr-namespace:AutoHotkeyRemaster.WPF.ViewModels"
         cal:Bind.AtDesignTime="True"
-        d:DataContext="{d:DesignInstance Type=vm:InfoWindowViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=vm:InfoWindowViewModel, 
+            IsDesignTimeCreatable=False}"
         mc:Ignorable="d"
+        ShowInTaskbar="False"
         MouseDown="OnMouseDown"
         ResizeMode="NoResize"
         WindowStyle="None"

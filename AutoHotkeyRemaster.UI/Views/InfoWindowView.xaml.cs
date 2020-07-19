@@ -20,8 +20,6 @@ namespace AutoHotkeyRemaster.WPF.Views
         public InfoWindowView()
         {
             InitializeComponent();
-
-            Hide();
         }
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)

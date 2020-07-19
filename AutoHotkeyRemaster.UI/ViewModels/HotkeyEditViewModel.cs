@@ -94,8 +94,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             set
             {
                 HotkeyAction.Key = value;
-                Save();
-                NotifyOfPropertyChange(() => HotkeyActionKey);
+                Save().ContinueWith((task) => NotifyOfPropertyChange(() => HotkeyActionKey));
             }
         }
 
@@ -127,8 +126,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 else
                     HotkeyAction.Modifier &= ~Modifiers.Ctrl;
 
-                Save();
-                NotifyOfPropertyChange(() => Control);
+                Save().ContinueWith((task) => NotifyOfPropertyChange(() => Control));
             }
         }
 
@@ -145,8 +143,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 else
                     HotkeyAction.Modifier &= ~Modifiers.Alt;
 
-                Save();
-                NotifyOfPropertyChange(() => Alt);
+                Save().ContinueWith((task) => NotifyOfPropertyChange(() => Alt));
             }
         }
         public bool Shift
@@ -162,11 +159,10 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 else
                     HotkeyAction.Modifier &= ~Modifiers.Shift;
 
-                Save();
-                NotifyOfPropertyChange(() => Shift);
+                Save().ContinueWith((task) => NotifyOfPropertyChange(() => Shift));
             }
-
         }
+
         public bool Win
         {
             get
@@ -180,24 +176,22 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 else
                     HotkeyAction.Modifier &= ~Modifiers.Win;
 
-                Save();
-                NotifyOfPropertyChange(() => Win);
+                Save().ContinueWith((task) => NotifyOfPropertyChange(() => Win));
             }
-
         }
         #endregion
 
-        public void Save()
+        public async Task Save()
         {
             CurrentHotkey.Action = HotkeyAction;
 
             if (IsActionSet())
             {
-                SaveOrEdit(CurrentHotkey);
+                await SaveOrEditAsync(CurrentHotkey);
             }
             else
             {
-                DeleteIfExists(CurrentHotkey);
+                await DeleteIfExistsAsync(CurrentHotkey);
             }
         }
 
@@ -238,10 +232,10 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             return Task.CompletedTask;
         }
 
-        public void ClearAction()
+        public async Task ClearActionAsync()
         {
             HotkeyAction = new KeyInfo();
-            DeleteIfExists(CurrentHotkey);
+            await DeleteIfExistsAsync(CurrentHotkey);
         }
 
         //Trigger : PreviewMouseRightButtonDown
@@ -269,7 +263,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             HotkeyActionKey = KeyInterop.VirtualKeyFromKey(key);
         }
 
-        private void SaveOrEdit(Hotkey hotkey)
+        private async Task SaveOrEditAsync(Hotkey hotkey)
         {
             int result = CurrentProfile.AddOrEditHotkeyIfExisting(hotkey);
 
@@ -281,7 +275,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                     break;
 
                 case 0:
-                    _eventAggregator.PublishOnUIThreadAsync(new HotkeyModifiedEvent
+                    await _eventAggregator.PublishOnUIThreadAsync(new HotkeyModifiedEvent
                     {
                         Hotkey = hotkey,
                         ModifiedEvent = EHotkeyModifiedEvent.Modified
@@ -289,7 +283,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                     break;
 
                 case 1:
-                    _eventAggregator.PublishOnUIThreadAsync(new HotkeyModifiedEvent
+                    await _eventAggregator.PublishOnUIThreadAsync(new HotkeyModifiedEvent
                     {
                         Hotkey = hotkey,
                         ModifiedEvent = EHotkeyModifiedEvent.Added
@@ -302,11 +296,11 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
         }
 
-        private void DeleteIfExists(Hotkey hotkey)
+        private async Task DeleteIfExistsAsync(Hotkey hotkey)
         {
             if (CurrentProfile.DeleteHotkeyIfExisting(hotkey))
             {
-                _eventAggregator.PublishOnUIThreadAsync(new HotkeyModifiedEvent
+                await _eventAggregator.PublishOnUIThreadAsync(new HotkeyModifiedEvent
                 {
                     Hotkey = hotkey,
                     ModifiedEvent = EHotkeyModifiedEvent.Deleted
