@@ -18,7 +18,7 @@ namespace AutoHotkeyRemaster.Services
         public delegate void AppStateChangeHandler(ApplicationState applicationState);
         public event AppStateChangeHandler ApplicationStateChange;
 
-        public delegate void ActivationKeyChangeHandler(int newKey);
+        public delegate void ActivationKeyChangeHandler();
         public event ActivationKeyChangeHandler ActivationKeyChange;
 
         public Options Options { get; private set; }
@@ -49,10 +49,9 @@ namespace AutoHotkeyRemaster.Services
             }
 
             Options.ActivationKey = key;
-            ActivationKeyChange?.Invoke(key);
+            ActivationKeyChange?.Invoke();
 
             return true;
         }
-
     }
 }

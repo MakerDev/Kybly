@@ -91,7 +91,7 @@
         </Grid>
 
         <Grid x:Name="MaskGrid"               
-              Panel.ZIndex="0"
+              Panel.ZIndex="30"
               Background="Transparent"
               Visibility="{Binding Profile, 
                     Converter={StaticResource ReferenceToInvertedVisibilityConverter}}"

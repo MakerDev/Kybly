@@ -11,12 +11,11 @@ namespace AutoHotkeyRemaster.Services
 {
     public class Options
     {
+        public const string SAVE_NAME = "options";
+        
         private const int VK_ESC = 27;
 
-        public const string SAVE_NAME = "options";
         private bool _saveLastInfoWindowPosition = true;
-        private int _activationKey = VK_ESC;
-
         public bool SaveLastInfoWindowPosition
         {
             get => _saveLastInfoWindowPosition;
@@ -27,6 +26,17 @@ namespace AutoHotkeyRemaster.Services
             }
         }
 
+        private bool _minimizeOnStartup = false;
+        public bool MinimizeOnStartUp
+        {
+            get { return _minimizeOnStartup; }
+            set { 
+                _minimizeOnStartup = value;
+                JsonFileManager.Save(this, SAVE_NAME);
+            }
+        }
+
+        private int _activationKey = VK_ESC;
         public int ActivationKey
         {
             get => _activationKey; 

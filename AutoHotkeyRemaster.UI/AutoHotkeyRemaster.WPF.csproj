@@ -7,12 +7,13 @@
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation />
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Resources\Icons\AppIcons\Icon.png" />
     <None Remove="Resources\Icons\Change Icon.png" />
     <None Remove="Resources\Icons\DisabledToggleSwitchOff.png" />
     <None Remove="Resources\Icons\DisabledToggleSwitchOn.png" />
-    <None Remove="Resources\Icons\Icon.png" />
     <None Remove="Resources\Icons\KeyboardIcon.png" />
     <None Remove="Resources\Icons\OptionIcon.png" />
     <None Remove="Resources\Icons\ScreenKeyboardIcon.png" />
@@ -36,10 +37,10 @@
     <ProjectReference Include="..\AutoHotkeyRemaster.Services\AutoHotkeyRemaster.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Icons\AppIcons\Icon.png" />
     <Resource Include="Resources\Icons\Change Icon.png" />
     <Resource Include="Resources\Icons\DisabledToggleSwitchOff.png" />
     <Resource Include="Resources\Icons\DisabledToggleSwitchOn.png" />
-    <Resource Include="Resources\Icons\Icon.png" />
     <Resource Include="Resources\Icons\KeyboardIcon.png" />
     <Resource Include="Resources\Icons\OptionIcon.png" />
     <Resource Include="Resources\Icons\ScreenKeyboardIcon.png" />

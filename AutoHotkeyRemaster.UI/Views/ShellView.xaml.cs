@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +13,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace AutoHotkeyRemaster.WPF.Views
 {
     /// <summary>
@@ -20,6 +22,7 @@ namespace AutoHotkeyRemaster.WPF.Views
     public partial class ShellView : MetroWindow
     {
         private readonly Storyboard _openProfilePanelStoryboard = new Storyboard();
+        private System.Windows.Forms.NotifyIcon _notiIcon = new System.Windows.Forms.NotifyIcon();
 
         public ShellView()
         {
@@ -40,6 +43,77 @@ namespace AutoHotkeyRemaster.WPF.Views
             OptionsPanel.Width = 0;
         }
 
+        protected override void OnActivated(EventArgs e)
+        {
+            //Set tray icon.
+            _notiIcon.Icon = Properties.Resources.KyblyIcon;
+            _notiIcon.Visible = true;
+            _notiIcon.DoubleClick += (s, e) => OpenWindow();
+
+            _notiIcon.BalloonTipClosed += (sender, e) =>
+            {
+                var icon = (System.Windows.Forms.NotifyIcon)sender;
+                icon.Visible = false;
+                icon.Dispose();
+            };
+
+            var contextMenu = new System.Windows.Forms.ContextMenuStrip();
+
+            contextMenu.Items.Add("Setting", null, (s, e) => OpenWindow());
+            contextMenu.Items.Add("Exit", null, (s, e) => Close());
+            _notiIcon.ContextMenuStrip = contextMenu;
+
+            base.OnActivated(e);
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            _notiIcon.Visible = false;
+
+            base.OnClosing(e);
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            switch (WindowState)
+            {
+                case WindowState.Normal:
+                    Show();
+                    break;
+
+                case WindowState.Minimized:
+                    Hide();
+                    break;
+
+                //Never happens
+                case WindowState.Maximized:
+                    break;
+
+                default:
+                    break;
+            }
+
+            base.OnStateChanged(e);
+        }
+
+        private void OpenWindow()
+        {
+            Show();
+            this.WindowState = WindowState.Normal;
+        }
+
+        private void OnDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ListViewItem listViewItem = sender as ListViewItem;
+            TextBlock txtBlock = listViewItem.Content as TextBlock;
+
+            ProfileEditor profileEditor = new ProfileEditor(txtBlock.Text);
+            profileEditor.ShowDialog();
+
+            txtBlock.Text = profileEditor.ChangedName;
+        }
+
+        #region UI EVENTS
         private void ToggleMenuBtnUnchecked(object sender, RoutedEventArgs e)
         {
             if (ProfilesPanel.SelectedItem == null && MenuList.SelectedItem != null)
@@ -71,38 +145,7 @@ namespace AutoHotkeyRemaster.WPF.Views
         {
             e.Handled = true;
         }
+        #endregion
 
-        private void OnDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            ListViewItem listViewItem = sender as ListViewItem;
-            TextBlock txtBlock = listViewItem.Content as TextBlock;
-
-            ProfileEditor profileEditor = new ProfileEditor(txtBlock.Text);
-            profileEditor.ShowDialog();
-
-            txtBlock.Text = profileEditor.ChangedName;
-        }
-
-        protected override void OnStateChanged(EventArgs e)
-        {
-            switch (WindowState)
-            {
-                case WindowState.Normal:
-                    Activate();
-                    break;
-
-                case WindowState.Minimized:
-                    Hide();
-                    break;
-
-                //Never happens
-                case WindowState.Maximized:
-                    break;
-                default:
-                    break;
-            }
-
-            base.OnStateChanged(e);
-        }
     }
 }

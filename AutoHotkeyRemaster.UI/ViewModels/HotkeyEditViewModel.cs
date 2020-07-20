@@ -35,7 +35,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             }
         }
 
-        //INFO : 요청으로 현재는 사용하지 않음
+        //INFO : Currently not in use.
         public string Explanation
         {
             get

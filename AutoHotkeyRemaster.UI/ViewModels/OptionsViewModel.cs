@@ -37,6 +37,18 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             }
         }
 
+        public bool MinimizeOnStartUp
+        {
+            get
+            {
+                return _options.MinimizeOnStartUp;
+            }
+            set
+            {
+                _options.MinimizeOnStartUp = value;
+                NotifyOfPropertyChange(() => MinimizeOnStartUp);
+            }
+        }
         public OptionsViewModel(ApplicationModel applicationModel)
         {
             _options = applicationModel.Options;

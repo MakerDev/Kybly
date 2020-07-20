@@ -46,8 +46,16 @@ namespace AutoHotkeyRemaster.Services
             _profileManager = profileManager;
             _profileSwitchKeyTable = profileSwitchKeyTable;
 
+            _applicationModel.ActivationKeyChange += OnActivationKeyChanged;
             _keyboardHooker.KeyHooked += HandleHookedEvent;
 
+            _keyboardHooker.StartHook(_activationKey, null);
+        }
+
+        private void OnActivationKeyChanged()
+        {
+            //Changing activation key means that current state is UnHooking
+            _keyboardHooker.StopHook();
             _keyboardHooker.StartHook(_activationKey, null);
         }
 

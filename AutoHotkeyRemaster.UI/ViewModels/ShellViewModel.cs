@@ -31,6 +31,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         private readonly WindowsHookManager _windowsHookManager;
         private readonly HotkeyEditViewModel _hotkeyEditViewModel;
         private readonly OptionsViewModel _optionsViewModel;
+        private readonly InfoWindowViewModel _infoWindowViewModel;
         private ProfileStateModel _selectedProfile;
         public ProfileStateModel SelectedProfile
         {
@@ -43,7 +44,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 if (_selectedProfile != null)
                 {
                     _eventAggregator.PublishOnUIThreadAsync(new ProfileChangedEvent { Profile = _selectedProfile.Profile })
-                        .ContinueWith((task) => 
+                        .ContinueWith((task) =>
                         {
                             NotifyOfPropertyChange(() => SelectedProfile);
                             NotifyOfPropertyChange(() => CanDeleteProfile);
@@ -59,7 +60,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         }
 
         private BindingList<ProfileStateModel> _profileStates = new BindingList<ProfileStateModel>();
-        private bool _hookActivated;
 
         public BindingList<ProfileStateModel> ProfileStates
         {
@@ -80,6 +80,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             private set { }
         }
 
+        private bool _hookActivated;
         public bool HookActivated
         {
             get { return _hookActivated; }
@@ -103,7 +104,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             _windowsHookManager = windowsHookManager;
             _hotkeyEditViewModel = hotkeyEditViewModel;
             _optionsViewModel = optionsViewModel;
-
+            _infoWindowViewModel = infoWindowViewModel;
             _eventAggregator.SubscribeOnUIThread(this);
 
             _windowManager.ShowWindowAsync(infoWindowViewModel);
@@ -111,6 +112,18 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             SetProfileListItems();
 
             Items.AddRange(new Screen[] { _hotkeyEditViewModel, _keyboardViewModel, _optionsViewModel });
+        }
+
+
+
+        protected override void OnViewLoaded(object view)
+        {
+            if (_application.Options.MinimizeOnStartUp)
+            {
+                ((Window)view).WindowState = WindowState.Minimized;
+            }
+
+            base.OnViewLoaded(view);
         }
 
         protected override async void OnViewReady(object view)
@@ -141,16 +154,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             _profileManager.CreateNewProfile().Save();
             NotifyOfPropertyChange(() => CanAddNewProfile);
             SetProfileListItems();
-        }
-
-        private void SetProfileListItems()
-        {
-            ProfileStates.Clear();
-
-            foreach (var profile in _profileManager.Profiles)
-            {
-                ProfileStates.Add(new ProfileStateModel(profile));
-            }
         }
 
         public bool CanDeleteProfile
@@ -197,11 +200,25 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             return Task.CompletedTask;
         }
 
-        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+        protected override async Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
             _windowsHookManager.Shutdown();
 
-            return base.OnDeactivateAsync(close, cancellationToken);
+            var closeInfoTask = _infoWindowViewModel.TryCloseAsync();
+            var baseTask = base.OnDeactivateAsync(close, cancellationToken);
+
+            await Task.WhenAll(baseTask, closeInfoTask);
         }
+
+        private void SetProfileListItems()
+        {
+            ProfileStates.Clear();
+
+            foreach (var profile in _profileManager.Profiles)
+            {
+                ProfileStates.Add(new ProfileStateModel(profile));
+            }
+        }
+
     }
 }
