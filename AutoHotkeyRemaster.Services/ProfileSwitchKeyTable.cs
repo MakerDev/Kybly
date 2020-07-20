@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using AutoHotkeyRemaster.Models.Helpers;
 
 namespace AutoHotkeyRemaster.Services
@@ -95,10 +96,13 @@ namespace AutoHotkeyRemaster.Services
             }
         }
 
+        //As We don't check whether there exists duplicate switch key when adding a hotkey,
+        //here we don't check whether this profile has the same key with this swtich key.
+        //As swtich key has higher priority in hook manager, the duplicated hotkey will not be added in hook.
         public bool SetSwitchKeyByIndex(int from, int to, int newKey)
         {
             //TODO : 중복처리
-            if (from == to)
+            if (from == to || SwitchKeyTable[from].FirstOrDefault((key) => key == newKey) > 0)
                 return false;
 
             SwitchKeyTable[from][to] = newKey;
