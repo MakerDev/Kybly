@@ -19,7 +19,7 @@ namespace AutoHotkeyRemaster.Services
      * 
      * 행 = 현재 프로필, 열 = 다음 프로필
      */
-    public class ProfileSwitchKeyTable
+    public class ProfileSwitchKeyTable : IAsyncInitializationNeeded
     {
         private const int VK_F1 = 112;
 
@@ -59,10 +59,10 @@ namespace AutoHotkeyRemaster.Services
         /// <param name="jsonSavefileManager"></param>
         public ProfileSwitchKeyTable(IAsyncJsonFileManager jsonSavefileManager)
         {
-            _jsonSavefileManager = jsonSavefileManager;            
+            _jsonSavefileManager = jsonSavefileManager; 
         }
 
-        public async Task InitializeTable()
+        public async Task InitializeAsync()
         {
             for (int i = 0; i < MAX_PROFILE; i++)
             {

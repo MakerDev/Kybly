@@ -39,7 +39,9 @@ namespace AutoHotkeyRemaster.WPF.Views
             if (!_isDictInitialized)
                 RegisterButtonsToDict();
 
-            var keyHotkeyPair = ((KeyboardViewModel)sender).TriggerHotkeyPairs;
+            var keyboardViewModel = (KeyboardViewModel)sender;
+
+            var keyHotkeyPair = keyboardViewModel.TriggerHotkeyPairs;
 
             foreach (var keycode in _keyButtonPairs.Keys)
             {

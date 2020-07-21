@@ -42,7 +42,6 @@ namespace AutoHotkeyRemaster.Services.Helpers
             if (appendExtenstion)
                 path += ".json";
 
-            //TODO : Replace exception to reduce overhead. This is because we can't return Task.FromResult(null)
             if (!File.Exists(path))
                 return Task.FromResult<T>(null);
 

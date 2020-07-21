@@ -120,6 +120,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         public Task HandleAsync(ProfileDeletedEvent message, CancellationToken cancellationToken)
         {
             Profile = null;
+            TriggerHotkeyPairs.Clear();
+            OnProfileChanged?.Invoke(this, null);
 
             return Task.CompletedTask;
         }

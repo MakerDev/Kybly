@@ -326,14 +326,15 @@
                         <DockPanel LastChildFill="False">
                             <!--Profiles-->
                             <ListView  
-                                DockPanel.Dock="Top"
                                 x:Name="ProfilesPanel"                               
+                                DockPanel.Dock="Top"
                                 HorizontalAlignment="Center"
                                 HorizontalContentAlignment="Center"
                                 Background="Transparent"    
                                 BorderBrush="Transparent"
                                 BorderThickness="0"
                                 Width="260"
+                                Margin="0 -1 0 0"
                                 PreviewKeyDown="PreventKeyboardNavigation"
                                 ItemContainerStyle="{StaticResource ListItemStyle}"                              
                                 ItemsSource="{Binding ProfileStates}"                               
@@ -342,7 +343,8 @@
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel>
-                                            <custom:ProfileListViewItem VerticalAlignment="Center"/>
+                                            <custom:ProfileListViewItem 
+                                                VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
@@ -365,7 +367,6 @@
                                 Content="Delete Profile"                                
                                 Background="#FFC13333" 
                                 Foreground="White" FontSize="16" />
-
                             </StackPanel>
 
                         </DockPanel>

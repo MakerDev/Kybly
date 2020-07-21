@@ -4,6 +4,7 @@ using AutoHotkeyRemaster.Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AutoHotkeyRemaster.Services
 {
@@ -14,7 +15,9 @@ namespace AutoHotkeyRemaster.Services
         Activated,
     }
     
-    public class ApplicationModel
+    //TODO : 이렇게 반드시 초기화 돼야하는 애들한테 인터페이스로 초기화 메서드와 초기화 여부를 구현하게 하고,
+    //초기화 안 된 상태로 사용못하도록 하거나, ShellView에서 리플렉션으로 초기화 메서드를 불러주는 것도 괜찮을듯.
+    public class ApplicationModel : IAsyncInitializationNeeded
     {
         public delegate void AppStateChangeHandler(ApplicationState applicationState);
         public event AppStateChangeHandler ApplicationStateChange;
@@ -26,7 +29,9 @@ namespace AutoHotkeyRemaster.Services
 
         private ApplicationState _applicationState;
         private readonly ProfileSwitchKeyTable _switchKeyTable;
+        private readonly IAsyncJsonFileManager _jsonSavefileManager;
 
+        
         public ApplicationState ApplicationState
         {
             get { return _applicationState; }
@@ -38,9 +43,15 @@ namespace AutoHotkeyRemaster.Services
 
         public ApplicationModel(ProfileSwitchKeyTable switchKeyTable, IAsyncJsonFileManager jsonSavefileManager)
         {
-            //HACK : Try to improve this to be async
-            Options = jsonSavefileManager.LoadAsync<Options>("options").Result ?? new Options();
             _switchKeyTable = switchKeyTable;
+            _jsonSavefileManager = jsonSavefileManager;
+        }
+
+        public async Task InitializeAsync()
+        {
+            Options = await _jsonSavefileManager.LoadAsync<Options>("options");
+
+            if (Options == null) Options = new Options();
         }
 
         public bool SetActivationKey(int key)
@@ -55,5 +66,6 @@ namespace AutoHotkeyRemaster.Services
 
             return true;
         }
+
     }
 }

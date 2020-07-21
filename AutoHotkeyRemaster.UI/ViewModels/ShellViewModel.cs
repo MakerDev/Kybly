@@ -116,12 +116,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             Items.AddRange(new Screen[] { _hotkeyEditViewModel, _keyboardViewModel, _optionsViewModel });
         }
 
-        //All async initialization goes here
         protected async override Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-            await _profileManager.LoadAllProfilesAsync();
-            await IoC.Get<ProfileSwitchKeyTable>().InitializeTable();
-
             await base.OnInitializeAsync(cancellationToken);
 
             SetProfileListItems();

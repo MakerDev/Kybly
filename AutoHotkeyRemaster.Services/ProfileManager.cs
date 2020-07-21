@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace AutoHotkeyRemaster.Services
 {
-    public class ProfileManager
+    public class ProfileManager : IAsyncInitializationNeeded
     {
         public const int MAX_PROFILE_NUM = 10;
         private readonly IAsyncJsonFileManager _jsonSavefileManager;
@@ -31,10 +31,10 @@ namespace AutoHotkeyRemaster.Services
         /// <param name="jsonSavefileManager"></param>
         public ProfileManager(IAsyncJsonFileManager jsonSavefileManager)
         {
-            _jsonSavefileManager = jsonSavefileManager;
+            _jsonSavefileManager = jsonSavefileManager;            
         }
 
-        public async Task LoadAllProfilesAsync()
+        public async Task InitializeAsync()
         {
             for (int i = 0; i < MAX_PROFILE_NUM; i++)
             {
@@ -128,5 +128,6 @@ namespace AutoHotkeyRemaster.Services
 
             return profile;
         }
+
     }
 }

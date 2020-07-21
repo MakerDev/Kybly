@@ -52,13 +52,6 @@ namespace AutoHotkeyRemaster.Services
             _keyboardHooker.StartHook(_activationKey, null);
         }
 
-        private void OnActivationKeyChanged()
-        {
-            //Changing activation key means that current state is UnHooking
-            _keyboardHooker.StopHook();
-            _keyboardHooker.StartHook(_activationKey, null);
-        }
-
         //Used to clean all key strokes. Useful in case of unexpected bugs
         public void Shutdown()
         {
@@ -242,6 +235,13 @@ namespace AutoHotkeyRemaster.Services
                 return;
 
             ProcessHotkeyAction(_profileHotkeys[keycode], false);
+        }
+
+        private void OnActivationKeyChanged()
+        {
+            //Changing activation key means that current state is UnHooking
+            _keyboardHooker.StopHook();
+            _keyboardHooker.StartHook(_activationKey, null);
         }
     }
 }
