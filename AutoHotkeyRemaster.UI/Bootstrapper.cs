@@ -19,10 +19,10 @@ namespace AutoHotkeyRemaster.WPF
 {
     public class Bootstrapper : BootstrapperBase
     {
-        private readonly SimpleContainer _container 
+        private readonly SimpleContainer _container
             = new SimpleContainer();
-        private readonly VirtualKeycodeToWpfKeyConverter _keyConverter 
-            = new VirtualKeycodeToWpfKeyConverter();        
+        private readonly VirtualKeycodeToWpfKeyConverter _keyConverter
+            = new VirtualKeycodeToWpfKeyConverter();
 
         public Bootstrapper()
         {
@@ -34,16 +34,15 @@ namespace AutoHotkeyRemaster.WPF
             //Instance는 우리가 미리 생성한 instance를 등록하는 것-싱글턴처럼 동작
             _container.Instance(_container);
 
-#if WINDOWS_WPF
+            //HACK : AutoHotkeyRemaster.Package에서 WINDOWS_UWP 상수를 정의할 수 없어서 이렇게 처리
+#if WINDOW_WPF
             _container.Singleton<IAsyncJsonFileManager, AsyncJsonSavefileManager>();
-#elif WINDOWS_UWP
-            //HACK!!
-            var uwpFileManager = UwpSavefileManager.CreateAsync().Result;
-            _container.Instance<IAsyncJsonFileManager>(uwpFileManager);
+#else
+            _container.Singleton<IAsyncJsonFileManager, UWPAsyncFileManager>();
 #endif
             _container
                 .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>()       
+                .Singleton<IEventAggregator, EventAggregator>()
                 .Singleton<ProfileSwitchKeyTable>()
                 .Singleton<ApplicationModel>()
                 .Singleton<WindowsHookManager>()
@@ -60,9 +59,24 @@ namespace AutoHotkeyRemaster.WPF
             KeyInfo.VirtualKeycodeToStringConverter = _keyConverter;
         }
 
-        protected override void OnStartup(object sender, StartupEventArgs e)
+        //protected override void OnStartup(object sender, StartupEventArgs e)
+        //{
+        //    var appModel = IoC.Get<ApplicationModel>();
+
+        //    appModel.InitializeAsync().GetAwaiter().OnCompleted(() => DisplayRootViewFor<ShellViewModel>());
+
+        //}
+
+        //HACK : All async initialization goes here. 
+        protected override async void OnStartup(object sender, StartupEventArgs e)
         {
-            DisplayRootViewFor<ShellViewModel>();
+            var appModelTask = IoC.Get<ApplicationModel>().InitializeAsync();
+            var profileManagerTask = IoC.Get<ProfileManager>().InitializeAsync();
+            var tableTask = IoC.Get<ProfileSwitchKeyTable>().InitializeAsync();
+
+            await Task.WhenAll(appModelTask, profileManagerTask, tableTask);
+
+            await DisplayRootViewFor<ShellViewModel>();
         }
 
         //아래들은 프레임워크에 컨테이너를 ServiceLocator로 등록하는 과정이라고 보면 될듯.
