@@ -1,6 +1,8 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services;
 using AutoHotkeyRemaster.Services.Events;
+using AutoHotkeyRemaster.Services.Helpers;
+using AutoHotkeyRemaster.WPF.Models;
 using AutoHotkeyRemaster.WPF.Views.CustomControls;
 using Caliburn.Micro;
 using System;
@@ -18,6 +20,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
     {
         private readonly Options _options;
         private readonly ApplicationModel _applicationModel;
+        private readonly IJsonSavefileManager _jsonSavefileManager;
+        private readonly OptionsModel _optionsModel;
 
         public int ActivationKey
         {
@@ -33,6 +37,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             set
             {
                 _options.SaveLastInfoWindowPosition = value;
+                _jsonSavefileManager.Save(_options, "options");
                 NotifyOfPropertyChange(() => SaveInfoWindowPosition);
             }
         }
@@ -46,13 +51,15 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             set
             {
                 _options.MinimizeOnStartUp = value;
+                _jsonSavefileManager.Save(_options, "options");
                 NotifyOfPropertyChange(() => MinimizeOnStartUp);
             }
         }
-        public OptionsViewModel(ApplicationModel applicationModel)
+        public OptionsViewModel(ApplicationModel applicationModel, IJsonSavefileManager jsonSavefileManager)
         {
             _options = applicationModel.Options;
             _applicationModel = applicationModel;
+            _jsonSavefileManager = jsonSavefileManager;
         }
 
         public void OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -64,6 +71,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
             if(_applicationModel.SetActivationKey(activationKey))
             {
+                _jsonSavefileManager.Save(_options, "options");
                 NotifyOfPropertyChange(() => ActivationKey);
 
                 return;

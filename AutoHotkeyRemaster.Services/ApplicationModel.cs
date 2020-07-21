@@ -1,5 +1,6 @@
 ﻿using AutoHotkeyRemaster.Models.Helpers;
 using AutoHotkeyRemaster.Services;
+using AutoHotkeyRemaster.Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -35,9 +36,9 @@ namespace AutoHotkeyRemaster.Services
             }
         }
 
-        public ApplicationModel(ProfileSwitchKeyTable switchKeyTable)
+        public ApplicationModel(ProfileSwitchKeyTable switchKeyTable, IJsonSavefileManager jsonSavefileManager)
         {
-            Options = JsonFileManager.Load<Options>(Options.SAVE_NAME) ?? new Options();
+            Options = jsonSavefileManager.Load<Options>("options") ?? new Options();
             _switchKeyTable = switchKeyTable;
         }
 

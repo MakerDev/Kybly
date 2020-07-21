@@ -11,6 +11,8 @@ using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Navigation;
+using AutoHotkeyRemaster.WPF.Models;
+using AutoHotkeyRemaster.Services.Helpers;
 
 namespace AutoHotkeyRemaster.WPF
 {
@@ -31,13 +33,24 @@ namespace AutoHotkeyRemaster.WPF
             //Instance는 우리가 미리 생성한 instance를 등록하는 것-싱글턴처럼 동작
             _container.Instance(_container);
 
+#if WINDOWS_WPF
+            _container.Singleton<IJsonSavefileManager, JsonSavefileManager>();
+#elif WINDOWS_UWP
+            _container.Singleton<IJsonSavefileManager, UwpSavefileManager>();
+#endif
+
             _container
                 .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<IEventAggregator, EventAggregator>()       
                 .Singleton<ProfileSwitchKeyTable>()
                 .Singleton<ApplicationModel>()
                 .Singleton<WindowsHookManager>()
                 .Singleton<ProfileManager>();
+
+
+
+            _container
+                .PerRequest<OptionsModel>();
                 
 
             GetType().Assembly.GetTypes()

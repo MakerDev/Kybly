@@ -1,6 +1,7 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services;
 using AutoHotkeyRemaster.Services.Events;
+using AutoHotkeyRemaster.Services.Helpers;
 using AutoHotkeyRemaster.WPF.Events;
 using AutoHotkeyRemaster.WPF.Models;
 using AutoHotkeyRemaster.WPF.Views;
@@ -31,6 +32,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         private readonly WindowsHookManager _windowsHookManager;
         private readonly HotkeyEditViewModel _hotkeyEditViewModel;
         private readonly OptionsViewModel _optionsViewModel;
+        private readonly IJsonSavefileManager _jsonSavefileManager;
         private readonly InfoWindowViewModel _infoWindowViewModel;
         private ProfileStateModel _selectedProfile;
         public ProfileStateModel SelectedProfile
@@ -93,7 +95,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
         public ShellViewModel(ProfileManager profileManager, IEventAggregator eventAggregator, IWindowManager windowManager,
             ApplicationModel application, KeyboardViewModel keyboardViewModel, WindowsHookManager windowsHookManager,
-            HotkeyEditViewModel hotkeyEditViewModel, OptionsViewModel optionsViewModel,
+            HotkeyEditViewModel hotkeyEditViewModel, OptionsViewModel optionsViewModel, IJsonSavefileManager jsonSavefileManager,
             InfoWindowViewModel infoWindowViewModel)
         {
             _profileManager = profileManager;
@@ -104,6 +106,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             _windowsHookManager = windowsHookManager;
             _hotkeyEditViewModel = hotkeyEditViewModel;
             _optionsViewModel = optionsViewModel;
+            _jsonSavefileManager = jsonSavefileManager;
             _infoWindowViewModel = infoWindowViewModel;
             _eventAggregator.SubscribeOnUIThread(this);
 
@@ -113,8 +116,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
             Items.AddRange(new Screen[] { _hotkeyEditViewModel, _keyboardViewModel, _optionsViewModel });
         }
-
-
 
         protected override void OnViewLoaded(object view)
         {
@@ -151,7 +152,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
         public void AddNewProfile(object sender, RoutedEventArgs e)
         {
-            _profileManager.CreateNewProfile().Save();
+            _profileManager.CreateNewProfile();
             NotifyOfPropertyChange(() => CanAddNewProfile);
             SetProfileListItems();
         }
@@ -216,7 +217,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
             foreach (var profile in _profileManager.Profiles)
             {
-                ProfileStates.Add(new ProfileStateModel(profile));
+                ProfileStates.Add(new ProfileStateModel(profile, _jsonSavefileManager));
             }
         }
 

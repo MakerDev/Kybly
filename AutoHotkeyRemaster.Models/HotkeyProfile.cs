@@ -33,18 +33,6 @@ namespace AutoHotkeyRemaster.Models
             private set { }
         }
 
-        private HotkeyProfile() { }
-
-        public static HotkeyProfile CreateNewProfile(int profileNum, string profileName = null)
-        {
-            HotkeyProfile profile = new HotkeyProfile
-            {
-                ProfileNum = profileNum,
-                ProfileName = profileName
-            };
-
-            return profile;
-        }
 
         /// <summary>
         /// Add new hotkey to profile
@@ -89,8 +77,6 @@ namespace AutoHotkeyRemaster.Models
                 hotkeyBefore.Action = hotkey.Action;
                 hotkeyBefore.EndingAction = hotkey.EndingAction;
 
-                Save();
-
                 return 0;
             }
 
@@ -100,8 +86,6 @@ namespace AutoHotkeyRemaster.Models
             }
 
             Hotkeys.Add(hotkey);
-
-            Save();
 
             return 1;
         }
@@ -116,7 +100,6 @@ namespace AutoHotkeyRemaster.Models
             }
 
             Hotkeys.Remove(hotkeyBefore);
-            Save();
 
             return true;
         }
@@ -142,36 +125,5 @@ namespace AutoHotkeyRemaster.Models
 
             return null;
         }
-
-        #region LOAD AND SAVE
-        public static HotkeyProfile LoadFromFile(int profileNum)
-        {
-            var profile = JsonFileManager.Load<HotkeyProfile>($"profile{profileNum}");
-            
-            if(profile!= null) profile.ProfileNum = profileNum;
-
-            return profile;
-        }
-
-        public void Save()
-        {
-            Save($"profile{ProfileNum}");
-        }
-
-        public void Save(string filenameWithoutExtenstion)
-        {
-            JsonFileManager.Save(this, filenameWithoutExtenstion);
-        }
-
-        public void Delete()
-        {
-            Delete($"profile{ProfileNum}");
-        }
-
-        public void Delete(string filename)
-        {
-            JsonFileManager.DeleteIfExists(filename);
-        }
-        #endregion
     }
 }

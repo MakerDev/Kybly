@@ -1,5 +1,6 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Models.Helpers;
+using AutoHotkeyRemaster.Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -9,6 +10,7 @@ namespace AutoHotkeyRemaster.Services
     public class ProfileManager
     {
         public const int MAX_PROFILE_NUM = 10;
+        private readonly IJsonSavefileManager _jsonSavefileManager;
 
         public int ProfileCount
         {
@@ -21,8 +23,10 @@ namespace AutoHotkeyRemaster.Services
 
         public List<HotkeyProfile> Profiles { get; private set; } = new List<HotkeyProfile>();
 
-        public ProfileManager()
+        public ProfileManager(IJsonSavefileManager jsonSavefileManager)
         {
+            _jsonSavefileManager = jsonSavefileManager;
+            
             LoadAllProfiles();
         }
 
@@ -43,10 +47,15 @@ namespace AutoHotkeyRemaster.Services
 
         public HotkeyProfile CreateNewProfile(string profileName = null)
         {
-            HotkeyProfile profile =
-                HotkeyProfile.CreateNewProfile(ProfileCount+1, profileName);
+            HotkeyProfile profile = new HotkeyProfile
+            {
+                ProfileNum = ProfileCount+1,
+                ProfileName = profileName
+            };
 
             Profiles.Add(profile);
+
+            _jsonSavefileManager.Save(profile, $"profile{profile.ProfileNum}");
 
             return profile;
         }
@@ -59,7 +68,7 @@ namespace AutoHotkeyRemaster.Services
 
             foreach (var profile in Profiles)
             {
-                profile.Delete($"profile{profile.ProfileNum}");
+                _jsonSavefileManager.DeleteIfExists($"profile{profile.ProfileNum}");
             }
 
             Profiles.RemoveAt(profileIdx);
@@ -78,7 +87,7 @@ namespace AutoHotkeyRemaster.Services
         {
             foreach (var profile in Profiles)
             {
-                profile.Save($"profile{profile.ProfileNum}");
+                _jsonSavefileManager.Save(profile, $"profile{profile.ProfileNum}");
             }
         }
 
@@ -86,13 +95,22 @@ namespace AutoHotkeyRemaster.Services
         {
             for (int i = 0; i < MAX_PROFILE_NUM; i++)
             {
-                HotkeyProfile profile = HotkeyProfile.LoadFromFile(i + 1);
+                HotkeyProfile profile = LoadProfileFromFile(i+1);
 
                 if (profile == null)
                     break;
 
                 Profiles.Add(profile);
             }
+        }
+
+        private HotkeyProfile LoadProfileFromFile(int profileNum)
+        {
+            var profile = _jsonSavefileManager.Load<HotkeyProfile>($"profile{profileNum}");
+
+            if (profile != null) profile.ProfileNum = profileNum;
+
+            return profile;
         }
     }
 }

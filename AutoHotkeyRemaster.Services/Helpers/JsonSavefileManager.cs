@@ -4,21 +4,20 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 
-namespace AutoHotkeyRemaster.Models.Helpers
+namespace AutoHotkeyRemaster.Services.Helpers
 {
-    public static class JsonFileManager
+    public class JsonSavefileManager : IJsonSavefileManager
     {
-        //TODO : need to change in UWP. Should extract interface and use DI?
-        public static string SavefileFolder { get; private set; }             
+        public static string SavefileFolder { get; private set; }
             = Path.Combine(Environment.CurrentDirectory, "savefiles");
 
-        static JsonFileManager()
+        public JsonSavefileManager()
         {
             if (!Directory.Exists(SavefileFolder))
                 Directory.CreateDirectory(SavefileFolder);
         }
 
-        public static bool DeleteIfExists(string filename, bool appendExtenstion = true)
+        public bool DeleteIfExists(string filename, bool appendExtenstion = true)
         {
             string path = Path.Combine(SavefileFolder, filename);
 
@@ -34,7 +33,7 @@ namespace AutoHotkeyRemaster.Models.Helpers
             return false;
         }
 
-        public static void Save(object instance, string filename, bool appendExtenstion = true)
+        public void Save<T>(T instance, string filename, bool appendExtenstion = true) where T : class
         {
             string path = Path.Combine(SavefileFolder, filename);
 
@@ -50,7 +49,7 @@ namespace AutoHotkeyRemaster.Models.Helpers
             File.WriteAllText(path, jsonString);
         }
 
-        public static T Load<T>(string filename, bool appendExtenstion = true) where T : class
+        public T Load<T>(string filename, bool appendExtenstion = true) where T : class
         {
             string path = Path.Combine(SavefileFolder, filename);
 

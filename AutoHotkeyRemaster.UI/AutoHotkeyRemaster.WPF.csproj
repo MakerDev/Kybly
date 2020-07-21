@@ -9,6 +9,12 @@
     <UpgradeBackupLocation />
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;WINDOWS_WPF</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;WINDOWS_WPF</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\Icons\AppIcons\Icon.png" />
     <None Remove="Resources\Icons\Change Icon.png" />
@@ -55,6 +61,15 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commands\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Runtime.WindowsRuntime">
+      <HintPath>..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5\System.Runtime.WindowsRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Windows">
+      <HintPath>..\..\..\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.19041.0\Windows.winmd</HintPath>
+      <IsWinMDFile>true</IsWinMDFile>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">

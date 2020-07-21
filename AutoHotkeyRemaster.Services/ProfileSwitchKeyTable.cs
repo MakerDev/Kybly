@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using AutoHotkeyRemaster.Models.Helpers;
+using AutoHotkeyRemaster.Services.Helpers;
 
 namespace AutoHotkeyRemaster.Services
 {
@@ -22,6 +23,7 @@ namespace AutoHotkeyRemaster.Services
         private const int VK_F1 = 112;
 
         private const int MAX_PROFILE = ProfileManager.MAX_PROFILE_NUM;
+        private readonly IJsonSavefileManager _jsonSavefileManager;
 
         public int[][] SwitchKeyTable { get; set; } = new int[MAX_PROFILE][];
 
@@ -50,14 +52,16 @@ namespace AutoHotkeyRemaster.Services
             private set { }
         }
 
-        public ProfileSwitchKeyTable()
+        public ProfileSwitchKeyTable(IJsonSavefileManager jsonSavefileManager)
         {
+            _jsonSavefileManager = jsonSavefileManager;
+
             for (int i = 0; i < MAX_PROFILE; i++)
             {
                 SwitchKeyTable[i] = new int[MAX_PROFILE];
             }
 
-            var table = JsonFileManager.Load<ProfileSwitchKeyTable>("profile_switch_key_table");
+            var table = _jsonSavefileManager.Load<ProfileSwitchKeyTable>("profile_switch_key_table");
 
             if (table == null)
             {
@@ -112,7 +116,7 @@ namespace AutoHotkeyRemaster.Services
 
         public void SaveKeys()
         {
-            JsonFileManager.Save(this, "profile_switch_key_table");
+            _jsonSavefileManager.Save(this, "profile_switch_key_table");
         }
 
         private void ResetToDefault()

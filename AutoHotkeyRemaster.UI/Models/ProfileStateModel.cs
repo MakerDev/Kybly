@@ -1,4 +1,5 @@
 ﻿using AutoHotkeyRemaster.Models;
+using AutoHotkeyRemaster.Services.Helpers;
 using AutoHotkeyRemaster.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,13 @@ namespace AutoHotkeyRemaster.WPF.Models
             set
             {
                 Profile.ProfileName = value;
-                Profile.Save();
+                _jsonSavefileManager.Save(Profile, $"profile{Profile.ProfileNum}");
                 CallPropertyChanged(nameof(ProfileName));
             }
         }
 
         private bool _canEditName = true;
+        private readonly IJsonSavefileManager _jsonSavefileManager;
 
         public bool CanEditName
         {
@@ -36,9 +38,10 @@ namespace AutoHotkeyRemaster.WPF.Models
 
         public HotkeyProfile Profile { get; private set; }
 
-        public ProfileStateModel(HotkeyProfile profile)
+        public ProfileStateModel(HotkeyProfile profile, IJsonSavefileManager jsonSavefileManager)
         {
             Profile = profile;
+            _jsonSavefileManager = jsonSavefileManager;
         }
 
 
