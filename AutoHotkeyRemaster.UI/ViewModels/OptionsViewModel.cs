@@ -20,12 +20,11 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
     {
         private readonly Options _options;
         private readonly ApplicationModel _applicationModel;
-        private readonly IJsonSavefileManager _jsonSavefileManager;
-        private readonly OptionsModel _optionsModel;
+        private readonly IAsyncJsonFileManager _jsonSavefileManager;
 
         public int ActivationKey
         {
-            get { return _options.ActivationKey; }            
+            get { return _options.ActivationKey; }
         }
 
         public bool SaveInfoWindowPosition
@@ -37,8 +36,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             set
             {
                 _options.SaveLastInfoWindowPosition = value;
-                _jsonSavefileManager.Save(_options, "options");
-                NotifyOfPropertyChange(() => SaveInfoWindowPosition);
+                _jsonSavefileManager.SaveAsync(_options, "options")
+                    .ContinueWith((task) => NotifyOfPropertyChange(() => SaveInfoWindowPosition));
             }
         }
 
@@ -51,27 +50,27 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             set
             {
                 _options.MinimizeOnStartUp = value;
-                _jsonSavefileManager.Save(_options, "options");
-                NotifyOfPropertyChange(() => MinimizeOnStartUp);
+                _jsonSavefileManager.SaveAsync(_options, "options")
+                    .ContinueWith((task) => NotifyOfPropertyChange(() => MinimizeOnStartUp));
             }
         }
-        public OptionsViewModel(ApplicationModel applicationModel, IJsonSavefileManager jsonSavefileManager)
+        public OptionsViewModel(ApplicationModel applicationModel, IAsyncJsonFileManager jsonSavefileManager)
         {
             _options = applicationModel.Options;
             _applicationModel = applicationModel;
             _jsonSavefileManager = jsonSavefileManager;
         }
 
-        public void OnPreviewKeyDown(object sender, KeyEventArgs e)
+        public async void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
 
             Key key = e.ImeProcessedKey == Key.None ? e.Key : e.ImeProcessedKey;
             int activationKey = KeyInterop.VirtualKeyFromKey(key);
 
-            if(_applicationModel.SetActivationKey(activationKey))
+            if (_applicationModel.SetActivationKey(activationKey))
             {
-                _jsonSavefileManager.Save(_options, "options");
+                await _jsonSavefileManager.SaveAsync(_options, "options");
                 NotifyOfPropertyChange(() => ActivationKey);
 
                 return;

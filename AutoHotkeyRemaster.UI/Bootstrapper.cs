@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Navigation;
 using AutoHotkeyRemaster.WPF.Models;
 using AutoHotkeyRemaster.Services.Helpers;
+using System.Threading.Tasks;
 
 namespace AutoHotkeyRemaster.WPF
 {
@@ -34,11 +35,12 @@ namespace AutoHotkeyRemaster.WPF
             _container.Instance(_container);
 
 #if WINDOWS_WPF
-            _container.Singleton<IJsonSavefileManager, JsonSavefileManager>();
+            _container.Singleton<IAsyncJsonFileManager, AsyncJsonSavefileManager>();
 #elif WINDOWS_UWP
-            _container.Singleton<IJsonSavefileManager, UwpSavefileManager>();
+            //HACK!!
+            var uwpFileManager = UwpSavefileManager.CreateAsync().Result;
+            _container.Instance<IAsyncJsonFileManager>(uwpFileManager);
 #endif
-
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()       
@@ -46,12 +48,6 @@ namespace AutoHotkeyRemaster.WPF
                 .Singleton<ApplicationModel>()
                 .Singleton<WindowsHookManager>()
                 .Singleton<ProfileManager>();
-
-
-
-            _container
-                .PerRequest<OptionsModel>();
-                
 
             GetType().Assembly.GetTypes()
                 .Where(type => type.IsClass)

@@ -18,13 +18,13 @@ namespace AutoHotkeyRemaster.WPF.Models
             set
             {
                 Profile.ProfileName = value;
-                _jsonSavefileManager.Save(Profile, $"profile{Profile.ProfileNum}");
-                CallPropertyChanged(nameof(ProfileName));
+                _jsonSavefileManager.SaveAsync(Profile, $"profile{Profile.ProfileNum}")
+                    .ContinueWith((task) => CallPropertyChanged(nameof(ProfileName)));
             }
         }
 
         private bool _canEditName = true;
-        private readonly IJsonSavefileManager _jsonSavefileManager;
+        private readonly IAsyncJsonFileManager _jsonSavefileManager;
 
         public bool CanEditName
         {
@@ -38,7 +38,7 @@ namespace AutoHotkeyRemaster.WPF.Models
 
         public HotkeyProfile Profile { get; private set; }
 
-        public ProfileStateModel(HotkeyProfile profile, IJsonSavefileManager jsonSavefileManager)
+        public ProfileStateModel(HotkeyProfile profile, IAsyncJsonFileManager jsonSavefileManager)
         {
             Profile = profile;
             _jsonSavefileManager = jsonSavefileManager;

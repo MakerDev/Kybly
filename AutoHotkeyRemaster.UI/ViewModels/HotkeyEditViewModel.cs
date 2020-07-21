@@ -20,9 +20,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
     public class HotkeyEditViewModel : Screen, IHandle<ProfileChangedEvent>, IHandle<KeySelectedEvent>, IHandle<ProfileDeletedEvent>
     {
         private readonly IEventAggregator _eventAggregator;
-
+        private readonly ProfileManager _profileManager;
         private HotkeyProfile _currentProfile;
-
         public HotkeyProfile CurrentProfile
         {
             get { return _currentProfile; }
@@ -181,6 +180,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         }
         #endregion
 
+
         public async Task Save()
         {
             CurrentHotkey.Action = HotkeyAction;
@@ -193,11 +193,15 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             {
                 await DeleteIfExistsAsync(CurrentHotkey);
             }
+
+            await _profileManager.SaveProfileAsync(CurrentProfile);
         }
 
-        public HotkeyEditViewModel(IEventAggregator eventAggregator)
+        public HotkeyEditViewModel(IEventAggregator eventAggregator, ProfileManager profileManager)
         {
+            _profileManager = profileManager;
             _eventAggregator = eventAggregator;
+
             _eventAggregator.SubscribeOnUIThread(this);
         }
 
@@ -267,6 +271,9 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         {
             int result = CurrentProfile.AddOrEditHotkeyIfExisting(hotkey);
 
+            if (result >= 0)
+                await _profileManager.SaveProfileAsync(CurrentProfile);
+
             switch (result)
             {
                 case -1:
@@ -293,13 +300,14 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 default:
                     break;
             }
-
         }
 
         private async Task DeleteIfExistsAsync(Hotkey hotkey)
         {
             if (CurrentProfile.DeleteHotkeyIfExisting(hotkey))
             {
+                await _profileManager.SaveProfileAsync(CurrentProfile);
+
                 await _eventAggregator.PublishOnUIThreadAsync(new HotkeyModifiedEvent
                 {
                     Hotkey = hotkey,

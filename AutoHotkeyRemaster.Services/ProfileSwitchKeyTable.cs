@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoHotkeyRemaster.Models.Helpers;
 using AutoHotkeyRemaster.Services.Helpers;
 
@@ -23,7 +24,7 @@ namespace AutoHotkeyRemaster.Services
         private const int VK_F1 = 112;
 
         private const int MAX_PROFILE = ProfileManager.MAX_PROFILE_NUM;
-        private readonly IJsonSavefileManager _jsonSavefileManager;
+        private readonly IAsyncJsonFileManager _jsonSavefileManager;
 
         public int[][] SwitchKeyTable { get; set; } = new int[MAX_PROFILE][];
 
@@ -52,16 +53,23 @@ namespace AutoHotkeyRemaster.Services
             private set { }
         }
 
-        public ProfileSwitchKeyTable(IJsonSavefileManager jsonSavefileManager)
+        /// <summary>
+        /// must call InitializeTable to use
+        /// </summary>
+        /// <param name="jsonSavefileManager"></param>
+        public ProfileSwitchKeyTable(IAsyncJsonFileManager jsonSavefileManager)
         {
-            _jsonSavefileManager = jsonSavefileManager;
+            _jsonSavefileManager = jsonSavefileManager;            
+        }
 
+        public async Task InitializeTable()
+        {
             for (int i = 0; i < MAX_PROFILE; i++)
             {
                 SwitchKeyTable[i] = new int[MAX_PROFILE];
             }
 
-            var table = _jsonSavefileManager.Load<ProfileSwitchKeyTable>("profile_switch_key_table");
+            var table = await _jsonSavefileManager.LoadAsync<ProfileSwitchKeyTable>("profile_switch_key_table");
 
             if (table == null)
             {
@@ -114,9 +122,9 @@ namespace AutoHotkeyRemaster.Services
             return true;
         }
 
-        public void SaveKeys()
+        public async Task SaveTableAsync()
         {
-            _jsonSavefileManager.Save(this, "profile_switch_key_table");
+            await _jsonSavefileManager.SaveAsync(this, "profile_switch_key_table");
         }
 
         private void ResetToDefault()

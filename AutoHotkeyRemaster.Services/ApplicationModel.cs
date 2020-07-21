@@ -36,9 +36,10 @@ namespace AutoHotkeyRemaster.Services
             }
         }
 
-        public ApplicationModel(ProfileSwitchKeyTable switchKeyTable, IJsonSavefileManager jsonSavefileManager)
+        public ApplicationModel(ProfileSwitchKeyTable switchKeyTable, IAsyncJsonFileManager jsonSavefileManager)
         {
-            Options = jsonSavefileManager.Load<Options>("options") ?? new Options();
+            //HACK : Try to improve this to be async
+            Options = jsonSavefileManager.LoadAsync<Options>("options").Result ?? new Options();
             _switchKeyTable = switchKeyTable;
         }
 

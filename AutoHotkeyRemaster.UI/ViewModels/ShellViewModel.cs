@@ -32,7 +32,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         private readonly WindowsHookManager _windowsHookManager;
         private readonly HotkeyEditViewModel _hotkeyEditViewModel;
         private readonly OptionsViewModel _optionsViewModel;
-        private readonly IJsonSavefileManager _jsonSavefileManager;
+        private readonly IAsyncJsonFileManager _jsonSavefileManager;
         private readonly InfoWindowViewModel _infoWindowViewModel;
         private ProfileStateModel _selectedProfile;
         public ProfileStateModel SelectedProfile
@@ -95,7 +95,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
         public ShellViewModel(ProfileManager profileManager, IEventAggregator eventAggregator, IWindowManager windowManager,
             ApplicationModel application, KeyboardViewModel keyboardViewModel, WindowsHookManager windowsHookManager,
-            HotkeyEditViewModel hotkeyEditViewModel, OptionsViewModel optionsViewModel, IJsonSavefileManager jsonSavefileManager,
+            HotkeyEditViewModel hotkeyEditViewModel, OptionsViewModel optionsViewModel, IAsyncJsonFileManager jsonSavefileManager,
             InfoWindowViewModel infoWindowViewModel)
         {
             _profileManager = profileManager;
@@ -112,9 +112,19 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
             _windowManager.ShowWindowAsync(infoWindowViewModel);
 
-            SetProfileListItems();
 
             Items.AddRange(new Screen[] { _hotkeyEditViewModel, _keyboardViewModel, _optionsViewModel });
+        }
+
+        //All async initialization goes here
+        protected async override Task OnInitializeAsync(CancellationToken cancellationToken)
+        {
+            await _profileManager.LoadAllProfilesAsync();
+            await IoC.Get<ProfileSwitchKeyTable>().InitializeTable();
+
+            await base.OnInitializeAsync(cancellationToken);
+
+            SetProfileListItems();
         }
 
         protected override void OnViewLoaded(object view)
@@ -153,6 +163,9 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         public void AddNewProfile(object sender, RoutedEventArgs e)
         {
             _profileManager.CreateNewProfile();
+
+
+
             NotifyOfPropertyChange(() => CanAddNewProfile);
             SetProfileListItems();
         }
@@ -178,7 +191,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
             if (dialogBox.DialogResult.HasValue && dialogBox.DialogResult.Value)
             {
-                HotkeyProfile deletedProfile = _profileManager.DeleteProfile(currentProfile.ProfileNum);
+                HotkeyProfile deletedProfile = await _profileManager.DeleteProfileAsync(currentProfile.ProfileNum);
 
                 SelectedProfile = null;
                 NotifyOfPropertyChange(() => CanAddNewProfile);
