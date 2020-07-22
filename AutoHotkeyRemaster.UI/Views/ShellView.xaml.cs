@@ -69,6 +69,7 @@ namespace AutoHotkeyRemaster.WPF.Views
         protected override void OnClosing(CancelEventArgs e)
         {
             _notiIcon.Visible = false;
+            _notiIcon.Dispose();
 
             base.OnClosing(e);
         }

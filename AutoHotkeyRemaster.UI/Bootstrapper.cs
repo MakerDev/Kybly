@@ -35,7 +35,7 @@ namespace AutoHotkeyRemaster.WPF
             _container.Instance(_container);
 
             //HACK : AutoHotkeyRemaster.Package에서 WINDOWS_UWP 상수를 정의할 수 없어서 이렇게 처리
-#if WINDOW_WPF
+#if WINDOWS_WPF
             _container.Singleton<IAsyncJsonFileManager, AsyncJsonSavefileManager>();
 #else
             _container.Singleton<IAsyncJsonFileManager, UWPAsyncFileManager>();
@@ -59,22 +59,24 @@ namespace AutoHotkeyRemaster.WPF
             KeyInfo.VirtualKeycodeToStringConverter = _keyConverter;
         }
 
-        //protected override void OnStartup(object sender, StartupEventArgs e)
-        //{
-        //    var appModel = IoC.Get<ApplicationModel>();
-
-        //    appModel.InitializeAsync().GetAwaiter().OnCompleted(() => DisplayRootViewFor<ShellViewModel>());
-
-        //}
-
         //HACK : All async initialization goes here. 
         protected override async void OnStartup(object sender, StartupEventArgs e)
         {
-            var appModelTask = IoC.Get<ApplicationModel>().InitializeAsync();
-            var profileManagerTask = IoC.Get<ProfileManager>().InitializeAsync();
-            var tableTask = IoC.Get<ProfileSwitchKeyTable>().InitializeAsync();
+            var asyncInitRequiredClasses = Assembly.GetAssembly(typeof(IAsyncInitializationRequired))
+                .GetTypes()
+                .Where(type => type.IsClass)
+                .Where(type => typeof(IAsyncInitializationRequired).IsAssignableFrom(type))
+                .ToList();
 
-            await Task.WhenAll(appModelTask, profileManagerTask, tableTask);
+            List<Task> initTasks = new List<Task>();
+
+            foreach (var item in asyncInitRequiredClasses)
+            {
+                var instance = _container.GetInstance(item, null) as IAsyncInitializationRequired;
+                initTasks.Add(instance.InitializeAsync());
+            }
+
+            await Task.WhenAll(initTasks);
 
             await DisplayRootViewFor<ShellViewModel>();
         }

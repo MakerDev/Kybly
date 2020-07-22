@@ -108,17 +108,11 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             _optionsViewModel = optionsViewModel;
             _jsonSavefileManager = jsonSavefileManager;
             _infoWindowViewModel = infoWindowViewModel;
-            _eventAggregator.SubscribeOnUIThread(this);
 
+            _eventAggregator.SubscribeOnUIThread(this);
             _windowManager.ShowWindowAsync(infoWindowViewModel);
 
-
             Items.AddRange(new Screen[] { _hotkeyEditViewModel, _keyboardViewModel, _optionsViewModel });
-        }
-
-        protected async override Task OnInitializeAsync(CancellationToken cancellationToken)
-        {
-            await base.OnInitializeAsync(cancellationToken);
 
             SetProfileListItems();
         }
@@ -159,8 +153,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         public void AddNewProfile(object sender, RoutedEventArgs e)
         {
             _profileManager.CreateNewProfile();
-
-
 
             NotifyOfPropertyChange(() => CanAddNewProfile);
             SetProfileListItems();

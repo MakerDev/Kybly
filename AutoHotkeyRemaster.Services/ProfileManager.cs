@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace AutoHotkeyRemaster.Services
 {
-    public class ProfileManager : IAsyncInitializationNeeded
+    public class ProfileManager : IAsyncInitializationRequired
     {
         public const int MAX_PROFILE_NUM = 10;
         private readonly IAsyncJsonFileManager _jsonSavefileManager;

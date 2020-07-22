@@ -19,7 +19,7 @@ namespace AutoHotkeyRemaster.Services
      * 
      * 행 = 현재 프로필, 열 = 다음 프로필
      */
-    public class ProfileSwitchKeyTable : IAsyncInitializationNeeded
+    public class ProfileSwitchKeyTable : IAsyncInitializationRequired
     {
         private const int VK_F1 = 112;
 

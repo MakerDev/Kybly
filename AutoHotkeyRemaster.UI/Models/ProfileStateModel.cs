@@ -51,6 +51,5 @@ namespace AutoHotkeyRemaster.WPF.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }
