@@ -60,6 +60,39 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style x:Key="SwitchButtonStyle" 
+                   TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border"
+                                Height="60"                                                 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True">
+
+                                <ContentPresenter 
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#7e7e7e" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#5e5e5e"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
         </ResourceDictionary>
     </Window.Resources>
 
@@ -75,8 +108,7 @@
                 Background="Black" 
                 Opacity="0.4" 
                 Focusable="True"
-                IsVisibleChanged="ActivatedMask_IsVisibleChanged"   
-                Visibility="{Binding HookActivated, 
+                Visibility="{Binding DisplayMask, 
                     Converter={StaticResource BooleanToVisibilityConverter}, 
                     FallbackValue='Collapsed'}" >
                 
@@ -85,7 +117,7 @@
                         VerticalAlignment="Center"
                         Style="{StaticResource DefaultFontStyle}"
                         FontSize="30"
-                        Text="Cannot edit profile while activated."/>
+                        Text="{Binding MaskMessage}"/>
             </Grid>
             
             <!--// Background Image //-->
@@ -260,24 +292,43 @@
                         <StackPanel>
                             <Button 
                                 x:Name="EditSwitchKeyTable"
-                                Style="{StaticResource MahApps.Styles.Button}" 
-                                Content="Switch"                                    
-                                Width="200" Height="40"/>
+                                Style="{StaticResource SwitchButtonStyle}"
+                                >
+                                <StackPanel 
+                                    Orientation="Horizontal"
+                                    Width="230"
+                                    Height="50"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+
+                                    <Image          
+                                        Margin="13 0 0 0"
+                                        Source="/Resources/Icons/ProfileSwitchIcon.png" 
+                                        Height="40" Width="40" />
+
+                                    <TextBlock 
+                                        Style="{StaticResource DefaultFontStyle}"
+                                        Margin="20 0 0 0"
+                                        VerticalAlignment="Center" 
+                                        Text="SwitchKey Table" />
+                                </StackPanel>
+
+                            </Button>
 
                             <ToggleButton
-                            x:Name="OptionButton"
-                            HorizontalAlignment="Left"
-                            Background="Transparent"                        
-                            BorderThickness="0"
-                            Style="{StaticResource OptionToggleStyle}"
-                            VerticalAlignment="Center">
+                                x:Name="OptionButton"
+                                HorizontalAlignment="Left"
+                                Background="Transparent"                        
+                                BorderThickness="0"
+                                Style="{StaticResource OptionToggleStyle}"
+                                VerticalAlignment="Center">
 
                                 <StackPanel 
-                                Orientation="Horizontal"
-                                Width="230"
-                                Height="50"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center">
+                                    Orientation="Horizontal"
+                                    Width="230"
+                                    Height="50"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
 
                                     <Image          
                                     Margin="13 0 0 0"

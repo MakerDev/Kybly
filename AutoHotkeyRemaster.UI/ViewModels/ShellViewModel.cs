@@ -89,9 +89,33 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             set
             {
                 _hookActivated = value;
+                DisplayMask = value;
                 NotifyOfPropertyChange(() => HookActivated);
             }
         }
+
+        private bool _displayMask;
+
+        public bool DisplayMask
+        {
+            get { return _displayMask; }
+            set { _displayMask = value;
+                NotifyOfPropertyChange(() => DisplayMask);
+                NotifyOfPropertyChange(() => MaskMessage);
+            }
+        }
+
+        public string MaskMessage
+        {
+            get { 
+                if(HookActivated)
+                {
+                    return "Cannot edit profile while activated.";
+                }
+                return ""; 
+            }
+        }
+
 
         public ShellViewModel(ProfileManager profileManager, IEventAggregator eventAggregator, IWindowManager windowManager,
             ApplicationModel application, KeyboardViewModel keyboardViewModel, WindowsHookManager windowsHookManager,
@@ -163,9 +187,12 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         {
             var vm = IoC.Get<SwitchKeyTableWindowViewModel>();
 
-            //TODO : Turn on mask
+            DisplayMask = true;
+
             await _windowManager.ShowDialogAsync(vm);
             await vm.TryCloseAsync();
+
+            DisplayMask = false;
         }
 
         public bool CanDeleteProfile

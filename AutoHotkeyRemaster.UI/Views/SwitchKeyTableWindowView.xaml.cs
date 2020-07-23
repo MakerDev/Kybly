@@ -26,5 +26,10 @@ namespace AutoHotkeyRemaster.WPF.Views
         {
             base.OnActivated(e);
         }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

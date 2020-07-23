@@ -148,12 +148,5 @@ namespace AutoHotkeyRemaster.WPF.Views
         }
         #endregion
 
-        private void ActivatedMask_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            Grid grid = sender as Grid;
-
-            if(grid.Visibility == Visibility.Visible)
-                Keyboard.Focus(ActivatedMask);
-        }
     }
 }

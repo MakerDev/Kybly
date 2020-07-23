@@ -163,45 +163,28 @@ namespace AutoHotkeyRemaster.Services
             Activate(toProfileNum);
         }
 
-        private void ProcessHotkeyAction(Hotkey hotkey, bool isPressed)
+        private void ProcessHotkeyAction(Hotkey hotkey, bool isDown)
         {
             _keyboardHooker.StopHookKeyboard();
 
             Debug.WriteLine($"trigger : {hotkey.Trigger}  |  action : {hotkey.Action}");
             
-            var modifiers = GetModifierList(hotkey.Action.Modifier);
-
-            if (isPressed)
+            //Mouse action
+            if(hotkey.Action.Key <= 4)
             {
-                foreach (var modifier in modifiers)
-                {
-                    _inputSimulator.Keyboard.KeyDown(modifier);
-                }
-
-                _inputSimulator.Keyboard.KeyDown((VirtualKeyCode)hotkey.Action.Key);
+                ProcessMouseAction(hotkey, isDown);
             }
             else
             {
-                foreach (var modifier in modifiers)
-                {
-                    _inputSimulator.Keyboard.KeyUp(modifier);
-                }
-
-                _inputSimulator.Keyboard.KeyUp((VirtualKeyCode)hotkey.Action.Key);
-
-                if (hotkey.EndingAction != null)
-                {
-                    modifiers = GetModifierList(hotkey.EndingAction.Modifier);
-
-                    _inputSimulator.Keyboard.ModifiedKeyStroke(modifiers, (VirtualKeyCode)hotkey.EndingAction.Key);
-                }
+                ProcessKeyboardAction(hotkey, isDown);
             }
 
             _keyboardHooker.StartHookKeyboard();
         }
 
-        private void ProcessKeyboardAction(KeyInfo action, bool isDown)
+        private void ProcessKeyboardAction(Hotkey hotkey, bool isDown)
         {
+            var action = hotkey.Action;
             var modifiers = GetModifierList(action.Modifier);
 
             if(isDown)
@@ -221,12 +204,19 @@ namespace AutoHotkeyRemaster.Services
                 }
 
                 _inputSimulator.Keyboard.KeyUp((VirtualKeyCode)action.Key);
+
+                if (hotkey.EndingAction != null)
+                {
+                    modifiers = GetModifierList(hotkey.EndingAction.Modifier);
+
+                    _inputSimulator.Keyboard.ModifiedKeyStroke(modifiers, (VirtualKeyCode)hotkey.EndingAction.Key);
+                }
             }
         }
 
         //Modifier of mouse event has special meaning.
         //MouseEvents constant is assigned.
-        private void ProcessMouseAction(KeyInfo mouseAction, bool isDown)
+        private void ProcessMouseAction(Hotkey hotkey, bool isDown)
         {
 
         }

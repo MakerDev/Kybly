@@ -13,6 +13,7 @@
         Background="{StaticResource DefaultBackgroundBrush}"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
         SizeToContent="WidthAndHeight"
         Title="SwitchKeyTableWindowView">
 
@@ -20,6 +21,34 @@
         <sys:Double x:Key="CellWidth">120</sys:Double>
         <sys:Double x:Key="CellHeight">30</sys:Double>
 
+        <Style x:Key="CloseButtonStyle" 
+               TargetType="Button" >
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border                             
+                            Background="{TemplateBinding Background}" BorderThickness="0">
+                            <ContentPresenter 
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="X" />
+                        </Border>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#7e7e7e" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#5e5e5e"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
         <Style x:Key="NameTextBlock" 
                TargetType="TextBlock" BasedOn="{StaticResource DefaultFontStyle}">
             <Setter Property="Background" Value="Transparent" />
@@ -71,47 +100,56 @@
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
-    
-    
-    
-    <StackPanel
-        Margin="30 30 30 30"
-        HorizontalAlignment="Center" VerticalAlignment="Center">
-        <StackPanel 
-            x:Name="Header"
-            Orientation="Horizontal">
-           
-            <Grid 
-                Width="140" Height="{StaticResource CellHeight}">
-                <Image 
-                    Source="/Resources/Icons/ProfileSwitchToIcon.png" RenderTransformOrigin="0.5,0.5">
-                    <Image.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleX="0.6" ScaleY="0.6"/>
-                            <SkewTransform/>
-                            <RotateTransform/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </Image.RenderTransform>
-                </Image>
-            </Grid>
-            <ItemsControl ItemsSource="{Binding ProfileNames}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Style="{StaticResource NameTextBlock}" Text="{Binding}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+
+
+    <StackPanel>
+        <Button 
+            Style="{StaticResource CloseButtonStyle}"
+            HorizontalAlignment="Right"
+            Width="30" Height="30"
+            FontSize="15"
+            Click="CloseWindow"/>
+
+        <StackPanel
+            Margin="30 5 30 30"
+            HorizontalAlignment="Center" VerticalAlignment="Center">
+
+            <StackPanel 
+                x:Name="Header"
+                Orientation="Horizontal">
+                <Grid 
+                    Width="140" Height="{StaticResource CellHeight}">
+                    <Image 
+                        Source="/Resources/Icons/ProfileSwitchToIcon.png" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="0.6" ScaleY="0.6"/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                </Grid>
+                <ItemsControl ItemsSource="{Binding ProfileNames}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Style="{StaticResource NameTextBlock}" Text="{Binding}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+
+            <!--Add Header here-->
+            <ItemsControl ItemsSource="{Binding SwitchKeyRows}" 
+                      ItemTemplate="{StaticResource SwitchKeyRowTemplate}">
             </ItemsControl>
         </StackPanel>
-        
-        <!--Add Header here-->
-        <ItemsControl ItemsSource="{Binding SwitchKeyRows}" 
-                      ItemTemplate="{StaticResource SwitchKeyRowTemplate}">
-        </ItemsControl>
+
     </StackPanel>
 </Window>
