@@ -85,7 +85,7 @@ namespace AutoHotkeyRemaster.Services
         }
 
         public void StartHook(Dictionary<int, KeyInfo> registeredKeys)
-        {
+        {            
             _registeredKeys = registeredKeys;
 
             foreach (var trigger in _registeredKeys.Keys)
@@ -98,15 +98,33 @@ namespace AutoHotkeyRemaster.Services
 
         public void StopHook()
         {
+            StopHookKeyboard();
+
             _registeredKeys.Clear();
             _isAlreadyPressed.Clear();
-
-            StopHookKeyboard();
         }
+        
+
+        //To avoid multiple hook registering. In this case, hotkey chaining occurs
+        private bool _isHookingKeyboard = false;
 
         //These two are for when processing InputSimulator to make no collision to occur.
-        public void StartHookKeyboard() => _hookId = SetHook(_proc);
-        public void StopHookKeyboard() => UnhookWindowsHookEx(_hookId);
+        public void StartHookKeyboard()
+        {
+            if (_isHookingKeyboard)
+                return;
+
+            _hookId = SetHook(_proc);
+            _isHookingKeyboard = true;
+        }
+
+        public void StopHookKeyboard()
+        {
+            UnhookWindowsHookEx(_hookId);
+
+            if (_isHookingKeyboard)
+                _isHookingKeyboard = false;
+        }
 
         private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {

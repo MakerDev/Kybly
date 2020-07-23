@@ -3,6 +3,7 @@ using AutoHotkeyRemaster.Services.Events;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using WindowsInput;
@@ -27,10 +28,10 @@ namespace AutoHotkeyRemaster.Services
         private readonly IEventAggregator _eventAggregator;
         private readonly ApplicationModel _applicationModel;
         private readonly ProfileManager _profileManager;
-        private readonly ProfileSwitchKeyTable _profileSwitchKeyTable;
+        private readonly ProfileSwitchKeyTableManager _profileSwitchKeyTable;
         private readonly WindowsKeyboardHooker _keyboardHooker = new WindowsKeyboardHooker();
         private readonly InputSimulator _inputSimulator = new InputSimulator();
-        
+
         private int _activationKey => _applicationModel.Options.ActivationKey;
         private readonly Dictionary<int, int> _swtichKeys = new Dictionary<int, int>(); //Key : switch keycode, Value : profile to switch
         private readonly Dictionary<int, Hotkey> _profileHotkeys = new Dictionary<int, Hotkey>();  //Key : trigger, Value : Hotkey
@@ -39,7 +40,7 @@ namespace AutoHotkeyRemaster.Services
         private int _lastHookedProfileNum = -1;
 
         public WindowsHookManager(IEventAggregator eventAggregator,
-            ApplicationModel applicationModel, ProfileManager profileManager, ProfileSwitchKeyTable profileSwitchKeyTable)
+            ApplicationModel applicationModel, ProfileManager profileManager, ProfileSwitchKeyTableManager profileSwitchKeyTable)
         {
             _eventAggregator = eventAggregator;
             _applicationModel = applicationModel;
@@ -81,6 +82,7 @@ namespace AutoHotkeyRemaster.Services
             return;
         }
 
+        //TODO : Change PublishOnUIThreadAsync to be awaited
         private void Deactivate()
         {
             _keyboardHooker.StopHook();
@@ -109,14 +111,14 @@ namespace AutoHotkeyRemaster.Services
         {
             _currentHookingProfile = _profileManager.FindProfileOrDefault(profileNum);
 
-            var switchKeys = _profileSwitchKeyTable[_currentHookingProfile.ProfileNum-1];
+            var switchKeys = _profileSwitchKeyTable.SwitchKeyTable[_currentHookingProfile.ProfileNum - 1];
 
             for (int i = 1; i <= _profileManager.ProfileCount; i++)
             {
                 if (i == _currentHookingProfile.ProfileNum)
                     continue;
 
-                _swtichKeys.Add(switchKeys[i-1], i);
+                _swtichKeys.Add(switchKeys[i - 1], i);
             }
 
             foreach (var hotkey in _currentHookingProfile.Hotkeys)
@@ -163,9 +165,11 @@ namespace AutoHotkeyRemaster.Services
 
         private void ProcessHotkeyAction(Hotkey hotkey, bool isPressed)
         {
-            var modifiers = GetModifierList(hotkey.Action.Modifier);
-
             _keyboardHooker.StopHookKeyboard();
+
+            Debug.WriteLine($"trigger : {hotkey.Trigger}  |  action : {hotkey.Action}");
+            
+            var modifiers = GetModifierList(hotkey.Action.Modifier);
 
             if (isPressed)
             {
@@ -175,26 +179,58 @@ namespace AutoHotkeyRemaster.Services
                 }
 
                 _inputSimulator.Keyboard.KeyDown((VirtualKeyCode)hotkey.Action.Key);
-
-                return;
             }
-
-            foreach (var modifier in modifiers)
+            else
             {
-                _inputSimulator.Keyboard.KeyUp(modifier);
-            }
+                foreach (var modifier in modifiers)
+                {
+                    _inputSimulator.Keyboard.KeyUp(modifier);
+                }
 
-            _inputSimulator.Keyboard.KeyUp((VirtualKeyCode)hotkey.Action.Key);
+                _inputSimulator.Keyboard.KeyUp((VirtualKeyCode)hotkey.Action.Key);
 
-            if (hotkey.EndingAction != null)
-            {
-                modifiers = GetModifierList(hotkey.EndingAction.Modifier);
+                if (hotkey.EndingAction != null)
+                {
+                    modifiers = GetModifierList(hotkey.EndingAction.Modifier);
 
-                _inputSimulator.Keyboard.ModifiedKeyStroke(modifiers, (VirtualKeyCode)hotkey.EndingAction.Key);
+                    _inputSimulator.Keyboard.ModifiedKeyStroke(modifiers, (VirtualKeyCode)hotkey.EndingAction.Key);
+                }
             }
 
             _keyboardHooker.StartHookKeyboard();
         }
+
+        private void ProcessKeyboardAction(KeyInfo action, bool isDown)
+        {
+            var modifiers = GetModifierList(action.Modifier);
+
+            if(isDown)
+            {
+                foreach (var modifier in modifiers)
+                {
+                    _inputSimulator.Keyboard.KeyDown(modifier);
+                }
+
+                _inputSimulator.Keyboard.KeyDown((VirtualKeyCode)action.Key);
+            }
+            else
+            {
+                foreach (var modifier in modifiers)
+                {
+                    _inputSimulator.Keyboard.KeyUp(modifier);
+                }
+
+                _inputSimulator.Keyboard.KeyUp((VirtualKeyCode)action.Key);
+            }
+        }
+
+        //Modifier of mouse event has special meaning.
+        //MouseEvents constant is assigned.
+        private void ProcessMouseAction(KeyInfo mouseAction, bool isDown)
+        {
+
+        }
+
         private List<VirtualKeyCode> GetModifierList(int modifier)
         {
             List<VirtualKeyCode> modifiers = new List<VirtualKeyCode>();
@@ -206,6 +242,7 @@ namespace AutoHotkeyRemaster.Services
 
             return modifiers;
         }
+
         private void HandleHookedEvent(KeyHookedArgs args)
         {
             int keycode = args.VkCode;
@@ -230,13 +267,12 @@ namespace AutoHotkeyRemaster.Services
 
                 return;
             }
-
+            
             if (keycode == _activationKey || _swtichKeys.ContainsKey(keycode))
                 return;
 
             ProcessHotkeyAction(_profileHotkeys[keycode], false);
         }
-
         private void OnActivationKeyChanged()
         {
             //Changing activation key means that current state is UnHooking
