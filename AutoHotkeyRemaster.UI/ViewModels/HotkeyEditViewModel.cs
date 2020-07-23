@@ -21,6 +21,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly ProfileManager _profileManager;
+
+        //TODO : profile3가 선택된 상태에서 profile3의 이름이 바뀌면 여기의 이름은 안바뀐다..
         private HotkeyProfile _currentProfile;
         public HotkeyProfile CurrentProfile
         {
@@ -187,14 +189,14 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
             if (IsActionSet())
             {
-                await SaveOrEditAsync(CurrentHotkey);
+                await SaveOrEditAsync(CurrentHotkey).ConfigureAwait(false);
             }
             else
             {
                 await DeleteIfExistsAsync(CurrentHotkey);
             }
 
-            await _profileManager.SaveProfileAsync(CurrentProfile);
+            await _profileManager.SaveProfileAsync(CurrentProfile).ConfigureAwait(false);
         }
 
         public HotkeyEditViewModel(IEventAggregator eventAggregator, ProfileManager profileManager)
@@ -239,7 +241,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         public async Task ClearActionAsync()
         {
             HotkeyAction = new KeyInfo();
-            await DeleteIfExistsAsync(CurrentHotkey);
+            await DeleteIfExistsAsync(CurrentHotkey).ConfigureAwait(false);
         }
 
         //Trigger : PreviewMouseRightButtonDown
@@ -272,7 +274,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             int result = CurrentProfile.AddOrEditHotkeyIfExisting(hotkey);
 
             if (result >= 0)
-                await _profileManager.SaveProfileAsync(CurrentProfile);
+                await _profileManager.SaveProfileAsync(CurrentProfile).ConfigureAwait(false);
 
             switch (result)
             {
@@ -306,7 +308,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         {
             if (CurrentProfile.DeleteHotkeyIfExisting(hotkey))
             {
-                await _profileManager.SaveProfileAsync(CurrentProfile);
+                await _profileManager.SaveProfileAsync(CurrentProfile).ConfigureAwait(false);
 
                 await _eventAggregator.PublishOnUIThreadAsync(new HotkeyModifiedEvent
                 {

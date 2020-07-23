@@ -10,7 +10,6 @@ namespace AutoHotkeyRemaster.Models
         public static IVirtualKeycodeToStringConverter VirtualKeycodeToStringConverter { get; set; }
             = new VirtualKeycodeToStringConverter();
 
-        //만약 key==0이라면 Z=Shift처럼 특수키 매핑인 것으로 간주함
         public int Key { get; set; }    //윈도우 virtualKeyCode값
         public int Modifier { get; set; } //Modifiers 값
 
@@ -61,13 +60,10 @@ namespace AutoHotkeyRemaster.Models
             else
                 return false;
         }
-
-        //INFO : 왜 해시코드도 같이 오버라이드 하며, 이런식으로 오버라이드 가능한 지 공부
         public override int GetHashCode()
         {
             return Key ^ Modifier;
         }
-
         private static string GetMouseEventExplanation(int button, int mouseEvent)
         {
             string explanation = "";
@@ -82,7 +78,6 @@ namespace AutoHotkeyRemaster.Models
 
             return explanation;
         }
-
         private string GetModifiersInfo(int modifier)
         {
             string info = "";

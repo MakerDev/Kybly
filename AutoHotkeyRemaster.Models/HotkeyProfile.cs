@@ -104,6 +104,17 @@ namespace AutoHotkeyRemaster.Models
             return true;
         }
 
+        public bool HasHotkey(int trigger)
+        {
+            foreach (var hotkey in Hotkeys)
+            {
+                if (hotkey.Trigger.Key == trigger)
+                    return true;
+            }
+
+            return false;
+        }
+
         public bool HasHotkey(Hotkey hotkeyToCheck)
         {
             foreach (var hotkey in Hotkeys)

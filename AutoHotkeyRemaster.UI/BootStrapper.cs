@@ -43,7 +43,7 @@ namespace AutoHotkeyRemaster.WPF
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
-                .Singleton<ProfileSwitchKeyTable>()
+                .Singleton<ProfileSwitchKeyTableManager>()
                 .Singleton<ApplicationModel>()
                 .Singleton<WindowsHookManager>()
                 .Singleton<ProfileManager>();
@@ -55,6 +55,7 @@ namespace AutoHotkeyRemaster.WPF
                 .ForEach(viewModelType => _container.RegisterPerRequest(
                    viewModelType, viewModelType.ToString(), viewModelType
                    ));
+
 
             KeyInfo.VirtualKeycodeToStringConverter = _keyConverter;
         }

@@ -74,6 +74,8 @@
                 Panel.ZIndex="1000"
                 Background="Black" 
                 Opacity="0.4" 
+                Focusable="True"
+                IsVisibleChanged="ActivatedMask_IsVisibleChanged"   
                 Visibility="{Binding HookActivated, 
                     Converter={StaticResource BooleanToVisibilityConverter}, 
                     FallbackValue='Collapsed'}" >
@@ -254,8 +256,15 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom" 
                         LastChildFill="False">
+                        
+                        <StackPanel>
+                            <Button 
+                                x:Name="EditSwitchKeyTable"
+                                Style="{StaticResource MahApps.Styles.Button}" 
+                                Content="Switch"                                    
+                                Width="200" Height="40"/>
 
-                        <ToggleButton
+                            <ToggleButton
                             x:Name="OptionButton"
                             HorizontalAlignment="Left"
                             Background="Transparent"                        
@@ -263,55 +272,58 @@
                             Style="{StaticResource OptionToggleStyle}"
                             VerticalAlignment="Center">
 
-                            <StackPanel 
+                                <StackPanel 
                                 Orientation="Horizontal"
                                 Width="230"
                                 Height="50"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
 
-                                <Image          
+                                    <Image          
                                     Margin="13 0 0 0"
                                     Source="/Resources/Icons/OptionIcon.png" 
                                     Height="40" Width="40" />
 
-                                <TextBlock 
+                                    <TextBlock 
                                     Style="{StaticResource DefaultFontStyle}"
                                     Margin="20 0 0 0"
                                     VerticalAlignment="Center" 
                                     Text="Options" />
-                            </StackPanel>
+                                </StackPanel>
 
-                            <ToggleButton.Triggers>
-                                <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                                    <BeginStoryboard>
-                                        <Storyboard x:Name="HideOptionPanel">
-                                            <DoubleAnimation                                                  
+                                <ToggleButton.Triggers>
+                                    <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                        <BeginStoryboard>
+                                            <Storyboard x:Name="HideOptionPanel">
+                                                <DoubleAnimation                                                  
                                                 Storyboard.TargetName="OptionsPanel"
                                                 Storyboard.TargetProperty="Width"
                                                 BeginTime="0:0:0"                                                
                                                 To="0"
                                                 Duration="0:0:0.2">
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
 
-                                <EventTrigger RoutedEvent="ToggleButton.Checked">
-                                    <BeginStoryboard>
-                                        <Storyboard x:Name="ShowOptionPanel">
-                                            <DoubleAnimation                                              
+                                    <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                        <BeginStoryboard>
+                                            <Storyboard x:Name="ShowOptionPanel">
+                                                <DoubleAnimation                                              
                                                 Storyboard.TargetName="OptionsPanel"
                                                 Storyboard.TargetProperty="Width"
                                                 BeginTime="0:0:0"
                                                 To="300"
                                                 Duration="0:0:0.2">
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                            </ToggleButton.Triggers>
-                        </ToggleButton>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </ToggleButton.Triggers>
+                            </ToggleButton>
+
+                        </StackPanel>
+
                     </DockPanel>
 
                     <Grid                      

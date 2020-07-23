@@ -110,7 +110,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             _infoWindowViewModel = infoWindowViewModel;
 
             _eventAggregator.SubscribeOnUIThread(this);
-            _windowManager.ShowWindowAsync(infoWindowViewModel);
 
             Items.AddRange(new Screen[] { _hotkeyEditViewModel, _keyboardViewModel, _optionsViewModel });
 
@@ -134,6 +133,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             await ActivateItemAsync(_hotkeyEditViewModel);
             await ActivateItemAsync(_keyboardViewModel);
             await ActivateItemAsync(_optionsViewModel);
+            await _windowManager.ShowWindowAsync(_infoWindowViewModel);
         }
 
         public bool CanAddNewProfile
@@ -156,6 +156,16 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
             NotifyOfPropertyChange(() => CanAddNewProfile);
             SetProfileListItems();
+        }
+
+        //TODO : 얘를 편집할때 infowindow를 못 움직이는 버그 있음
+        public async void EditSwitchKeyTable()
+        {
+            var vm = IoC.Get<SwitchKeyTableWindowViewModel>();
+
+            //TODO : Turn on mask
+            await _windowManager.ShowDialogAsync(vm);
+            await vm.TryCloseAsync();
         }
 
         public bool CanDeleteProfile

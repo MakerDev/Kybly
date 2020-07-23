@@ -3,17 +3,115 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AutoHotkeyRemaster.WPF.Views"
+        xmlns:models="clr-namespace:AutoHotkeyRemaster.WPF.Models"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
+        xmlns:vm="clr-namespace:AutoHotkeyRemaster.WPF.ViewModels"
+        cal:Bind.AtDesignTime="True"
+        d:DataContext="{d:DesignInstance Type=vm:SwitchKeyTableWindowViewModel, IsDesignTimeCreatable=False}"
         mc:Ignorable="d"
         Background="{StaticResource DefaultBackgroundBrush}"
         ResizeMode="NoResize"
-        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight"
         Title="SwitchKeyTableWindowView">
-    <Window.Resources>
 
+    <Window.Resources>
+        <sys:Double x:Key="CellWidth">120</sys:Double>
+        <sys:Double x:Key="CellHeight">30</sys:Double>
+
+        <Style x:Key="NameTextBlock" 
+               TargetType="TextBlock" BasedOn="{StaticResource DefaultFontStyle}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Width" Value="{StaticResource CellWidth}"/>
+            <Setter Property="Height" Value="{StaticResource CellHeight}"/>
+        </Style>
+
+        <Style x:Key="CellTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource DefaultStyleForTextBox}">
+            <Setter Property="Width" Value="{StaticResource CellWidth}"/>
+            <Setter Property="Height" Value="{StaticResource CellHeight}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#494949"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="cal:Message.Attach" 
+                    Value="[Event PreviewKeyDown]=[Action OnPreviewKeyDown($source, $eventArgs)]" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#bfbfbf"/>
+                    <Setter Property="Opacity" Value="1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        
+        <DataTemplate x:Key="SwitchKeyCellTemplate" 
+                      DataType="{x:Type models:SwitchKeyCellModel}">
+            <TextBox Text="{Binding SwitchKey, Mode=OneWay}" 
+                     IsEnabled="{Binding CanEdit}" 
+                     Style="{StaticResource CellTextBoxStyle}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="SwitchKeyRowTemplate"
+                      DataType="{x:Type models:ProfileSwitchKeyTableRowModel}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Name}" 
+                           Margin="0 0 20 0"
+                           Style="{StaticResource NameTextBlock}" />
+                
+                <ItemsControl ItemsSource="{Binding SwitchKeyCells}"
+                              ItemTemplate="{StaticResource SwitchKeyCellTemplate}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+        </DataTemplate>
     </Window.Resources>
     
-    <Grid 
-        Height="300" Width="450">
-    </Grid>
+    
+    
+    <StackPanel
+        Margin="30 30 30 30"
+        HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel 
+            x:Name="Header"
+            Orientation="Horizontal">
+           
+            <Grid 
+                Width="140" Height="{StaticResource CellHeight}">
+                <Image 
+                    Source="/Resources/Icons/ProfileSwitchToIcon.png" RenderTransformOrigin="0.5,0.5">
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="0.6" ScaleY="0.6"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+            </Grid>
+            <ItemsControl ItemsSource="{Binding ProfileNames}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Style="{StaticResource NameTextBlock}" Text="{Binding}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </StackPanel>
+        
+        <!--Add Header here-->
+        <ItemsControl ItemsSource="{Binding SwitchKeyRows}" 
+                      ItemTemplate="{StaticResource SwitchKeyRowTemplate}">
+        </ItemsControl>
+    </StackPanel>
 </Window>

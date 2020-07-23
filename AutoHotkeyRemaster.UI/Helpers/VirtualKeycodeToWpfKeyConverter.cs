@@ -23,7 +23,5 @@ namespace AutoHotkeyRemaster.WPF.Helpers
 
             return KeyInterop.KeyFromVirtualKey(keycode).ToString();
         }
-
-
     }
 }

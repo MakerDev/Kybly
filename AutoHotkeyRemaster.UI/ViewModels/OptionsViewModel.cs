@@ -76,7 +76,9 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 return;
             }
 
-            CustomMessageDialog dialog = new CustomMessageDialog("This key is already registered in switchkey table!");
+            CustomMessageDialog dialog = 
+                new CustomMessageDialog("This key is already registered in switchkey table!");
+            dialog.ShowDialog();
         }
     }
 }

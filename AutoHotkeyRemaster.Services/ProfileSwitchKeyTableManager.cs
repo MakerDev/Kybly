@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Models.Helpers;
 using AutoHotkeyRemaster.Services.Helpers;
+using Caliburn.Micro;
 
 namespace AutoHotkeyRemaster.Services
 {
@@ -19,65 +21,35 @@ namespace AutoHotkeyRemaster.Services
      * 
      * 행 = 현재 프로필, 열 = 다음 프로필
      */
-    public class ProfileSwitchKeyTable : IAsyncInitializationRequired
+    public class ProfileSwitchKeyTableManager : IAsyncInitializationRequired
     {
         private const int VK_F1 = 112;
 
-        private const int MAX_PROFILE = ProfileManager.MAX_PROFILE_NUM;
+        private const int MAX_PROFILE = AppConstants.MAX_PROFILE;
+
         private readonly IAsyncJsonFileManager _jsonSavefileManager;
+        private readonly ProfileManager _profileManager;
 
-        public int[][] SwitchKeyTable { get; set; } = new int[MAX_PROFILE][];
+        public ProfileSwitchKeyTable SwitchKeyTable { get; private set; }
 
-        public int this[int from, int to]
+        public ProfileSwitchKeyTableManager(IAsyncJsonFileManager jsonSavefileManager, ProfileManager profileManager)
         {
-            get
-            {
-                if (from >= MAX_PROFILE || from < 0 || to >= MAX_PROFILE || to < 0)
-                {
-                    return -1;
-                }
-
-                return SwitchKeyTable[from][to];
-            }
-
-            private set { }
-        }
-
-        public int[] this[int profile]
-        {
-            get
-            {
-                return SwitchKeyTable[profile];
-            }
-
-            private set { }
-        }
-
-        /// <summary>
-        /// must call InitializeTable to use
-        /// </summary>
-        /// <param name="jsonSavefileManager"></param>
-        public ProfileSwitchKeyTable(IAsyncJsonFileManager jsonSavefileManager)
-        {
-            _jsonSavefileManager = jsonSavefileManager; 
+            _jsonSavefileManager = jsonSavefileManager;
+            _profileManager = profileManager;
         }
 
         public async Task InitializeAsync()
         {
-            for (int i = 0; i < MAX_PROFILE; i++)
-            {
-                SwitchKeyTable[i] = new int[MAX_PROFILE];
-            }
-
-            var table = await _jsonSavefileManager.LoadAsync<ProfileSwitchKeyTable>("profile_switch_key_table");
+            var table = await _jsonSavefileManager.LoadAsync<ProfileSwitchKeyTable>("profile_switch_key_table").ConfigureAwait(false);
 
             if (table == null)
             {
+                SwitchKeyTable = new ProfileSwitchKeyTable();
                 ResetToDefault();
             }
             else
             {
-                SwitchKeyTable = table.SwitchKeyTable;
+                SwitchKeyTable = table;
             }
         }
 
@@ -111,20 +83,33 @@ namespace AutoHotkeyRemaster.Services
         //As We don't check whether there exists duplicate switch key when adding a hotkey,
         //here we don't check whether this profile has the same key with this swtich key.
         //As swtich key has higher priority in hook manager, the duplicated hotkey will not be added in hook.
-        public bool SetSwitchKeyByIndex(int from, int to, int newKey)
+        /// <summary>
+        /// This method doesn't check if the newKey is same with the activation key, as when activation key is pressed,
+        /// the setting window will autmatically be closed
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="newKey"></param>
+        /// <returns>
+        /// -1 : Collistion with other switch key <para />
+        /// 0 : Collision with profile hotkey
+        /// </returns>
+        public int SetSwitchKeyByIndex(int from, int to, int newKey)
         {
-            //TODO : 중복처리
-            if (from == to || SwitchKeyTable[from].FirstOrDefault((key) => key == newKey) > 0)
-                return false;
+            if (SwitchKeyTable[from].FirstOrDefault((key) => key == newKey) > 0)
+                return -1;
+
+            if (_profileManager.Profiles[from].HasHotkey(newKey))
+                return 0;
 
             SwitchKeyTable[from][to] = newKey;
 
-            return true;
+            return 1;
         }
 
         public async Task SaveTableAsync()
         {
-            await _jsonSavefileManager.SaveAsync(this, "profile_switch_key_table");
+            await _jsonSavefileManager.SaveAsync(SwitchKeyTable, "profile_switch_key_table").ConfigureAwait(false);
         }
 
         private void ResetToDefault()

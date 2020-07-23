@@ -10,7 +10,7 @@ namespace AutoHotkeyRemaster.Services
 {
     public class ProfileManager : IAsyncInitializationRequired
     {
-        public const int MAX_PROFILE_NUM = 10;
+        public const int MAX_PROFILE_NUM = AppConstants.MAX_PROFILE;
         private readonly IAsyncJsonFileManager _jsonSavefileManager;
 
         public int ProfileCount
@@ -31,14 +31,14 @@ namespace AutoHotkeyRemaster.Services
         /// <param name="jsonSavefileManager"></param>
         public ProfileManager(IAsyncJsonFileManager jsonSavefileManager)
         {
-            _jsonSavefileManager = jsonSavefileManager;            
+            _jsonSavefileManager = jsonSavefileManager;
         }
 
         public async Task InitializeAsync()
         {
             for (int i = 0; i < MAX_PROFILE_NUM; i++)
             {
-                HotkeyProfile profile = await LoadProfileFromFileAsync(i + 1);
+                HotkeyProfile profile = await LoadProfileFromFileAsync(i + 1).ConfigureAwait(false);
 
                 if (profile == null)
                     break;
@@ -64,7 +64,7 @@ namespace AutoHotkeyRemaster.Services
 
         public async Task SaveProfileAsync(HotkeyProfile profile)
         {
-            await _jsonSavefileManager.SaveAsync(profile, $"profile{profile.ProfileNum}");
+            await _jsonSavefileManager.SaveAsync(profile, $"profile{profile.ProfileNum}").ConfigureAwait(false);
         }
 
         public HotkeyProfile CreateNewProfile(string profileName = null)
@@ -93,7 +93,7 @@ namespace AutoHotkeyRemaster.Services
                 tasks.Add(_jsonSavefileManager.DeleteIfExistsAsync($"profile{profile.ProfileNum}"));
             }
 
-            await Task.WhenAll(tasks);
+            await Task.WhenAll(tasks).ConfigureAwait(false);
 
             Profiles.RemoveAt(profileIdx);
 
@@ -102,7 +102,7 @@ namespace AutoHotkeyRemaster.Services
                 Profiles[i].ProfileNum -= 1;
             }
 
-            await SaveAllProfileAsync();
+            await SaveAllProfileAsync().ConfigureAwait(false);
 
             return deletedProfile;
         }
@@ -116,13 +116,13 @@ namespace AutoHotkeyRemaster.Services
                 tasks.Add(_jsonSavefileManager.SaveAsync(profile, $"profile{profile.ProfileNum}"));
             }
 
-            await Task.WhenAll(tasks);
+            await Task.WhenAll(tasks).ConfigureAwait(false);
         }
 
 
         private async Task<HotkeyProfile> LoadProfileFromFileAsync(int profileNum)
         {
-            var profile = await _jsonSavefileManager.LoadAsync<HotkeyProfile>($"profile{profileNum}");
+            var profile = await _jsonSavefileManager.LoadAsync<HotkeyProfile>($"profile{profileNum}").ConfigureAwait(false);
 
             if (profile != null) profile.ProfileNum = profileNum;
 
