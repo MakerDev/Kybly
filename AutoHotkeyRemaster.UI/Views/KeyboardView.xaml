@@ -18,7 +18,7 @@
         <Style x:Key="Keyboard" x:Name="KeyboardStyle" TargetType="ToggleButton">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Opacity" Value="0.2"/>
+            <Setter Property="Opacity" Value="0.0"/>
             <Setter Property="BorderBrush" Value="{x:Null}"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -35,15 +35,15 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="fill" Property="Background" Value="#FF2B6CAC" />
+                                <Setter Property="Background" Value="#FF4595D7" />
                             </Trigger>
                             
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="fill" Property="Background" Value="#FF0A3A8D" />
+                                <Setter Property="Background" Value="#FF0076D7" />
                             </Trigger>
 
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="fill" Property="Background" Value="Blue" />
+                                <Setter Property="Background" Value="#FF0076D7" />
                             </Trigger>
 
                             <MultiTrigger>
@@ -52,7 +52,7 @@
                                     <Condition Property="Tag" Value="True" />
                                 </MultiTrigger.Conditions>
                                 <MultiTrigger.Setters>
-                                    <Setter TargetName="fill" Property="Background" Value="White" />
+                                    <Setter Property="Background" Value="#797979" />
                                 </MultiTrigger.Setters>
                             </MultiTrigger>
 
@@ -62,7 +62,7 @@
                                     <Condition Property="Tag" Value="True" />
                                 </MultiTrigger.Conditions>
                                 <MultiTrigger.Setters>
-                                    <Setter TargetName="fill" Property="Background" Value="Green" />
+                                    <Setter Property="Background" Value="#bfbfbf" />
                                 </MultiTrigger.Setters>
                             </MultiTrigger>
                         </ControlTemplate.Triggers>
@@ -1066,5 +1066,972 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]" 
             />
         </Grid>
+
+        <Grid 
+            x:Name="BackgroundTextBlocks"
+            Panel.ZIndex="-1"
+            Margin="0,-76,0,0">
+
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn27}"
+                HorizontalAlignment="Left" 
+                Margin="34,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="40" Height="28" 
+                Tag="ESC" />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn112}"
+                HorizontalAlignment="Left" 
+                Margin="83,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="28" 
+                Tag="F1"
+                
+                />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn113}"
+
+                HorizontalAlignment="Left" 
+                Margin="138,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="28" 
+                Tag="F2"
+                
+                />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn114}"
+
+                HorizontalAlignment="Left" 
+                Margin="193,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="28" 
+                Tag="F3"
+                
+                />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn115}"
+
+                HorizontalAlignment="Left" 
+                Margin="248,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="28" 
+                Tag="F4"
+                
+                />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn116}"
+
+                HorizontalAlignment="Left" 
+                Margin="302,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="28" 
+                Tag="F5"
+                
+                />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn117}"
+
+                HorizontalAlignment="Left" 
+                Margin="357,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="28" 
+                Tag="F6"
+                
+                />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn118}"
+
+                HorizontalAlignment="Left" 
+                Margin="412,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="28" 
+                Tag="F7"
+                
+                />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn119}"
+
+                HorizontalAlignment="Left" 
+                Margin="467,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="29" 
+                Tag="F8"
+                
+                />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn120}"
+
+                HorizontalAlignment="Left" 
+                Margin="521,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="29" 
+                Tag="F9"
+                
+                />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn121}"
+
+                HorizontalAlignment="Left" 
+                Margin="576,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="28" 
+                Tag="F10"
+                
+                />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn122}"
+
+                HorizontalAlignment="Left" 
+                Margin="631,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="28" 
+                Tag="F11"
+                
+                />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn123}"
+
+                HorizontalAlignment="Left" 
+                Margin="685,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="28" 
+                Tag="F12"
+                
+                />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn192}"
+
+                HorizontalAlignment="Left" 
+                Margin="34,134,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="40" Height="45" 
+                Tag="OEM3_(`, ~)"
+                
+                />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn49}"
+
+                HorizontalAlignment="Left" 
+                Margin="83,134,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="46" Height="45" 
+                Tag="D1"
+                
+                />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn50}"
+
+                HorizontalAlignment="Left" 
+                Margin="138,134,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="45" Height="45" 
+                Tag="D2"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn51}"
+
+                HorizontalAlignment="Left" 
+                Margin="193,134,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="45" Height="45" 
+                Tag="D3"
+                
+             />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn52}"
+
+                HorizontalAlignment="Left" 
+                Margin="248,134,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="D4"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn53}"
+
+                HorizontalAlignment="Left" 
+                Margin="302,134,0,0" 
+                VerticalAlignment="Top"                 
+                Width="46" Height="45" 
+                Tag="D5"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn54}"
+
+                HorizontalAlignment="Left" 
+                
+                Margin="357,134,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="45" Height="45" 
+                Tag="D6"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn55}"
+
+                HorizontalAlignment="Left" 
+                
+                Margin="412,134,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="45" Height="45" 
+                Tag="D7"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn56}"
+
+                HorizontalAlignment="Left" 
+                Margin="467,134,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="D8"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn57}"
+
+                HorizontalAlignment="Left" 
+                Margin="521,134,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="D9"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn48}"
+
+                HorizontalAlignment="Left" 
+                Margin="576,134,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="D0"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn189}"
+
+                HorizontalAlignment="Left" 
+                Margin="631,134,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="OEM_MINUS (-, _)"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn187}"
+
+                HorizontalAlignment="Left" 
+                Margin="686,134,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="OEM_PLUS, (=, +)"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn44}"
+
+                HorizontalAlignment="Left" 
+                Margin="740,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="90" Height="28" 
+                Tag="SNAPSHOT"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn145}"
+
+                HorizontalAlignment="Left" 
+                Margin="839,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="28" 
+                Tag="SCROLL LOCK"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn19}"
+
+                HorizontalAlignment="Left" 
+                Margin="894,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="28" 
+                Tag="PAUSE"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn144}"
+
+                HorizontalAlignment="Left" 
+                Margin="949,96,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="28" 
+                Tag="NUMLOCK"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn45}"
+
+                HorizontalAlignment="Left" 
+                Margin="839,134,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="45" 
+                Tag="INSERT"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn36}"
+
+                HorizontalAlignment="Left" 
+                Margin="894,134,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="HOME"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn33}"
+
+                HorizontalAlignment="Left" 
+                
+                Margin="949,134,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="PAGE UP"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn254}"
+
+                HorizontalAlignment="Left" 
+                Margin="1004,134,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="OEM_CLEAR"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn111}"
+
+                HorizontalAlignment="Left" 
+                
+                Margin="1058,134,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="46" Height="45" 
+                Tag="DIVIDE"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn106}"
+
+                HorizontalAlignment="Left" 
+                
+                Margin="1113,134,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="45" Height="45" 
+                Tag="MULTIPLY"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn109}"
+
+                HorizontalAlignment="Left" 
+                
+                Margin="1168,134,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="45" Height="45" 
+                Tag="SUBTRACT"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn9}"
+
+                HorizontalAlignment="Left" 
+                
+                Margin="34,189,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="71" Height="45" 
+                Tag="TAB"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn81}"
+
+                HorizontalAlignment="Left" 
+                Margin="115,189,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="Q"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn87}"
+
+                HorizontalAlignment="Left" 
+                
+                Margin="170,189,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="45" Height="45" 
+                Tag="W"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn69}"
+
+                HorizontalAlignment="Left" 
+                Margin="224,189,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="E"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn82}"
+
+                HorizontalAlignment="Left" 
+                Margin="279,189,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="45" Height="45" 
+                Tag="R"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn84}"
+
+                HorizontalAlignment="Left" 
+                Margin="334,189,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="T"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn89}"
+
+                HorizontalAlignment="Left" 
+                
+                Margin="388,189,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="46" Height="45" 
+                Tag="Y"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn85}"
+
+                HorizontalAlignment="Left" 
+                
+                Margin="443,189,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="45" Height="45" 
+                Tag="U"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn73}"
+
+                HorizontalAlignment="Left" 
+                
+                Margin="498,189,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="45" Height="45" 
+                Tag="I"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn79}"
+
+                HorizontalAlignment="Left" 
+                Margin="553,189,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="O"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn80}"
+
+                HorizontalAlignment="Left" 
+                Margin="607,189,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="45" 
+                Tag="P"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn219}"
+
+                HorizontalAlignment="Left" 
+                Margin="662,189,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="OEM_OPEN BRACKET"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn221}"
+
+                HorizontalAlignment="Left" 
+                Margin="717,189,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="OEM_CLOSE BRACKET"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn220}"
+                HorizontalAlignment="Left" 
+                
+                Margin="772,189,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="58" Height="45" 
+                Tag="OEM5 (\, |)"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn46}"
+
+                HorizontalAlignment="Left" 
+                Margin="839,189,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="45" 
+                Tag="DELETE"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn35}"
+
+                HorizontalAlignment="Left" 
+                
+                Margin="894,189,0,0" 
+                VerticalAlignment="Top" 
+                
+                Width="45" Height="45" 
+                Tag="END"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn34}"
+
+                HorizontalAlignment="Left" 
+                Margin="949,189,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="PAGE DOWN"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn103}"
+
+                HorizontalAlignment="Left" 
+                Margin="1004,189,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="NUMPAD7"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn104}"
+
+                HorizontalAlignment="Left" 
+                Margin="1058,189,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="45" 
+                Tag="NUMPAD8"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn105}"
+
+                HorizontalAlignment="Left" 
+                Margin="1113,189,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="NUMPAD9"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn107}"
+
+                HorizontalAlignment="Left" 
+                Margin="1168,189,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="100" 
+                Tag="ADD"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn8}"
+
+                HorizontalAlignment="Left" 
+                Margin="740,134,0,0" 
+                VerticalAlignment="Top" 
+                Width="90" Height="45" 
+                Tag="BACKSPACE"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn20}"
+
+                HorizontalAlignment="Left" 
+                Margin="34,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="88" Height="45" 
+                Tag="CAPITAL"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn65}"
+
+                HorizontalAlignment="Left" 
+                Margin="132,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="46" 
+                Tag="A"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn83}"
+
+                HorizontalAlignment="Left" 
+                Margin="187,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="46" 
+                Tag="S"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn68}"
+
+                HorizontalAlignment="Left" 
+                Margin="241,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="46" 
+                Tag="D"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn70}"
+
+                HorizontalAlignment="Left" 
+                Margin="296,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="46" 
+                Tag="F"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn71}"
+
+                HorizontalAlignment="Left" 
+                Margin="351,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="46" 
+                Tag="G"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn72}"
+
+                HorizontalAlignment="Left" 
+                Margin="405,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="46" 
+                Tag="H"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn74}"
+
+                HorizontalAlignment="Left" 
+                Margin="460,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="46" 
+                Tag="J"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn75}"
+
+                HorizontalAlignment="Left" 
+                Margin="515,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="46" 
+                Tag="K"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn76}"
+
+                HorizontalAlignment="Left" 
+                Margin="570,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="46" 
+                Tag="L"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn186}"
+
+                HorizontalAlignment="Left" 
+                Margin="624,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="46" 
+                Tag="OEM1 (;, :)"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn222}"
+
+                HorizontalAlignment="Left" 
+                Margin="679,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="46" 
+                Tag="OEMQUOTE"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn13}"
+
+                HorizontalAlignment="Left" 
+                Margin="734,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="96" Height="46" 
+                Tag="RETURN"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn100}"
+
+                HorizontalAlignment="Left" 
+                Margin="1004,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="46" 
+                Tag="NUMPAD4"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn101}"
+
+                HorizontalAlignment="Left" 
+                Margin="1058,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="46" 
+                Tag="NUMPAD5"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn102}"
+
+                HorizontalAlignment="Left" 
+                Margin="1113,243,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="46" 
+                Tag="NUMPAD6"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn160}"
+
+                HorizontalAlignment="Left" 
+                Margin="34,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="119" Height="45" 
+                Tag="LEFTSHIFT"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn99}"
+
+                HorizontalAlignment="Left" 
+                Margin="1113,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="46" 
+                Tag="NUMPAD3"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn90}"
+
+                HorizontalAlignment="Left" 
+                Margin="163,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="Z"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn88}"
+
+                HorizontalAlignment="Left" 
+                Margin="218,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="X"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn67}"
+
+                HorizontalAlignment="Left" 
+                Margin="273,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="C"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn86}"
+
+                HorizontalAlignment="Left" 
+                Margin="327,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="45" 
+                Tag="V"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn66}"
+
+                HorizontalAlignment="Left" 
+                Margin="382,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="B"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn78}"
+
+                HorizontalAlignment="Left" 
+                Margin="437,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="N"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn77}"
+
+                HorizontalAlignment="Left" 
+                Margin="491,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="45" 
+                Tag="M"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn188}"
+
+                HorizontalAlignment="Left" 
+                Margin="546,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="OemComma"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn190}"
+
+                HorizontalAlignment="Left" 
+                Margin="601,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="OemPeriod"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn191}"
+
+                HorizontalAlignment="Left" 
+                Margin="656,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="OemQuestion"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn161}"
+
+                HorizontalAlignment="Left" 
+                Margin="710,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="120" Height="45" 
+                Tag="RIGHTSHIFT"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn38}"
+
+                HorizontalAlignment="Left" 
+                Margin="894,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="UP ARROW"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn97}"
+
+                HorizontalAlignment="Left" 
+                Margin="1004,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="NUMPAD1"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn98}"
+
+                HorizontalAlignment="Left" 
+                Margin="1059,298,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="NUMPAD2"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn110}"
+
+                HorizontalAlignment="Left" 
+                Margin="1113,353,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="DECIMAL"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn96}"
+
+                HorizontalAlignment="Left" 
+                Margin="1004,353,0,0" 
+                VerticalAlignment="Top" 
+                Width="100" Height="45" 
+                Tag="NUMPAD0"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn40}"
+
+                HorizontalAlignment="Left" 
+                Margin="894,353,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="DOWN ARROW"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn39}"
+
+                HorizontalAlignment="Left" 
+                Margin="949,353,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="RIGHT ARROW"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn37}"
+
+                HorizontalAlignment="Left" 
+                Margin="839,353,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="45" 
+                Tag="LEFT ARROW"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn163}"
+
+                HorizontalAlignment="Left" 
+                Margin="765,353,0,0" 
+                VerticalAlignment="Top" 
+                Width="65" Height="45" 
+                Tag="RIGHT CONTROL"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn93}"
+
+                HorizontalAlignment="Left" 
+                Margin="710,353,0,0" 
+                VerticalAlignment="Top" 
+                Width="46" Height="45" 
+                Tag="Apps"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn92}"
+
+                HorizontalAlignment="Left" 
+                Margin="656,353,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="RIGHT WINDOWS"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn165}"
+
+                HorizontalAlignment="Left" 
+                Margin="601,353,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="RIGHT ALT"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn32}"
+
+                HorizontalAlignment="Left" 
+                Margin="272,353,0,0" 
+                VerticalAlignment="Top" 
+                Width="319" Height="45" 
+                Tag="SPACEBAR"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn164}"
+
+                HorizontalAlignment="Left" 
+                Margin="218,353,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="LEFT ALT"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn91}"
+
+                HorizontalAlignment="Left" 
+                Margin="163,353,0,0" 
+                VerticalAlignment="Top" 
+                Width="45" Height="45" 
+                Tag="LEFT WINDOWS"
+                
+            />
+            <TextBlock Background = "{Binding Path=Background, ElementName=xBtn162}"
+                HorizontalAlignment="Left" 
+                Margin="34,353,0,0" 
+                VerticalAlignment="Top" 
+                Width="65" Height="45" 
+                Tag="LEFT CONTROL"/>
+        </Grid>
+
+
     </Grid>
 </UserControl>
