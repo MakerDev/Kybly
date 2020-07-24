@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro.Core" Version="4.0.136-rc" />
-    <PackageReference Include="InputSimulatorCore" Version="1.0.5" />
+    <PackageReference Include="InputSimulatorPlus" Version="1.0.7" />
   </ItemGroup>
 
   <ItemGroup>

@@ -95,7 +95,9 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             set
             {
                 HotkeyAction.Key = value;
-                Save().ContinueWith((task) => NotifyOfPropertyChange(() => HotkeyActionKey));
+                Save().ContinueWith((task) => {
+                    NotifyOfPropertyChange(() => HotkeyActionKey);
+                });
             }
         }
 

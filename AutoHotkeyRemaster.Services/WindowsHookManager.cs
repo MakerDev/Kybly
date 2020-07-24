@@ -1,5 +1,6 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services.Events;
+using AutoHotkeyRemaster.Services.Helpers;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,6 @@ namespace AutoHotkeyRemaster.Services
         private readonly ProfileManager _profileManager;
         private readonly ProfileSwitchKeyTableManager _profileSwitchKeyTable;
         private readonly WindowsKeyboardHooker _keyboardHooker = new WindowsKeyboardHooker();
-        private readonly InputSimulator _inputSimulator = new InputSimulator();
 
         private int _activationKey => _applicationModel.Options.ActivationKey;
         private readonly Dictionary<int, int> _swtichKeys = new Dictionary<int, int>(); //Key : switch keycode, Value : profile to switch
@@ -57,11 +57,7 @@ namespace AutoHotkeyRemaster.Services
         public void Shutdown()
         {
             _keyboardHooker.StopHook();
-
-            _inputSimulator.Keyboard.KeyUp(VirtualKeyCode.SHIFT);
-            _inputSimulator.Keyboard.KeyUp(VirtualKeyCode.MENU);
-            _inputSimulator.Keyboard.KeyUp(VirtualKeyCode.CONTROL);
-            _inputSimulator.Keyboard.KeyUp(VirtualKeyCode.LWIN);
+            InputSimlationHelper.UpAllModifiers();
         }
 
         private void ChangeHookState()
@@ -82,26 +78,6 @@ namespace AutoHotkeyRemaster.Services
             return;
         }
 
-        //TODO : Change PublishOnUIThreadAsync to be awaited
-        private void Deactivate()
-        {
-            _keyboardHooker.StopHook();
-
-            _lastHookedProfileNum = _currentHookingProfile.ProfileNum;
-
-            //Delete cache for case where user modified profile hotkeys while deactivated
-            _profileHotkeys.Clear();
-            _swtichKeys.Clear();
-            _currentHookingProfile = null;
-
-            //Only enables activation key            
-            _keyboardHooker.StartHook(_activationKey, null);
-
-            _eventAggregator.PublishOnUIThreadAsync(new HookStateChangeEvent
-            {
-                HookState = HookState.UnHooking,
-            });
-        }
 
         /// <summary>
         /// On the first activation, activates default profile. (profile1)
@@ -134,6 +110,26 @@ namespace AutoHotkeyRemaster.Services
             {
                 HookState = HookState.Hooking,
                 HotkeyProfile = _currentHookingProfile
+            });
+        }
+        //TODO : Change PublishOnUIThreadAsync to be awaited
+        private void Deactivate()
+        {
+            _keyboardHooker.StopHook();
+
+            _lastHookedProfileNum = _currentHookingProfile.ProfileNum;
+
+            //Delete cache for case where user modified profile hotkeys while deactivated
+            _profileHotkeys.Clear();
+            _swtichKeys.Clear();
+            _currentHookingProfile = null;
+
+            //Only enables activation key            
+            _keyboardHooker.StartHook(_activationKey, null);
+
+            _eventAggregator.PublishOnUIThreadAsync(new HookStateChangeEvent
+            {
+                HookState = HookState.UnHooking,
             });
         }
 
@@ -169,68 +165,21 @@ namespace AutoHotkeyRemaster.Services
 
             Debug.WriteLine($"trigger : {hotkey.Trigger}  |  action : {hotkey.Action}");
             
-            //Mouse action
-            if(hotkey.Action.Key <= 4)
+            if(isDown)
             {
-                ProcessMouseAction(hotkey, isDown);
+                InputSimlationHelper.DownKey(hotkey.Action);
             }
             else
             {
-                ProcessKeyboardAction(hotkey, isDown);
+                InputSimlationHelper.UpKey(hotkey.Action);
+
+                if(hotkey.EndingAction != null)
+                {
+                    InputSimlationHelper.PressKey(hotkey.EndingAction);
+                }
             }
 
             _keyboardHooker.StartHookKeyboard();
-        }
-
-        private void ProcessKeyboardAction(Hotkey hotkey, bool isDown)
-        {
-            var action = hotkey.Action;
-            var modifiers = GetModifierList(action.Modifier);
-
-            if(isDown)
-            {
-                foreach (var modifier in modifiers)
-                {
-                    _inputSimulator.Keyboard.KeyDown(modifier);
-                }
-
-                _inputSimulator.Keyboard.KeyDown((VirtualKeyCode)action.Key);
-            }
-            else
-            {
-                foreach (var modifier in modifiers)
-                {
-                    _inputSimulator.Keyboard.KeyUp(modifier);
-                }
-
-                _inputSimulator.Keyboard.KeyUp((VirtualKeyCode)action.Key);
-
-                if (hotkey.EndingAction != null)
-                {
-                    modifiers = GetModifierList(hotkey.EndingAction.Modifier);
-
-                    _inputSimulator.Keyboard.ModifiedKeyStroke(modifiers, (VirtualKeyCode)hotkey.EndingAction.Key);
-                }
-            }
-        }
-
-        //Modifier of mouse event has special meaning.
-        //MouseEvents constant is assigned.
-        private void ProcessMouseAction(Hotkey hotkey, bool isDown)
-        {
-
-        }
-
-        private List<VirtualKeyCode> GetModifierList(int modifier)
-        {
-            List<VirtualKeyCode> modifiers = new List<VirtualKeyCode>();
-
-            if ((modifier & Modifiers.Ctrl) != 0) { modifiers.Add(VirtualKeyCode.CONTROL); }
-            if ((modifier & Modifiers.Shift) != 0) { modifiers.Add(VirtualKeyCode.SHIFT); }
-            if ((modifier & Modifiers.Alt) != 0) { modifiers.Add(VirtualKeyCode.MENU); }
-            if ((modifier & Modifiers.Win) != 0) { modifiers.Add(VirtualKeyCode.LWIN); }
-
-            return modifiers;
         }
 
         private void HandleHookedEvent(KeyHookedArgs args)

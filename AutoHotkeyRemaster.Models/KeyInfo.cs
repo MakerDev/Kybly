@@ -12,35 +12,36 @@ namespace AutoHotkeyRemaster.Models
 
         public int Key { get; set; }    //윈도우 virtualKeyCode값
         public int Modifier { get; set; } //Modifiers 값
+        public EMouseEvents MouseEvent { get; set; }
 
         public KeyInfo()
         {
             Key = -1;
             Modifier = 0;
+            MouseEvent = EMouseEvents.None;
         }
 
-        public KeyInfo(int key, int modifier)
+        public KeyInfo(int key, int modifier, 
+            EMouseEvents mouseEvent = EMouseEvents.None)
         {
             Key = key;
             Modifier = modifier;
+            MouseEvent = mouseEvent;
         }
 
         public override string ToString()
         {
             string info = "";
 
-            //마우스 이벤트일 경우
-            if (Key >= 1 && Key <= 4)
-            {
-                int mouseMod = Modifier / 100;
-                int mods = Modifier - mouseMod * 100;
+            info += GetModifiersInfo(Modifier);
 
-                info += GetModifiersInfo(mods);
-                info += GetMouseEventExplanation(Key, mouseMod);
+            //마우스 이벤트일 경우
+            if (MouseEvent != EMouseEvents.None)
+            {
+                info += GetMouseEventExplanation(Key, MouseEvent);
             }
             else
             {
-                info += GetModifiersInfo(Modifier);
                 //INFO : .netstandard를 위해 이렇게 바꿨다. 호출자쪽에서 캐스팅해라.
                 info += VirtualKeycodeToStringConverter.Convert(Key);
             }
@@ -64,17 +65,17 @@ namespace AutoHotkeyRemaster.Models
         {
             return Key ^ Modifier;
         }
-        private static string GetMouseEventExplanation(int button, int mouseEvent)
+        private static string GetMouseEventExplanation(int button, EMouseEvents mouseEvent)
         {
             string explanation = "";
 
-            if (button == 1) { explanation = "LeftMouseButton"; }
-            if (button == 2) { explanation = "RightMouseButton"; }
-            if (button == 4) { explanation = "MiddleMouseButton"; }
+            if (button == 1) { explanation = "Left Mouse Button"; }
+            if (button == 2) { explanation = "Right Mouse Button"; }
+            if (button == 4) { explanation = "Middle Mouse Button"; }
 
-            if (mouseEvent == MouseEvents.Click) { explanation += "\nClick"; }
-            if (mouseEvent == MouseEvents.DoubleClick) { explanation += "\nDouble Click"; }
-            if (mouseEvent == MouseEvents.Down) { explanation += "\nDown"; }
+            if (mouseEvent == EMouseEvents.Click) { explanation += "\nClick"; }
+            if (mouseEvent == EMouseEvents.DoubleClick) { explanation += "\nDouble Click"; }
+            if (mouseEvent == EMouseEvents.Down) { explanation += "\nDown"; }
 
             return explanation;
         }
