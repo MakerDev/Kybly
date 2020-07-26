@@ -57,6 +57,10 @@ namespace AutoHotkeyRemaster.Services
         public void Shutdown()
         {
             _keyboardHooker.StopHook();
+            _keyboardHooker.KeyHooked -= HandleHookedEvent;
+            _applicationModel.ActivationKeyChange -= OnActivationKeyChanged;
+            //For sure
+            InputSimlationHelper.UpAllModifiers();
             InputSimlationHelper.UpAllModifiers();
         }
 

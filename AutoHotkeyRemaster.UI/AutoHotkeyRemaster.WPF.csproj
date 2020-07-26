@@ -7,7 +7,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation />
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <ApplicationIcon>KyblyIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;WINDOWS_WPF</DefineConstants>
@@ -16,7 +16,11 @@
     <DefineConstants>TRACE;WINDOWS_WPF</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Properties\KyblyIcon.ico" />
+    <None Remove="Properties\KyblyIcon.png" />
     <None Remove="Resources\Icons\AppIcons\Icon.png" />
+    <None Remove="Resources\Icons\AppIcons\KyblyIcon.ico" />
+    <None Remove="Resources\Icons\AppIcons\KyblyIcon.png" />
     <None Remove="Resources\Icons\DisabledToggleSwitchOff.png" />
     <None Remove="Resources\Icons\DisabledToggleSwitchOn.png" />
     <None Remove="Resources\Icons\KeyboardIcon.png" />
@@ -43,7 +47,8 @@
     <ProjectReference Include="..\AutoHotkeyRemaster.Services\AutoHotkeyRemaster.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Icons\AppIcons\Icon.png" />
+    <Resource Include="Resources\Icons\AppIcons\KyblyIcon.ico" />
+    <Resource Include="Resources\Icons\AppIcons\KyblyIcon.png" />
     <Resource Include="Resources\Icons\ProfileSwitchIcon.png" />
     <Resource Include="Resources\Icons\DisabledToggleSwitchOff.png" />
     <Resource Include="Resources\Icons\DisabledToggleSwitchOn.png" />

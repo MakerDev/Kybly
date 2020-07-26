@@ -18,7 +18,7 @@
             <Setter Property="FontSize" Value="15"/>
         </Style>
     </UserControl.Resources>
-    
+
     <UserControl.Background>
         <StaticResource ResourceKey="DefaultBackgroundBrush"/>
     </UserControl.Background>
@@ -113,12 +113,13 @@
                            HorizontalAlignment="Left"
                            Text="Left Button"/>
 
-                <RadioButton
-                    GroupName="SpecialKeyGroup"
+                <ToggleButton                    
                     Margin="0 10 0 0"
-                    HorizontalAlignment="Left"   
-                    Tag="Control"
-                    IsChecked="{Binding Control}"
+                    HorizontalAlignment="Left"
+                    Tag="SpecialKey"
+                    IsChecked="{Binding MouseLeftButton, FallbackValue='False'}"
+                    Checked="OnSpecialKeyChecked"
+                    Unchecked="OnSpecialKeyUnChecked"
                     Style="{StaticResource CustomSwitchStyle}" />
 
                 <TextBlock 
@@ -127,31 +128,37 @@
                     HorizontalAlignment="Left"
                     Text="Right Button"/>
 
-                <RadioButton
-                    GroupName="SpecialKeyGroup"
+                <ToggleButton
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"
                     Tag="Control"
-                    IsChecked="{Binding Control}"
+                    Checked="OnSpecialKeyChecked"
+                    Unchecked="OnSpecialKeyUnChecked"
+                    IsChecked="{Binding MouseRightButton, FallbackValue='False'}"
                     Style="{StaticResource CustomSwitchStyle}" />
-                
+
                 <TextBlock 
                     Style="{StaticResource ExplanationTextBlockStyle}"
                     Margin="0 16 0 0"
                     HorizontalAlignment="Left"
                     Text="Middle Button"/>
-                
 
-                <RadioButton
-                    GroupName="SpecialKeyGroup"
+
+                <ToggleButton                    
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"   
                     Tag="Control"
-                    IsChecked="{Binding Control}"
+                    Checked="OnSpecialKeyChecked"
+                    Unchecked="OnSpecialKeyUnChecked"
+
+                    IsChecked="{Binding MouseMiddleButton, FallbackValue='False'}"
                     Style="{StaticResource CustomSwitchStyle}" />
-                
+
                 <StackPanel 
-                    x:Name="MouseEventGroupPanel">
+                    x:Name="MouseEventGroupPanel"
+                    Visibility="{Binding IsMouseKeySelected,
+                        Converter={StaticResource BooleanToVisibilityConverter}}">
+                    
                     <TextBlock 
                         Style="{StaticResource ExplanationTextBlockStyle}"
                         Margin="0 20 0 0"
@@ -163,7 +170,7 @@
                         Margin="0 10 0 0"
                         HorizontalAlignment="Left"   
                         Tag="Control"
-                        IsChecked="{Binding Control}"
+                        IsChecked="{Binding MouseClick}"
                         Style="{StaticResource CustomSwitchStyle}" />
 
                     <TextBlock 
@@ -177,7 +184,7 @@
                         Margin="0 10 0 0"
                         HorizontalAlignment="Left"   
                         Tag="Control"
-                        IsChecked="{Binding Control}"
+                        IsChecked="{Binding MouseDown}"
                         Style="{StaticResource CustomSwitchStyle}" />
 
                     <TextBlock 
@@ -191,7 +198,7 @@
                         Margin="0 10 0 0"
                         HorizontalAlignment="Left"   
                         Tag="Control"
-                        IsChecked="{Binding Control}"
+                        IsChecked="{Binding MouseDoubleClick}"
                         Style="{StaticResource CustomSwitchStyle}" />
                 </StackPanel>
 
@@ -207,12 +214,13 @@
                            HorizontalAlignment="Left"
                            Text="Play/Pause"/>
 
-                <RadioButton
-                    GroupName="SpecialKeyGroup"
+                <ToggleButton
+                    Checked="OnSpecialKeyChecked"
+                    Unchecked="OnSpecialKeyUnChecked"
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"   
                     Tag="Control"
-                    IsChecked="{Binding Control}"
+                    IsChecked="{Binding MediaPlay}"
                     Style="{StaticResource CustomSwitchStyle}" />
 
                 <TextBlock 
@@ -221,12 +229,13 @@
                     HorizontalAlignment="Left"
                     Text="Mute"/>
 
-                <RadioButton
-                    GroupName="SpecialKeyGroup"
+                <ToggleButton
+                    Checked="OnSpecialKeyChecked"
+                    Unchecked="OnSpecialKeyUnChecked"
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"   
                     Tag="Control"
-                    IsChecked="{Binding Control}"
+                    IsChecked="{Binding VolumeMute}"
                     Style="{StaticResource CustomSwitchStyle}" />
 
                 <TextBlock 
@@ -236,12 +245,13 @@
                     Text="Volume Up"/>
 
 
-                <RadioButton
-                    GroupName="SpecialKeyGroup"
+                <ToggleButton
+                    Checked="OnSpecialKeyChecked"
+                    Unchecked="OnSpecialKeyUnChecked"
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"   
                     Tag="Control"
-                    IsChecked="{Binding Control}"
+                    IsChecked="{Binding VolumeUp}"
                     Style="{StaticResource CustomSwitchStyle}" />
 
                 <TextBlock 
@@ -251,15 +261,16 @@
                     Text="Volume down"/>
 
 
-                <RadioButton
-                    GroupName="SpecialKeyGroup"
+                <ToggleButton
+                    Checked="OnSpecialKeyChecked"
+                    Unchecked="OnSpecialKeyUnChecked"
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"   
                     Tag="Control"
-                    IsChecked="{Binding Control}"
+                    IsChecked="{Binding VolumeDown}"
                     Style="{StaticResource CustomSwitchStyle}" />
             </StackPanel>
-            
+
             <StackPanel 
                     x:Name="BrowserPanel" Width="130">
 
@@ -270,12 +281,13 @@
                            HorizontalAlignment="Left"
                            Text="Back"/>
 
-                <RadioButton
-                    GroupName="SpecialKeyGroup"
+                <ToggleButton
+                    Checked="OnSpecialKeyChecked"
+                    Unchecked="OnSpecialKeyUnChecked"
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"   
                     Tag="Control"
-                    IsChecked="{Binding Control}"
+                    IsChecked="{Binding BrowserBack}"
                     Style="{StaticResource CustomSwitchStyle}" />
 
                 <TextBlock 
@@ -284,12 +296,13 @@
                     HorizontalAlignment="Left"
                     Text="Forward"/>
 
-                <RadioButton
-                    GroupName="SpecialKeyGroup"
+                <ToggleButton
+                    Checked="OnSpecialKeyChecked"
+                    Unchecked="OnSpecialKeyUnChecked"
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"   
                     Tag="Control"
-                    IsChecked="{Binding Control}"
+                    IsChecked="{Binding BrowserForward}"
                     Style="{StaticResource CustomSwitchStyle}" />
 
                 <TextBlock 
@@ -299,12 +312,13 @@
                     Text="Refresh"/>
 
 
-                <RadioButton
-                    GroupName="SpecialKeyGroup"
+                <ToggleButton 
+                    Checked="OnSpecialKeyChecked"
+                    Unchecked="OnSpecialKeyUnChecked"
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"   
                     Tag="Control"
-                    IsChecked="{Binding Control}"
+                    IsChecked="{Binding BrowserRefresh}"
                     Style="{StaticResource CustomSwitchStyle}" />
 
                 <TextBlock 
@@ -312,12 +326,13 @@
                     Margin="0 16 0 0"
                     HorizontalAlignment="Left"
                     Text="Search"/>
-                <RadioButton
-                    GroupName="SpecialKeyGroup"
+                <ToggleButton
+                    Checked="OnSpecialKeyChecked"
+                    Unchecked="OnSpecialKeyUnChecked"
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"   
                     Tag="Control"
-                    IsChecked="{Binding Control}"
+                    IsChecked="{Binding BrowserSearch}"
                     Style="{StaticResource CustomSwitchStyle}" />
 
                 <TextBlock 
@@ -326,12 +341,13 @@
                     HorizontalAlignment="Left"
                     Text="Home"/>
 
-                <RadioButton
-                    GroupName="SpecialKeyGroup"
+                <ToggleButton
+                    Checked="OnSpecialKeyChecked"
+                    Unchecked="OnSpecialKeyUnChecked"
                     Margin="0 10 0 0"
                     HorizontalAlignment="Left"   
                     Tag="Control"                    
-                    IsChecked="{Binding Control}"
+                    IsChecked="{Binding BrowserHome}"
                     Style="{StaticResource CustomSwitchStyle}" />
             </StackPanel>
 
@@ -346,8 +362,31 @@
                     Text="Action"/>
 
                 <TextBox
+                    x:Name="ActionKeyTextBox"
+                    ContextMenu="{x:Null}"
                     Style="{StaticResource KeyInputTextBoxStyle}"
                     Text="{Binding HotkeyActionKey, Mode=OneWay, 
+                        Converter={StaticResource KeycodeToStringConverter}, 
+                        FallbackValue='', TargetNullValue=''}"
+                    IsReadOnly="{Binding CanEdit, 
+                        Converter={StaticResource BooleanInvertingConverter}}"
+                    cal:Message.Attach="
+                        [Event PreviewKeyDown] 
+                            = [Action OnPreviewKeyDown($source, $eventArgs)];
+                        [Event PreviewMouseRightButtonDown] 
+                            = [Action ClearActionKey($source, $eventArgs)]" />
+
+                <TextBlock 
+                    Style="{StaticResource  DefaultFontStyle}"
+                    Margin="0 40 0 15"
+                    HorizontalAlignment="Center"
+                    Text="Ending Key"/>
+
+                <TextBox
+                    x:Name="EndingKeyTextBox"
+                    ContextMenu="{x:Null}"
+                    Style="{StaticResource KeyInputTextBoxStyle}"
+                    Text="{Binding HotkeyEndingKey, Mode=OneWay, 
                         Converter={StaticResource KeycodeToStringConverter}, 
                         FallbackValue='', TargetNullValue=''}"
                     IsReadOnly="{Binding CanEdit, 
@@ -429,7 +468,7 @@
 
             <StackPanel 
                 x:Name="ProfileInfo"
-                Width="300">
+                Width="260">
 
                 <TextBlock 
                     Style="{StaticResource TitleTextBlock}" 

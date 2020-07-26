@@ -60,6 +60,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         {
             //HACK : 나중에 tag 바꿔야 되니까 얘만 캐시해둔다.
             _selectedButton = sender as ToggleButton;
+
             int keycode = KeyConversionHelper.ExtractFromElementName(_selectedButton.Name);
 
             Hotkey hotkey;
@@ -96,18 +97,15 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 case EHotkeyModifiedEvent.Added:
                     _selectedButton.Tag = "True";
                     TriggerHotkeyPairs.Add(message.Hotkey.Trigger.Key, message.Hotkey);
-
                     break;
 
                 case EHotkeyModifiedEvent.Modified:
                     TriggerHotkeyPairs[message.Hotkey.Trigger.Key] = message.Hotkey;
-
                     break;
 
                 case EHotkeyModifiedEvent.Deleted:
                     _selectedButton.Tag = "False";
                     TriggerHotkeyPairs.Remove(message.Hotkey.Trigger.Key);
-
                     break;
 
                 default:

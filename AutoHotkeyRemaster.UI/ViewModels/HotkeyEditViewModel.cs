@@ -22,7 +22,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly ProfileManager _profileManager;
 
-        //TODO : profile3가 선택된 상태에서 profile3의 이름이 바뀌면 여기의 이름은 안바뀐다..
+        //TODO : profile3가 선택된 상태에서 profile3의 이름이 바뀌면 여기의 이름은 안바뀐다
         private HotkeyProfile _currentProfile;
         public HotkeyProfile CurrentProfile
         {
@@ -33,26 +33,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
                 NotifyOfPropertyChange(() => CanEdit);
                 NotifyOfPropertyChange(() => CurrentProfile);
-            }
-        }
-
-        //INFO : Currently not in use.
-        public string Explanation
-        {
-            get
-            {
-                if (CurrentHotkey == null)
-                    return "";
-
-                return CurrentHotkey.Explanation;
-            }
-            set
-            {
-                if (CurrentHotkey != null)
-                {
-                    CurrentHotkey.Explanation = value;
-                    NotifyOfPropertyChange(() => Explanation);
-                }
             }
         }
 
@@ -95,8 +75,26 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             set
             {
                 HotkeyAction.Key = value;
-                Save().ContinueWith((task) => {
+                SaveAsync().ContinueWith((task) =>
+                {
                     NotifyOfPropertyChange(() => HotkeyActionKey);
+                });
+            }
+        }
+
+        private int _hotkeyEndingKey = -1;
+        public int HotkeyEndingKey
+        {
+            get
+            {
+                return _hotkeyEndingKey;
+            }
+            set
+            {
+                _hotkeyEndingKey = value;
+                SaveAsync().ContinueWith((task) =>
+                {
+                    NotifyOfPropertyChange(() => HotkeyEndingKey);
                 });
             }
         }
@@ -110,7 +108,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             {
                 _currenHotkey = value;
 
-                NotifyOfPropertyChange(() => Explanation);
                 NotifyOfPropertyChange(() => CurrentHotkey);
             }
         }
@@ -129,7 +126,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 else
                     HotkeyAction.Modifier &= ~Modifiers.Ctrl;
 
-                Save().ContinueWith((task) => NotifyOfPropertyChange(() => Control));
+                SaveAsync().ContinueWith((task) => NotifyOfPropertyChange(() => Control));
             }
         }
 
@@ -146,7 +143,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 else
                     HotkeyAction.Modifier &= ~Modifiers.Alt;
 
-                Save().ContinueWith((task) => NotifyOfPropertyChange(() => Alt));
+                SaveAsync().ContinueWith((task) => NotifyOfPropertyChange(() => Alt));
             }
         }
         public bool Shift
@@ -162,7 +159,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 else
                     HotkeyAction.Modifier &= ~Modifiers.Shift;
 
-                Save().ContinueWith((task) => NotifyOfPropertyChange(() => Shift));
+                SaveAsync().ContinueWith((task) => NotifyOfPropertyChange(() => Shift));
             }
         }
 
@@ -179,27 +176,341 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 else
                     HotkeyAction.Modifier &= ~Modifiers.Win;
 
-                Save().ContinueWith((task) => NotifyOfPropertyChange(() => Win));
+                SaveAsync().ContinueWith((task) => NotifyOfPropertyChange(() => Win));
             }
         }
         #endregion
 
 
-        public async Task Save()
+        //TODO : OnReset, Turn this back to EMouseEvents.Click
+        #region MOUSE EVENTS
+        public EMouseEvents SelectedMouseEvent { get; set; } = EMouseEvents.Click;
+
+        public bool IsMouseKeySelected
         {
-            CurrentHotkey.Action = HotkeyAction;
-
-            if (IsActionSet())
+            get
             {
-                await SaveOrEditAsync(CurrentHotkey).ConfigureAwait(false);
-            }
-            else
-            {
-                await DeleteIfExistsAsync(CurrentHotkey);
-            }
+                if (HotkeyAction != null && HotkeyAction.MouseEvent != EMouseEvents.None)
+                {
+                    return true;
+                }
 
-            await _profileManager.SaveProfileAsync(CurrentProfile).ConfigureAwait(false);
+                return false;
+            }
+            private set { }
         }
+
+        public bool MouseClick
+        {
+            get
+            {
+                return SelectedMouseEvent == EMouseEvents.Click;
+            }
+            set
+            {
+                if (value)
+                {
+                    SelectedMouseEvent = EMouseEvents.Click;
+                    SaveAsync().ContinueWith((t) =>
+                    {
+                        NotifyOfPropertyChange(() => MouseClick);
+                    });
+                }
+            }
+        }
+        public bool MouseDown
+        {
+            get
+            {
+                return SelectedMouseEvent == EMouseEvents.Down;
+            }
+            set
+            {
+                if (value)
+                {
+                    SelectedMouseEvent = EMouseEvents.Down;
+                    SaveAsync().ContinueWith((t) =>
+                    {
+                        NotifyOfPropertyChange(() => MouseDown);
+                    });
+                }
+            }
+        }
+        public bool MouseDoubleClick
+        {
+            get
+            {
+                return SelectedMouseEvent == EMouseEvents.DoubleClick;
+            }
+            set
+            {
+                if (value)
+                {
+                    SelectedMouseEvent = EMouseEvents.DoubleClick;
+                    SaveAsync().ContinueWith((t) =>
+                    {
+                        NotifyOfPropertyChange(() => MouseDoubleClick);
+                    });
+                }
+            }
+        }
+
+        #endregion
+
+        #region SPECIAL KEYS
+        public bool MouseLeftButton
+        {
+            get
+            {
+                return HotkeyActionKey == (int)VirtualKeyCode.LBUTTON;
+            }
+            set
+            {
+                if (value)
+                {
+                    HotkeyActionKey = (int)VirtualKeyCode.LBUTTON;
+                }
+                else if (HotkeyActionKey == (int)VirtualKeyCode.LBUTTON)
+                {
+                    HotkeyActionKey = -1;
+                }
+
+                NotifyOfPropertyChange(() => IsMouseKeySelected);
+                NotifyOfPropertyChange(() => MouseLeftButton);
+            }
+        }
+
+        public bool MouseRightButton
+        {
+            get
+            {
+                return HotkeyActionKey == (int)VirtualKeyCode.RBUTTON;
+            }
+            set
+            {
+                if (value)
+                {
+                    HotkeyActionKey = (int)VirtualKeyCode.RBUTTON;
+                }
+                else if (HotkeyActionKey == (int)VirtualKeyCode.RBUTTON)
+                {
+                    HotkeyActionKey = -1;
+                }
+
+                NotifyOfPropertyChange(() => IsMouseKeySelected);
+                NotifyOfPropertyChange(() => MouseRightButton);
+            }
+        }
+
+        public bool MouseMiddleButton
+        {
+            get
+            {
+                return HotkeyActionKey == (int)VirtualKeyCode.MBUTTON;
+            }
+            set
+            {
+                if (value)
+                {
+                    HotkeyActionKey = (int)VirtualKeyCode.MBUTTON;
+                }
+                else if (HotkeyActionKey == (int)VirtualKeyCode.MBUTTON)
+                {
+                    HotkeyActionKey = -1;
+                }
+
+                NotifyOfPropertyChange(() => IsMouseKeySelected);
+                NotifyOfPropertyChange(() => MouseMiddleButton);
+            }
+        }
+
+        public bool MediaPlay
+        {
+            get
+            {
+                return HotkeyActionKey == (int)VirtualKeyCode.MEDIA_PLAY_PAUSE;
+            }
+            set
+            {
+                if (value)
+                {
+                    HotkeyActionKey = (int)VirtualKeyCode.MEDIA_PLAY_PAUSE;
+                }
+                else if (HotkeyActionKey == (int)VirtualKeyCode.MEDIA_PLAY_PAUSE)
+                {
+                    HotkeyActionKey = -1;
+                }
+
+                NotifyOfPropertyChange(() => MediaPlay);
+            }
+        }
+
+        public bool VolumeMute
+        {
+            get
+            {
+                return HotkeyActionKey == (int)VirtualKeyCode.VOLUME_MUTE;
+            }
+            set
+            {
+                if (value)
+                {
+                    HotkeyActionKey = (int)VirtualKeyCode.VOLUME_MUTE;
+                }
+                else if (HotkeyActionKey == (int)VirtualKeyCode.VOLUME_MUTE)
+                {
+                    HotkeyActionKey = -1;
+                }
+
+                NotifyOfPropertyChange(() => VolumeMute);
+            }
+        }
+
+        public bool VolumeUp
+        {
+            get
+            {
+                return HotkeyActionKey == (int)VirtualKeyCode.VOLUME_UP;
+            }
+            set
+            {
+                if (value)
+                {
+                    HotkeyActionKey = (int)VirtualKeyCode.VOLUME_UP;
+                }
+                else if (HotkeyActionKey == (int)VirtualKeyCode.VOLUME_UP)
+                {
+                    HotkeyActionKey = -1;
+                }
+
+                NotifyOfPropertyChange(() => VolumeUp);
+            }
+        }
+
+        public bool VolumeDown
+        {
+            get
+            {
+                return HotkeyActionKey == (int)VirtualKeyCode.VOLUME_DOWN;
+            }
+            set
+            {
+                if (value)
+                {
+                    HotkeyActionKey = (int)VirtualKeyCode.VOLUME_DOWN;
+                }
+                else if (HotkeyActionKey == (int)VirtualKeyCode.VOLUME_DOWN)
+                {
+                    HotkeyActionKey = -1;
+                }
+
+                NotifyOfPropertyChange(() => VolumeDown);
+            }
+        }
+
+        public bool BrowserBack
+        {
+            get
+            {
+                return HotkeyActionKey == (int)VirtualKeyCode.BROWSER_BACK;
+            }
+            set
+            {
+                if (value)
+                {
+                    HotkeyActionKey = (int)VirtualKeyCode.BROWSER_BACK;
+                }
+                else if (HotkeyActionKey == (int)VirtualKeyCode.BROWSER_BACK)
+                {
+                    HotkeyActionKey = -1;
+                }
+
+                NotifyOfPropertyChange(() => BrowserBack);
+            }
+        }
+
+        public bool BrowserForward
+        {
+            get
+            {
+                return HotkeyActionKey == (int)VirtualKeyCode.BROWSER_FORWARD;
+            }
+            set
+            {
+                if (value)
+                {
+                    HotkeyActionKey = (int)VirtualKeyCode.BROWSER_FORWARD;
+                }
+                else if (HotkeyActionKey == (int)VirtualKeyCode.BROWSER_FORWARD)
+                {
+                    HotkeyActionKey = -1;
+                }
+
+                NotifyOfPropertyChange(() => BrowserForward);
+            }
+        }        
+        public bool BrowserRefresh
+        {
+            get
+            {
+                return HotkeyActionKey == (int)VirtualKeyCode.BROWSER_REFRESH;
+            }
+            set
+            {
+                if (value)
+                {
+                    HotkeyActionKey = (int)VirtualKeyCode.BROWSER_REFRESH;
+                }
+                else if (HotkeyActionKey == (int)VirtualKeyCode.BROWSER_REFRESH)
+                {
+                    HotkeyActionKey = -1;
+                }
+
+                NotifyOfPropertyChange(() => BrowserRefresh);
+            }
+        }
+        public bool BrowserSearch
+        {
+            get
+            {
+                return HotkeyActionKey == (int)VirtualKeyCode.BROWSER_SEARCH;
+            }
+            set
+            {
+                if (value)
+                {
+                    HotkeyActionKey = (int)VirtualKeyCode.BROWSER_SEARCH;
+                }
+                else if (HotkeyActionKey == (int)VirtualKeyCode.BROWSER_SEARCH)
+                {
+                    HotkeyActionKey = -1;
+                }
+
+                NotifyOfPropertyChange(() => BrowserSearch);
+            }
+        }
+
+        public bool BrowserHome
+        {
+            get
+            {
+                return HotkeyActionKey == (int)VirtualKeyCode.BROWSER_HOME;
+            }
+            set
+            {
+                if (value)
+                {
+                    HotkeyActionKey = (int)VirtualKeyCode.BROWSER_HOME;
+                }
+                else if (HotkeyActionKey == (int)VirtualKeyCode.BROWSER_HOME)
+                {
+                    HotkeyActionKey = -1;
+                }
+
+                NotifyOfPropertyChange(() => BrowserHome);
+            }
+        }
+        #endregion
 
         public HotkeyEditViewModel(IEventAggregator eventAggregator, ProfileManager profileManager)
         {
@@ -215,6 +526,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             HotkeyAction = null;
             CurrentProfile = null;
 
+            NotifyAllSpecialKeysChanged();
+
             return Task.CompletedTask;
         }
 
@@ -224,6 +537,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             CurrentHotkey = null;
             HotkeyAction = null;
 
+            NotifyAllSpecialKeysChanged();
+
             return Task.CompletedTask;
         }
 
@@ -231,22 +546,72 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         {
             CurrentHotkey = message.Hotkey;
 
-            HotkeyAction = new KeyInfo
+            //this must be here
+            if (CurrentHotkey.Action.MouseEvent == EMouseEvents.None)
             {
-                Key = CurrentHotkey.Action.Key,
-                Modifier = CurrentHotkey.Action.Modifier
-            };
+                SelectedMouseEvent = EMouseEvents.Click;
+            }
+            else
+            {
+                SelectedMouseEvent = CurrentHotkey.Action.MouseEvent;
+            }
+
+            HotkeyAction = new KeyInfo(
+                CurrentHotkey.Action.Key,
+                CurrentHotkey.Action.Modifier,
+                CurrentHotkey.Action.MouseEvent);
+
+            HotkeyEndingKey = CurrentHotkey.EndingAction?.Key ?? -1;
+
+            NotifyAllSpecialKeysChanged();
 
             return Task.CompletedTask;
         }
 
+        public async Task SaveAsync()
+        {
+            CurrentHotkey.Action = HotkeyAction;
+
+            //If mouse event
+            if (IsMouseAction(CurrentHotkey.Action.Key))
+            {
+                CurrentHotkey.Action.MouseEvent = SelectedMouseEvent;
+            }
+            else
+            {
+                CurrentHotkey.Action.MouseEvent = EMouseEvents.None;
+            }
+
+            if (HotkeyEndingKey != -1)
+            {
+                CurrentHotkey.EndingAction = new KeyInfo(HotkeyEndingKey, 0);
+            }
+            else
+            {
+                CurrentHotkey.EndingAction = null;
+            }
+
+            if (IsActionSet())
+            {
+                await SaveOrEditAsync(CurrentHotkey).ConfigureAwait(false);
+            }
+            else
+            {
+                await DeleteIfExistsAsync(CurrentHotkey).ConfigureAwait(false);
+            }
+
+            await _profileManager.SaveProfileAsync(CurrentProfile).ConfigureAwait(false);
+        }
+
+
         public async Task ClearActionAsync()
         {
             HotkeyAction = new KeyInfo();
+            HotkeyEndingKey = -1;
+            NotifyAllSpecialKeysChanged();
             await DeleteIfExistsAsync(CurrentHotkey).ConfigureAwait(false);
         }
 
-        //Trigger : PreviewMouseRightButtonDown
         public void ClearActionKey(object sender, MouseEventArgs e)
         {
             e.Handled = true;
@@ -254,7 +619,12 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             if (HotkeyAction == null)
                 return;
 
-            HotkeyActionKey = -1;
+            var name = (sender as TextBox).Name;
+
+            if (name == "ActionKeyTextBox")
+                HotkeyActionKey = -1;
+            else
+                HotkeyEndingKey = -1;
         }
 
         public void OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -268,7 +638,17 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
             Key key = e.ImeProcessedKey == Key.None ? e.Key : e.ImeProcessedKey;
 
-            HotkeyActionKey = KeyInterop.VirtualKeyFromKey(key);
+            var name = (sender as TextBox).Name;
+
+            if (name == "ActionKeyTextBox")
+            {
+                HotkeyActionKey = KeyInterop.VirtualKeyFromKey(key);
+                NotifyAllSpecialKeysChanged();
+            }
+            else
+            {
+                HotkeyEndingKey = KeyInterop.VirtualKeyFromKey(key);
+            }
         }
 
         private async Task SaveOrEditAsync(Hotkey hotkey)
@@ -282,7 +662,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             {
                 case -1:
                     //TODO : replace this with custom alert
-                    MessageBox.Show("No more hotkey is available");
+                    CustomMessageDialog messageDialog = new CustomMessageDialog("No more hotkey is available");
+                    messageDialog.ShowDialog();
                     break;
 
                 case 0:
@@ -306,6 +687,26 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             }
         }
 
+        private void NotifyAllSpecialKeysChanged()
+        {
+            NotifyOfPropertyChange(() => IsMouseKeySelected);
+            NotifyOfPropertyChange(() => MouseLeftButton);
+            NotifyOfPropertyChange(() => MouseRightButton);
+            NotifyOfPropertyChange(() => MouseMiddleButton);
+            NotifyOfPropertyChange(() => MouseClick);
+            NotifyOfPropertyChange(() => MouseDoubleClick);
+            NotifyOfPropertyChange(() => MouseDown);
+            NotifyOfPropertyChange(() => MediaPlay);
+            NotifyOfPropertyChange(() => VolumeUp);
+            NotifyOfPropertyChange(() => VolumeDown);
+            NotifyOfPropertyChange(() => VolumeMute);
+            NotifyOfPropertyChange(() => BrowserBack);
+            NotifyOfPropertyChange(() => BrowserForward);
+            NotifyOfPropertyChange(() => BrowserRefresh);
+            NotifyOfPropertyChange(() => BrowserSearch);
+            NotifyOfPropertyChange(() => BrowserHome);
+        }
+
         private async Task DeleteIfExistsAsync(Hotkey hotkey)
         {
             if (CurrentProfile.DeleteHotkeyIfExisting(hotkey))
@@ -320,9 +721,14 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             }
         }
 
+        private bool IsMouseAction(int key)
+        {
+            return 1 <= key && key <= 4;
+        }
+
         private bool IsActionSet()
         {
-            if (HotkeyAction.Modifier == 0 && HotkeyAction.Key == -1)
+            if (HotkeyAction.Modifier == 0 && HotkeyAction.Key == -1 && HotkeyEndingKey == -1)
                 return false;
 
             return true;

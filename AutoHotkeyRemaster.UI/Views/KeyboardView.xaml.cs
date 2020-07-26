@@ -27,8 +27,6 @@ namespace AutoHotkeyRemaster.WPF.Views
         public KeyboardView()
         {
             InitializeComponent();
-
-
         }
 
         private bool _isDictInitialized = false;
