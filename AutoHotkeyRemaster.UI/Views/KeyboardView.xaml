@@ -43,9 +43,9 @@
                             </Trigger>
 
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter Property="Background" Value="#FF0076D7" />
+                                <Setter Property="Background" Value="#FF0076D7"/>
                             </Trigger>
-
+                            
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsChecked" Value="False" />
@@ -94,13 +94,12 @@
               Panel.ZIndex="30"
               Background="Transparent"
               Visibility="{Binding Profile, 
-                    Converter={StaticResource ReferenceToInvertedVisibilityConverter}}"
-              />
+                    Converter={StaticResource ReferenceToInvertedVisibilityConverter}}"/>
 
         <Grid 
             x:Name="xGridKeyButtons" Margin="0,-76,0,0">
             <RadioButton x:Name="xBtn27" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="34,96,0,0" 
                 VerticalAlignment="Top" 
@@ -109,25 +108,24 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
                 />
             <RadioButton x:Name="xBtn112" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="83,96,0,0" 
                 VerticalAlignment="Top" 
                 Width="46" Height="28" 
                 Tag="F1"
-                cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
-                />
+                cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"/>
+            
             <RadioButton x:Name="xBtn113" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="138,96,0,0" 
                 VerticalAlignment="Top" 
                 Width="45" Height="28" 
                 Tag="F2"
-                cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
-                />
+                cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"/>
             <RadioButton x:Name="xBtn114" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="193,96,0,0" 
                 VerticalAlignment="Top" 
@@ -136,7 +134,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
                 />
             <RadioButton x:Name="xBtn115" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="248,96,0,0" 
                 VerticalAlignment="Top" 
@@ -145,7 +143,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
                 />
             <RadioButton x:Name="xBtn116" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="302,96,0,0" 
                 VerticalAlignment="Top" 
@@ -154,7 +152,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
                 />
             <RadioButton x:Name="xBtn117" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="357,96,0,0" 
                 VerticalAlignment="Top" 
@@ -163,7 +161,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
                 />
             <RadioButton x:Name="xBtn118" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="412,96,0,0" 
                 VerticalAlignment="Top" 
@@ -172,7 +170,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
                 />
             <RadioButton x:Name="xBtn119" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="467,96,0,0" 
                 VerticalAlignment="Top" 
@@ -181,7 +179,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
                 />
             <RadioButton x:Name="xBtn120" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="521,96,0,0" 
                 VerticalAlignment="Top" 
@@ -190,7 +188,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
                 />
             <RadioButton x:Name="xBtn121" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="576,96,0,0" 
                 VerticalAlignment="Top" 
@@ -199,7 +197,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
                 />
             <RadioButton x:Name="xBtn122" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="631,96,0,0" 
                 VerticalAlignment="Top" 
@@ -208,7 +206,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
                 />
             <RadioButton x:Name="xBtn123" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="685,96,0,0" 
                 VerticalAlignment="Top" 
@@ -217,7 +215,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
                 />
             <RadioButton x:Name="xBtn192" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="34,134,0,0" 
                 VerticalAlignment="Top" 
@@ -227,7 +225,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
                 />
             <RadioButton x:Name="xBtn49" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="83,134,0,0" 
                 VerticalAlignment="Top" 
@@ -237,7 +235,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
                 />
             <RadioButton x:Name="xBtn50" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="138,134,0,0" 
                 VerticalAlignment="Top" 
@@ -247,7 +245,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn51" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="193,134,0,0" 
                 VerticalAlignment="Top" 
@@ -257,7 +255,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
              />
             <RadioButton x:Name="xBtn52" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="248,134,0,0" 
                 VerticalAlignment="Top" 
@@ -266,7 +264,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn53" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="302,134,0,0" 
                 VerticalAlignment="Top"                 
@@ -275,7 +273,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn54" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 HorizontalContentAlignment="Center"
                 Margin="357,134,0,0" 
@@ -286,7 +284,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn55" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 HorizontalContentAlignment="Center"
                 Margin="412,134,0,0" 
@@ -297,7 +295,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn56" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="467,134,0,0" 
                 VerticalAlignment="Top" 
@@ -306,7 +304,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn57" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="521,134,0,0" 
                 VerticalAlignment="Top" 
@@ -315,7 +313,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn48" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="576,134,0,0" 
                 VerticalAlignment="Top" 
@@ -324,7 +322,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn189" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="631,134,0,0" 
                 VerticalAlignment="Top" 
@@ -333,7 +331,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn187" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="686,134,0,0" 
                 VerticalAlignment="Top" 
@@ -342,7 +340,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn44" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="740,96,0,0" 
                 VerticalAlignment="Top" 
@@ -351,7 +349,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn145" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="839,96,0,0" 
                 VerticalAlignment="Top" 
@@ -360,7 +358,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn19" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="894,96,0,0" 
                 VerticalAlignment="Top" 
@@ -369,7 +367,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn144" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="949,96,0,0" 
                 VerticalAlignment="Top" 
@@ -378,7 +376,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn45" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="839,134,0,0" 
                 VerticalAlignment="Top" 
@@ -387,7 +385,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn36" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="894,134,0,0" 
                 VerticalAlignment="Top" 
@@ -396,7 +394,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn33" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 HorizontalContentAlignment="Center"
                 Margin="949,134,0,0" 
@@ -406,7 +404,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn254" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="1004,134,0,0" 
                 VerticalAlignment="Top" 
@@ -415,7 +413,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn111" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 HorizontalContentAlignment="Center"
                 Margin="1058,134,0,0" 
@@ -426,7 +424,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn106" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 HorizontalContentAlignment="Center"
                 Margin="1113,134,0,0" 
@@ -437,7 +435,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn109" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 HorizontalContentAlignment="Center"
                 Margin="1168,134,0,0" 
@@ -448,7 +446,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn9" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 HorizontalContentAlignment="Left"
                 Margin="34,189,0,0" 
@@ -459,7 +457,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn81" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="115,189,0,0" 
                 VerticalAlignment="Top" 
@@ -468,7 +466,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn87" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 HorizontalContentAlignment="Center"
                 Margin="170,189,0,0" 
@@ -479,7 +477,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn69" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="224,189,0,0" 
                 VerticalAlignment="Top" 
@@ -488,7 +486,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn82" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="279,189,0,0" 
                 VerticalAlignment="Top" 
@@ -498,7 +496,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn84" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="334,189,0,0" 
                 VerticalAlignment="Top" 
@@ -507,7 +505,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn89" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 HorizontalContentAlignment="Center"
                 Margin="388,189,0,0" 
@@ -518,7 +516,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn85" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 HorizontalContentAlignment="Center"
                 Margin="443,189,0,0" 
@@ -529,7 +527,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn73" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 HorizontalContentAlignment="Center"
                 Margin="498,189,0,0" 
@@ -540,7 +538,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn79" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="553,189,0,0" 
                 VerticalAlignment="Top" 
@@ -549,7 +547,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn80" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="607,189,0,0" 
                 VerticalAlignment="Top" 
@@ -558,7 +556,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn219" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="662,189,0,0" 
                 VerticalAlignment="Top" 
@@ -567,7 +565,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn221" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="717,189,0,0" 
                 VerticalAlignment="Top" 
@@ -576,7 +574,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn220" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 HorizontalContentAlignment="Center"
                 Margin="772,189,0,0" 
@@ -587,7 +585,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn46" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="839,189,0,0" 
                 VerticalAlignment="Top" 
@@ -596,7 +594,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn35" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 HorizontalContentAlignment="Center"
                 Margin="894,189,0,0" 
@@ -607,7 +605,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn34" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="949,189,0,0" 
                 VerticalAlignment="Top" 
@@ -616,7 +614,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn103" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="1004,189,0,0" 
                 VerticalAlignment="Top" 
@@ -625,7 +623,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn104" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="1058,189,0,0" 
                 VerticalAlignment="Top" 
@@ -634,7 +632,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn105" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="1113,189,0,0" 
                 VerticalAlignment="Top" 
@@ -643,7 +641,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn107" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="1168,189,0,0" 
                 VerticalAlignment="Top" 
@@ -652,7 +650,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn8" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="740,134,0,0" 
                 VerticalAlignment="Top" 
@@ -661,7 +659,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn20" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="34,243,0,0" 
                 VerticalAlignment="Top" 
@@ -670,7 +668,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn65" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="132,243,0,0" 
                 VerticalAlignment="Top" 
@@ -679,7 +677,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn83" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="187,243,0,0" 
                 VerticalAlignment="Top" 
@@ -688,7 +686,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn68" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="241,243,0,0" 
                 VerticalAlignment="Top" 
@@ -697,7 +695,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn70" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="296,243,0,0" 
                 VerticalAlignment="Top" 
@@ -706,7 +704,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn71" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="351,243,0,0" 
                 VerticalAlignment="Top" 
@@ -715,7 +713,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn72" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="405,243,0,0" 
                 VerticalAlignment="Top" 
@@ -724,7 +722,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn74" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="460,243,0,0" 
                 VerticalAlignment="Top" 
@@ -733,7 +731,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn75" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="515,243,0,0" 
                 VerticalAlignment="Top" 
@@ -742,7 +740,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn76" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="570,243,0,0" 
                 VerticalAlignment="Top" 
@@ -751,7 +749,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn186" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="624,243,0,0" 
                 VerticalAlignment="Top" 
@@ -760,7 +758,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn222" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="679,243,0,0" 
                 VerticalAlignment="Top" 
@@ -769,7 +767,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn13" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="734,243,0,0" 
                 VerticalAlignment="Top" 
@@ -778,7 +776,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn100" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="1004,243,0,0" 
                 VerticalAlignment="Top" 
@@ -787,7 +785,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn101" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="1058,243,0,0" 
                 VerticalAlignment="Top" 
@@ -796,7 +794,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn102" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="1113,243,0,0" 
                 VerticalAlignment="Top" 
@@ -805,7 +803,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn160" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="34,298,0,0" 
                 VerticalAlignment="Top" 
@@ -814,7 +812,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn99" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="1113,298,0,0" 
                 VerticalAlignment="Top" 
@@ -823,7 +821,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn90" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="163,298,0,0" 
                 VerticalAlignment="Top" 
@@ -832,7 +830,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn88" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="218,298,0,0" 
                 VerticalAlignment="Top" 
@@ -841,7 +839,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn67" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="273,298,0,0" 
                 VerticalAlignment="Top" 
@@ -850,7 +848,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn86" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="327,298,0,0" 
                 VerticalAlignment="Top" 
@@ -859,7 +857,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn66" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="382,298,0,0" 
                 VerticalAlignment="Top" 
@@ -868,7 +866,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn78" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="437,298,0,0" 
                 VerticalAlignment="Top" 
@@ -877,7 +875,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn77" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="491,298,0,0" 
                 VerticalAlignment="Top" 
@@ -886,7 +884,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn188" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="546,298,0,0" 
                 VerticalAlignment="Top" 
@@ -895,7 +893,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn190" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="601,298,0,0" 
                 VerticalAlignment="Top" 
@@ -904,7 +902,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn191" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="656,298,0,0" 
                 VerticalAlignment="Top" 
@@ -913,7 +911,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn161" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="710,298,0,0" 
                 VerticalAlignment="Top" 
@@ -922,7 +920,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn38" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="894,298,0,0" 
                 VerticalAlignment="Top" 
@@ -931,7 +929,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn97" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="1004,298,0,0" 
                 VerticalAlignment="Top" 
@@ -940,7 +938,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn98" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="1059,298,0,0" 
                 VerticalAlignment="Top" 
@@ -949,7 +947,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn110" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="1113,353,0,0" 
                 VerticalAlignment="Top" 
@@ -958,7 +956,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn96" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="1004,353,0,0" 
                 VerticalAlignment="Top" 
@@ -967,7 +965,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn40" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="894,353,0,0" 
                 VerticalAlignment="Top" 
@@ -976,7 +974,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn39" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="949,353,0,0" 
                 VerticalAlignment="Top" 
@@ -985,7 +983,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn37" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="839,353,0,0" 
                 VerticalAlignment="Top" 
@@ -994,7 +992,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn163" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="765,353,0,0" 
                 VerticalAlignment="Top" 
@@ -1003,7 +1001,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn93" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="710,353,0,0" 
                 VerticalAlignment="Top" 
@@ -1012,7 +1010,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn92" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="656,353,0,0" 
                 VerticalAlignment="Top" 
@@ -1021,7 +1019,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn165" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="601,353,0,0" 
                 VerticalAlignment="Top" 
@@ -1030,7 +1028,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn32" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="272,353,0,0" 
                 VerticalAlignment="Top" 
@@ -1039,7 +1037,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn164" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="218,353,0,0" 
                 VerticalAlignment="Top" 
@@ -1048,7 +1046,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn91" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="163,353,0,0" 
                 VerticalAlignment="Top" 
@@ -1057,7 +1055,7 @@
                 cal:Message.Attach="[Event Click] = [Action OnKeyClick($source, $eventArgs)]"
             />
             <RadioButton x:Name="xBtn162" 
-                Style="{StaticResource Keyboard}"
+                Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 
                 Margin="34,353,0,0" 
                 VerticalAlignment="Top" 

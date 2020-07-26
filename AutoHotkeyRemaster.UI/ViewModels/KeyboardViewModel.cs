@@ -14,13 +14,24 @@ using System.Windows.Controls.Primitives;
 
 namespace AutoHotkeyRemaster.WPF.ViewModels
 {
-    public class KeyboardViewModel : Screen, IHandle<ProfileChangedEvent>, IHandle<HotkeyModifiedEvent>, IHandle<ProfileDeletedEvent>
+    public class KeyboardViewModel : Screen, IHandle<ProfileChangedEvent>, IHandle<HotkeyModifiedEvent>, IHandle<ProfileDeletedEvent>, IHandle<SelectingKeyEvent>
     {
-        public event EventHandler OnProfileChanged;
-
         private readonly IEventAggregator _eventAggregator;
 
         private HotkeyProfile _profile = null;
+        private bool _isSelectingKey = false;
+        public bool IsSelectingKey
+        {
+            get { return _isSelectingKey; }
+            set
+            {
+                _isSelectingKey = value;
+                NotifyOfPropertyChange(() => IsSelectingKey);
+            }
+        }
+
+        //For optimization
+        public Dictionary<int, Hotkey> TriggerHotkeyPairs { get; set; } = new Dictionary<int, Hotkey>();
 
         public HotkeyProfile Profile
         {
@@ -33,16 +44,12 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         }
 
 
-        //For optimization
-        public Dictionary<int, Hotkey> TriggerHotkeyPairs { get; set; } = new Dictionary<int, Hotkey>();
-
         //Key 눌렀을 때 이벤트를 발생시키기 위해
         public KeyboardViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.SubscribeOnUIThread(this);
         }
-
 
         private void SetTriggerHotkeyPairs(HotkeyProfile profile)
         {
@@ -58,10 +65,13 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
         public async void OnKeyClick(object sender, RoutedEventArgs e)
         {
-            //HACK : 나중에 tag 바꿔야 되니까 얘만 캐시해둔다.
-            _selectedButton = sender as ToggleButton;
+            var clickedButton = sender as ToggleButton;
 
-            int keycode = KeyConversionHelper.ExtractFromElementName(_selectedButton.Name);
+            //HACK : 나중에 tag 바꿔야 되니까 얘만 캐시해둔다.
+            if (!_isSelectingKey)
+                _selectedButton = clickedButton;
+
+            int keycode = KeyConversionHelper.ExtractFromElementName(clickedButton.Name);
 
             Hotkey hotkey;
             bool hasHotkey = TriggerHotkeyPairs.ContainsKey(keycode);
@@ -83,7 +93,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             //HACK : Profiel = message.Profile가 먼저 실행되면 왜인지는 모르겠으나, OnProfileChanged가 먼저 fire되면서
             //다소 이상한 동작을 함.
             SetTriggerHotkeyPairs(message.Profile);
-            OnProfileChanged?.Invoke(this, null);
 
             Profile = message.Profile;
 
@@ -119,7 +128,13 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         {
             Profile = null;
             TriggerHotkeyPairs.Clear();
-            OnProfileChanged?.Invoke(this, null);
+
+            return Task.CompletedTask;
+        }
+
+        public Task HandleAsync(SelectingKeyEvent message, CancellationToken cancellationToken)
+        {
+            _isSelectingKey = message.IsSelecting;
 
             return Task.CompletedTask;
         }

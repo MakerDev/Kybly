@@ -1,9 +1,12 @@
-﻿using AutoHotkeyRemaster.WPF.Helpers;
+﻿using AutoHotkeyRemaster.WPF.Events;
+using AutoHotkeyRemaster.WPF.Helpers;
 using AutoHotkeyRemaster.WPF.ViewModels;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -20,26 +23,59 @@ namespace AutoHotkeyRemaster.WPF.Views
     /// <summary>
     /// Interaction logic for KeyboardPage.xaml
     /// </summary>
-    public partial class KeyboardView : UserControl
+    public partial class KeyboardView : UserControl, IHandle<ProfileChangedEvent>, IHandle<SelectingKeyEvent>, IHandle<ProfileDeletedEvent>
     {
-        private bool _subscibedEvent = false;
+        private KeyboardViewModel _keyboardViewModel = null;
+        private readonly Dictionary<int, RadioButton> _keyButtonPairs = new Dictionary<int, RadioButton>();
+
+        private bool _isSelectingKey = false;
+        private ToggleButton _selectedButton = null;
 
         public KeyboardView()
         {
             InitializeComponent();
+
+            var eventAggregator = IoC.Get<IEventAggregator>();
+            eventAggregator.SubscribeOnUIThread(this);
+
+            RegisterButtons();
         }
 
-        private bool _isDictInitialized = false;
-        private readonly Dictionary<int, RadioButton> _keyButtonPairs = new Dictionary<int, RadioButton>();
-
-        private void OnProfileChanged(object sender, EventArgs e)
+        private void RegisterButtons()
         {
-            if (!_isDictInitialized)
-                RegisterButtonsToDict();
+            var children = xGridKeyButtons.Children;
 
-            var keyboardViewModel = (KeyboardViewModel)sender;
+            foreach (var item in children)
+            {
+                RadioButton button = item as RadioButton;
+                int keycode = KeyConversionHelper.ExtractFromElementName((button.Name));
 
-            var keyHotkeyPair = keyboardViewModel.TriggerHotkeyPairs;
+                _keyButtonPairs.Add(keycode, button);
+            }
+        }
+
+        public Task HandleAsync(ProfileChangedEvent message, CancellationToken cancellationToken)
+        {
+            if (_keyboardViewModel == null)
+            {
+                _keyboardViewModel = (KeyboardViewModel)DataContext;
+            }
+
+            ResetButton();
+
+            return Task.CompletedTask;
+        }
+
+        public Task HandleAsync(ProfileDeletedEvent message, CancellationToken cancellationToken)
+        {
+            ResetButton();
+
+            return Task.CompletedTask;
+        }
+
+        private void ResetButton()
+        {
+            var keyHotkeyPair = _keyboardViewModel.TriggerHotkeyPairs;
 
             foreach (var keycode in _keyButtonPairs.Keys)
             {
@@ -56,31 +92,35 @@ namespace AutoHotkeyRemaster.WPF.Views
             }
         }
 
-        private void RegisterButtonsToDict()
+        public Task HandleAsync(SelectingKeyEvent message, CancellationToken cancellationToken)
         {
-            var children = xGridKeyButtons.Children;
+            _isSelectingKey = message.IsSelecting;
 
-            //TODO : 여기서 태그와 바인딩을 세팅하는 방법도 고려가능. 바인딩을 통해 tag의 변경을 여기서 알림 받고, 백그라운드 색깔 표시를 위한 버튼과 동기화한다.
-            foreach (var item in children)
-            {
-                RadioButton button = item as RadioButton;
-                int keycode = KeyConversionHelper.ExtractFromElementName((button.Name));
-
-                _keyButtonPairs.Add(keycode, button);
-            }
-
-            _isDictInitialized = true;
+            return Task.CompletedTask;
         }
 
-        protected override void OnRender(DrawingContext drawingContext)
+        private void OnChecked(object sender, RoutedEventArgs e)
         {
-            base.OnRender(drawingContext);
+            var button = sender as ToggleButton;
 
-            if (!_subscibedEvent)
+            if (_isSelectingKey)
             {
-                ((KeyboardViewModel)DataContext).PropertyChanged += OnProfileChanged;
-                _subscibedEvent = true;
+                if (_selectedButton != button)
+                {
+                    _selectedButton.IsChecked = true;
+                    button.IsChecked = false;
+                }
+
+                return;
             }
+
+            if (_selectedButton != null)
+            {
+                _selectedButton.IsChecked = false;
+            }
+
+            _selectedButton = button;
         }
+
     }
 }

@@ -19,6 +19,13 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 {
     public class HotkeyEditViewModel : Screen, IHandle<ProfileChangedEvent>, IHandle<KeySelectedEvent>, IHandle<ProfileDeletedEvent>
     {
+        public enum ESelectKeyTarget
+        {
+            ActionKey,
+            EndingKey,
+            ProfileSwitchKey,
+        }
+
         private readonly IEventAggregator _eventAggregator;
         private readonly ProfileManager _profileManager;
 
@@ -100,6 +107,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         }
 
         private Hotkey _currenHotkey;
+        private bool _isSelectingKey = false;
 
         public Hotkey CurrentHotkey
         {
@@ -181,8 +189,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         }
         #endregion
 
-
-        //TODO : OnReset, Turn this back to EMouseEvents.Click
         #region MOUSE EVENTS
         public EMouseEvents SelectedMouseEvent { get; set; } = EMouseEvents.Click;
 
@@ -448,7 +454,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
                 NotifyOfPropertyChange(() => BrowserForward);
             }
-        }        
+        }
         public bool BrowserRefresh
         {
             get
@@ -512,6 +518,40 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         }
         #endregion
 
+
+        private ESelectKeyTarget _selectKeyTarget;
+
+        public bool IsSelectingKey
+        {
+            get { return _isSelectingKey; }
+            set
+            {
+                _isSelectingKey = value;
+
+                if (_isSelectingKey == false)
+                {
+                    //To reset view
+                    NotifyOfPropertyChange(() => IsSelectingKey);
+                }
+
+                _eventAggregator.PublishOnUIThreadAsync(new SelectingKeyEvent
+                {
+                    IsSelecting = _isSelectingKey
+                });
+            }
+        }
+
+        public void StartSelectingKey(ESelectKeyTarget selectKeyTarget)
+        {
+            IsSelectingKey = true;
+            _selectKeyTarget = selectKeyTarget;
+        }
+
+        public void StopSelectingKey()
+        {
+            IsSelectingKey = false;
+        }
+
         public HotkeyEditViewModel(IEventAggregator eventAggregator, ProfileManager profileManager)
         {
             _profileManager = profileManager;
@@ -520,30 +560,58 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             _eventAggregator.SubscribeOnUIThread(this);
         }
 
-        public Task HandleAsync(ProfileDeletedEvent message, CancellationToken cancellationToken)
+        private void ResetState()
         {
-            CurrentHotkey = null;
             HotkeyAction = null;
-            CurrentProfile = null;
+            IsSelectingKey = false;
+            CurrentHotkey = null;
+            IsSelectingKey = false;
+            _hotkeyEndingKey = -1;
 
             NotifyAllSpecialKeysChanged();
+        }
+
+        public Task HandleAsync(ProfileDeletedEvent message, CancellationToken cancellationToken)
+        {
+            CurrentProfile = null;
+            ResetState();
 
             return Task.CompletedTask;
         }
 
+
         public Task HandleAsync(ProfileChangedEvent message, CancellationToken cancellationToken)
         {
             CurrentProfile = message.Profile;
-            CurrentHotkey = null;
-            HotkeyAction = null;
-
-            NotifyAllSpecialKeysChanged();
+            ResetState();
 
             return Task.CompletedTask;
         }
 
         public Task HandleAsync(KeySelectedEvent message, CancellationToken cancellationToken)
         {
+            if (IsSelectingKey)
+            {
+                switch (_selectKeyTarget)
+                {
+                    case ESelectKeyTarget.ActionKey:
+                        HotkeyActionKey = message.Hotkey.Trigger.Key;
+                        break;
+
+                    case ESelectKeyTarget.EndingKey:
+                        HotkeyEndingKey = message.Hotkey.Trigger.Key;
+                        break;
+
+                    case ESelectKeyTarget.ProfileSwitchKey:
+                        break;
+
+                    default:
+                        break;
+                }
+
+                return Task.CompletedTask;
+            }
+
             CurrentHotkey = message.Hotkey;
 
             //this must be here
@@ -603,7 +671,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             await _profileManager.SaveProfileAsync(CurrentProfile).ConfigureAwait(false);
         }
 
-
         public async Task ClearActionAsync()
         {
             HotkeyAction = new KeyInfo();
@@ -661,8 +728,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             switch (result)
             {
                 case -1:
-                    //TODO : replace this with custom alert
-                    CustomMessageDialog messageDialog = new CustomMessageDialog("No more hotkey is available");
+                    CustomMessageDialog messageDialog
+                        = new CustomMessageDialog("No more hotkey is available");
                     messageDialog.ShowDialog();
                     break;
 

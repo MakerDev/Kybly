@@ -31,12 +31,13 @@
             Visibility="{Binding CurrentHotkey, 
                 Converter={StaticResource ReferenceToInvertedVisibilityConverter},
                 FallbackValue='Collapsed'}" 
-            Width="560">
+            Width="1200">
         </Grid>
 
         <StackPanel
             Orientation="Horizontal">
             <StackPanel 
+                Visibility="Visible"
                 Margin="80 0 0 0"
                 Width="150">
                 <TextBlock 
@@ -376,6 +377,14 @@
                         [Event PreviewMouseRightButtonDown] 
                             = [Action ClearActionKey($source, $eventArgs)]" />
 
+                <ToggleButton 
+                    x:Name="ActionKeySelectButton"
+                    Width="140" Height="30"
+                    Margin="0 10 0 0"                    
+                    Checked="OnSelectKeyChecked"
+                    Unchecked="OnSelectKeyUnChecked"
+                    Content="Select Key" />
+
                 <TextBlock 
                     Style="{StaticResource  DefaultFontStyle}"
                     Margin="0 40 0 15"
@@ -398,16 +407,17 @@
                             = [Action ClearActionKey($source, $eventArgs)]" />
 
                 <ToggleButton 
+                    x:Name="EndingKeySelectKeyButton"
+                    Width="140" Height="30"
                     Margin="0 10 0 0"
-                    Width="120" 
-                    Height="28" 
-                    Visibility="Collapsed"
+                    Checked="OnSelectKeyChecked"
+                    Unchecked="OnSelectKeyUnChecked"
                     Content="Select Key" />
 
                 <Button 
                     x:Name="ClearAction"
-                    Margin="0 10 0 0"
-                    Width="120"
+                    Margin="0 20 0 0"
+                    Width="140"
                     Height="28"
                     Content="Clear"
                     />
