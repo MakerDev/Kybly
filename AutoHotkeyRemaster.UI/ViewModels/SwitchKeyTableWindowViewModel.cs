@@ -2,10 +2,7 @@
 using AutoHotkeyRemaster.Services.Events;
 using AutoHotkeyRemaster.WPF.Models;
 using Caliburn.Micro;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +10,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 {
     public class SwitchKeyTableWindowViewModel : Screen, IHandle<HookStateChangeEvent>
     {
-        public ObservableCollection<string> ProfileNames { get; set; } 
+        public ObservableCollection<string> ProfileNames { get; set; }
             = new ObservableCollection<string>();
 
         public ObservableCollection<ProfileSwitchKeyTableRowModel> SwitchKeyRows { get; set; }

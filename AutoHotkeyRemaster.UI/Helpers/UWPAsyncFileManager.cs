@@ -1,7 +1,5 @@
 ﻿using AutoHotkeyRemaster.Services.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -21,7 +19,7 @@ namespace AutoHotkeyRemaster.WPF.Helpers
 
             if (item == null)
                 return false;
-         
+
             await item.DeleteAsync();
 
             return true;

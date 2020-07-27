@@ -3,7 +3,7 @@
 
     <!--// Toggle Button Style Template //-->
     <ImageBrush x:Key="ToggleBtnMouseOver"
-                    ImageSource="../Resources/Icons/ToggleMouseOver.png"/>
+                    ImageSource="../Resources/Icons/ToggleDefault.png"/>
 
     <Style x:Key="ToggleBtnStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Template">

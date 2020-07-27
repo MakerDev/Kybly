@@ -1,12 +1,6 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services.Helpers;
-using AutoHotkeyRemaster.WPF.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
-using System.Windows;
-using System.Windows.Input;
 
 namespace AutoHotkeyRemaster.WPF.Models
 {

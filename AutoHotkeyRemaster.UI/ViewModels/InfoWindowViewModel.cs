@@ -2,17 +2,13 @@
 using AutoHotkeyRemaster.Services.Events;
 using AutoHotkeyRemaster.Services.Helpers;
 using Caliburn.Micro;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace AutoHotkeyRemaster.WPF.ViewModels
 {
     public class InfoWindowViewModel : Screen, IHandle<HookStateChangeEvent>
-    {        
+    {
         private string _hookingProfileName = "DEACTIVATED";
         private readonly Options _options;
         private readonly IAsyncJsonFileManager _jsonFileManager;

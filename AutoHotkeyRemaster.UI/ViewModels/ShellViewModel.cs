@@ -4,22 +4,14 @@ using AutoHotkeyRemaster.Services.Events;
 using AutoHotkeyRemaster.Services.Helpers;
 using AutoHotkeyRemaster.WPF.Events;
 using AutoHotkeyRemaster.WPF.Models;
-using AutoHotkeyRemaster.WPF.Views;
 using AutoHotkeyRemaster.WPF.Views.CustomControls;
 using Caliburn.Micro;
-using Microsoft.Xaml.Behaviors.Core;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace AutoHotkeyRemaster.WPF.ViewModels
 {
@@ -261,11 +253,31 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
         private void SetProfileListItems()
         {
+            foreach (var stateModel in ProfileStates)
+            {
+                stateModel.PropertyChanged -= OnProfileModelPropertyChanged;
+            }
+
             ProfileStates.Clear();
 
             foreach (var profile in _profileManager.Profiles)
             {
-                ProfileStates.Add(new ProfileStateModel(profile, _jsonSavefileManager));
+                var profileModel = new ProfileStateModel(profile, _jsonSavefileManager);
+                profileModel.PropertyChanged += OnProfileModelPropertyChanged;
+                ProfileStates.Add(profileModel);
+            }
+        }
+
+        private async void OnProfileModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            ProfileStateModel stateModel = sender as ProfileStateModel;
+
+            if (stateModel == _selectedProfile && e.PropertyName == nameof(stateModel.ProfileName))
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(new ProfileNameChangedEvent
+                {
+                    NewName = stateModel.ProfileName
+                });
             }
         }
     }

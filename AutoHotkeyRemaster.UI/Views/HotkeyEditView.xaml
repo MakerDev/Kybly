@@ -35,19 +35,33 @@
         </Grid>
 
         <StackPanel
-            Margin="0 30 0 0"
+            Margin="0 20 0 0"
             Orientation="Horizontal">
             <StackPanel 
                 Visibility="Visible"
-                Margin="80 0 0 0"
-                Width="150">
-                <TextBlock 
+                Margin="20 0 0 0"
+                Width="250">
+                <StackPanel x:Name="ProfileInfo">
+
+                    <TextBlock 
+                        Style="{StaticResource TitleTextBlock}" 
+                        HorizontalAlignment="Center"
+                        Text="{Binding ProfileName, 
+                            FallbackValue='Select a profile'}"/>
+                </StackPanel>
+
+                <!--<TextBlock 
+                    HorizontalAlignment="Center"
+                    Margin="0 30 0 0"
                     Style="{StaticResource TitleTextBlock}"
-                    Text="Trigger"/>
+                    Text="Trigger"/>-->
                 <TextBlock
+                    HorizontalAlignment="Center"
                     Style="{StaticResource ExplanationTextBlockStyle}"
                     Text="{Binding CurrentHotkey.Trigger, 
-                        Converter={StaticResource InstanceToStringConverter}}"/>
+                        Converter={StaticResource InstanceToStringConverter}}"
+                    FontSize="24"
+                    />
             </StackPanel>
 
             <StackPanel x:Name="Modifiers" Width="150">
@@ -474,17 +488,6 @@
 
 
 
-            </StackPanel>
-
-            <StackPanel 
-                x:Name="ProfileInfo"
-                Width="260">
-
-                <TextBlock 
-                    Style="{StaticResource TitleTextBlock}" 
-                    HorizontalAlignment="Center"
-                    Text="{Binding CurrentProfile.ProfileName, 
-                        FallbackValue='Select a profile'}"/>
             </StackPanel>
         </StackPanel>
 

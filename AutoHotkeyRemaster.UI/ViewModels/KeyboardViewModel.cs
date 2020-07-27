@@ -2,14 +2,10 @@
 using AutoHotkeyRemaster.WPF.Events;
 using AutoHotkeyRemaster.WPF.Helpers;
 using Caliburn.Micro;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 namespace AutoHotkeyRemaster.WPF.ViewModels
@@ -95,7 +91,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             SetTriggerHotkeyPairs(message.Profile);
 
             Profile = message.Profile;
-            
+
             return Task.CompletedTask;
         }
 

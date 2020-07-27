@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace AutoHotkeyRemaster.WPF.Views.CustomControls
 {
@@ -26,7 +16,7 @@ namespace AutoHotkeyRemaster.WPF.Views.CustomControls
 
         private void OnDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ProfileEditor profileEditor 
+            ProfileEditor profileEditor
                 = new ProfileEditor(txtBlock.Text);
             profileEditor.ShowDialog();
 

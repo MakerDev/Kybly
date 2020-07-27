@@ -1,15 +1,8 @@
-﻿using AutoHotkeyRemaster.Models;
-using AutoHotkeyRemaster.Services;
-using AutoHotkeyRemaster.Services.Events;
+﻿using AutoHotkeyRemaster.Services;
 using AutoHotkeyRemaster.Services.Helpers;
-using AutoHotkeyRemaster.WPF.Models;
 using AutoHotkeyRemaster.WPF.Views.CustomControls;
 using Caliburn.Micro;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace AutoHotkeyRemaster.WPF.ViewModels
@@ -76,7 +69,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 return;
             }
 
-            CustomMessageDialog dialog = 
+            CustomMessageDialog dialog =
                 new CustomMessageDialog("This key is already registered in switchkey table!");
             dialog.ShowDialog();
         }

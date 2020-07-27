@@ -3,8 +3,6 @@ using AutoHotkeyRemaster.WPF.Helpers;
 using AutoHotkeyRemaster.WPF.Views.CustomControls;
 using Caliburn.Micro;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
 namespace AutoHotkeyRemaster.WPF.Models

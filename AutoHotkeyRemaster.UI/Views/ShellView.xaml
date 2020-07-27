@@ -11,9 +11,9 @@
         cal:Bind.AtDesignTime="True"
         d:DataContext="{d:DesignInstance Type=vm:ShellViewModel, IsDesignTimeCreatable=False}"
         mc:Ignorable="d"       
-        Title="KyBly"         
         ResizeMode="CanMinimize"            
         BorderThickness="0"
+        Title=""
         WindowTransitionsEnabled="False"
         TitleBarHeight="30"
         GlowBrush="{StaticResource MahApps.Brushes.Gray}"                    
@@ -161,14 +161,14 @@
                             <!--// Menu title text //-->
                             <TextBlock  Grid.Row="1"
                                     Grid.Column="0"
-                                    Margin="73,0,0,0"
-                                    Text="M E N U"
+                                    Margin="71,0,0,0"
+                                    Text="KYBLY"                                                                   
                                     Foreground="White"
                                     FontSize="22"
                                     Background="Transparent"
                                     HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource DefaultFontStyle}">
+                                    VerticalAlignment="Center" 
+                                    >
                             </TextBlock>
 
                             <!--// Toggle Button //-->
@@ -245,7 +245,7 @@
                                         Width="230"
                                         VerticalAlignment="Center" HorizontalAlignment="Left">
                                     <Image 
-                                        Margin="7 0 0 0"
+                                        Margin="8 0 0 0"
                                         Source="/Resources/Icons/KeyboardIcon.png" 
                                         Height="27" Width="38" />
 

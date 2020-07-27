@@ -1,21 +1,11 @@
 ﻿using AutoHotkeyRemaster.WPF.Events;
 using AutoHotkeyRemaster.WPF.ViewModels;
 using Caliburn.Micro;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace AutoHotkeyRemaster.WPF.Views
 {
@@ -47,7 +37,7 @@ namespace AutoHotkeyRemaster.WPF.Views
 
             if (_currentOnSelectKeyButton != null && _currentOnSelectKeyButton != toggleButton)
             {
-                _currentOnSelectKeyButton.IsChecked = false;                
+                _currentOnSelectKeyButton.IsChecked = false;
             }
 
             HotkeyEditViewModel.ESelectKeyTarget target;
@@ -94,7 +84,7 @@ namespace AutoHotkeyRemaster.WPF.Views
 
         public Task HandleAsync(ProfileChangedEvent message, CancellationToken cancellationToken)
         {
-            if(_currentOnSelectKeyButton != null)
+            if (_currentOnSelectKeyButton != null)
                 _currentOnSelectKeyButton.IsChecked = false;
 
             return Task.CompletedTask;

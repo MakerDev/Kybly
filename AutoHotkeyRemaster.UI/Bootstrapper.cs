@@ -1,19 +1,15 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services;
-using AutoHotkeyRemaster.WPF.ViewModels;
+using AutoHotkeyRemaster.Services.Helpers;
 using AutoHotkeyRemaster.WPF.Helpers;
+using AutoHotkeyRemaster.WPF.ViewModels;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Windows;
-using System.Windows.Navigation;
-using AutoHotkeyRemaster.WPF.Models;
-using AutoHotkeyRemaster.Services.Helpers;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace AutoHotkeyRemaster.WPF
 {

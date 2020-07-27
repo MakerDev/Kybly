@@ -1,10 +1,7 @@
 ﻿using AutoHotkeyRemaster.WPF.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using System.Windows.Data;
-using System.Windows.Input;
 
 namespace AutoHotkeyRemaster.WPF.Converters
 {

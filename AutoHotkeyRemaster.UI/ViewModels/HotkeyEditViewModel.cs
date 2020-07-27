@@ -1,23 +1,19 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services;
-using AutoHotkeyRemaster.Services.Events;
 using AutoHotkeyRemaster.WPF.Events;
 using AutoHotkeyRemaster.WPF.Views.CustomControls;
 using Caliburn.Micro;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WindowsInput.Native;
 
 namespace AutoHotkeyRemaster.WPF.ViewModels
 {
-    public class HotkeyEditViewModel : Screen, IHandle<ProfileChangedEvent>, IHandle<KeySelectedEvent>, IHandle<ProfileDeletedEvent>
+    public class HotkeyEditViewModel : Screen,
+        IHandle<ProfileChangedEvent>, IHandle<KeySelectedEvent>, IHandle<ProfileDeletedEvent>, IHandle<ProfileNameChangedEvent>
     {
         public enum ESelectKeyTarget
         {
@@ -40,6 +36,22 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
                 NotifyOfPropertyChange(() => CanEdit);
                 NotifyOfPropertyChange(() => CurrentProfile);
+            }
+        }
+
+
+        private string _profileName;
+
+        public string ProfileName
+        {
+            get
+            {
+                return _profileName;
+            }
+            set
+            {
+                _profileName = value;
+                NotifyOfPropertyChange(() => ProfileName);
             }
         }
 
@@ -583,7 +595,15 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         public Task HandleAsync(ProfileChangedEvent message, CancellationToken cancellationToken)
         {
             CurrentProfile = message.Profile;
+            ProfileName = CurrentProfile.ProfileName;
             ResetState();
+
+            return Task.CompletedTask;
+        }
+
+        public Task HandleAsync(ProfileNameChangedEvent message, CancellationToken cancellationToken)
+        {
+            ProfileName = message.NewName;
 
             return Task.CompletedTask;
         }
@@ -667,8 +687,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             {
                 await DeleteIfExistsAsync(CurrentHotkey).ConfigureAwait(false);
             }
-
-            await _profileManager.SaveProfileAsync(CurrentProfile).ConfigureAwait(false);
         }
 
         public async Task ClearActionAsync()
