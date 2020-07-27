@@ -25,7 +25,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly ProfileManager _profileManager;
 
-        //TODO : profile3가 선택된 상태에서 profile3의 이름이 바뀌면 여기의 이름은 안바뀐다
         private HotkeyProfile _currentProfile;
         public HotkeyProfile CurrentProfile
         {

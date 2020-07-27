@@ -175,6 +175,7 @@ namespace AutoHotkeyRemaster.Services
             }
             else
             {
+                //TODO : Insert Thread.Sleep
                 InputSimlationHelper.UpKey(hotkey.Action);
 
                 if (hotkey.EndingAction != null)
