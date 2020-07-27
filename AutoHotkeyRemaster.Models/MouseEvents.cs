@@ -1,7 +1,6 @@
 ﻿namespace AutoHotkeyRemaster.Models
 {
-    //To avoid collision with Modifiers
-    public enum EMouseEvents
+    public enum MouseEvents
     {
         None = 0,
         Click = 128,

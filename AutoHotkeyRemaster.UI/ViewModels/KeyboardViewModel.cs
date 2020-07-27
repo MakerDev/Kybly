@@ -95,7 +95,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             SetTriggerHotkeyPairs(message.Profile);
 
             Profile = message.Profile;
-
+            
             return Task.CompletedTask;
         }
 

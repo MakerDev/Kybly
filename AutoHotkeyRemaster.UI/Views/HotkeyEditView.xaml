@@ -35,6 +35,7 @@
         </Grid>
 
         <StackPanel
+            Margin="0 30 0 0"
             Orientation="Horizontal">
             <StackPanel 
                 Visibility="Visible"
@@ -48,7 +49,6 @@
                     Text="{Binding CurrentHotkey.Trigger, 
                         Converter={StaticResource InstanceToStringConverter}}"/>
             </StackPanel>
-
 
             <StackPanel x:Name="Modifiers" Width="150">
                 <TextBlock Style="{StaticResource TitleTextBlock}"

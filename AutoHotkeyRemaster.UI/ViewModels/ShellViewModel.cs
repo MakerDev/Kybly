@@ -10,6 +10,7 @@ using Caliburn.Micro;
 using Microsoft.Xaml.Behaviors.Core;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -42,7 +43,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             {
                 _selectedProfile = value;
 
-                //INFO : If somthing goes wrong, consider to change this synchronous
                 if (_selectedProfile != null)
                 {
                     _eventAggregator.PublishOnUIThreadAsync(new ProfileChangedEvent { Profile = _selectedProfile.Profile })
@@ -57,13 +57,12 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                     NotifyOfPropertyChange(() => SelectedProfile);
                     NotifyOfPropertyChange(() => CanDeleteProfile);
                 }
-
             }
         }
 
-        private BindingList<ProfileStateModel> _profileStates = new BindingList<ProfileStateModel>();
+        private ObservableCollection<ProfileStateModel> _profileStates = new ObservableCollection<ProfileStateModel>();
 
-        public BindingList<ProfileStateModel> ProfileStates
+        public ObservableCollection<ProfileStateModel> ProfileStates
         {
             get { return _profileStates; }
             set
@@ -99,7 +98,9 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         public bool DisplayMask
         {
             get { return _displayMask; }
-            set { _displayMask = value;
+            set
+            {
+                _displayMask = value;
                 NotifyOfPropertyChange(() => DisplayMask);
                 NotifyOfPropertyChange(() => MaskMessage);
             }
@@ -107,12 +108,13 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
         public string MaskMessage
         {
-            get { 
-                if(HookActivated)
+            get
+            {
+                if (HookActivated)
                 {
                     return "Cannot edit profile while activated.";
                 }
-                return ""; 
+                return "";
             }
         }
 
@@ -137,7 +139,15 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
             Items.AddRange(new Screen[] { _hotkeyEditViewModel, _keyboardViewModel, _optionsViewModel });
 
-            SetProfileListItems();
+            if (_profileManager.ProfileCount == 0)
+            {
+                AddNewProfile();
+            }
+            else
+            {
+                SetProfileListItems();
+            }
+
         }
 
         protected override void OnViewLoaded(object view)
@@ -174,15 +184,14 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             set { }
         }
 
-        public void AddNewProfile(object sender, RoutedEventArgs e)
+        public void AddNewProfile()
         {
             _profileManager.CreateNewProfile();
 
-            NotifyOfPropertyChange(() => CanAddNewProfile);
             SetProfileListItems();
+            NotifyOfPropertyChange(() => CanAddNewProfile);
         }
 
-        //TODO : 얘를 편집할때 infowindow를 못 움직이는 버그 있음
         public async void EditSwitchKeyTable()
         {
             var vm = IoC.Get<SwitchKeyTableWindowViewModel>();
@@ -211,7 +220,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         {
             var currentProfile = SelectedProfile.Profile;
 
-            CustomDialogBox dialogBox = new CustomDialogBox($"Are you sure to close {currentProfile.ProfileName}");
+            CustomDialogBox dialogBox
+                = new CustomDialogBox($"Are you sure to close {currentProfile.ProfileName}");
             dialogBox.ShowDialog();
 
             if (dialogBox.DialogResult.HasValue && dialogBox.DialogResult.Value)
@@ -258,6 +268,5 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 ProfileStates.Add(new ProfileStateModel(profile, _jsonSavefileManager));
             }
         }
-
     }
 }

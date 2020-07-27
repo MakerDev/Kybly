@@ -26,7 +26,8 @@ namespace AutoHotkeyRemaster.WPF.Views.CustomControls
 
         private void OnDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ProfileEditor profileEditor = new ProfileEditor(txtBlock.Text);
+            ProfileEditor profileEditor 
+                = new ProfileEditor(txtBlock.Text);
             profileEditor.ShowDialog();
 
             txtBlock.Text = profileEditor.ChangedName;

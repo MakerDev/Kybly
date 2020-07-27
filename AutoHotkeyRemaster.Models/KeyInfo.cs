@@ -12,17 +12,17 @@ namespace AutoHotkeyRemaster.Models
 
         public int Key { get; set; }    //윈도우 virtualKeyCode값
         public int Modifier { get; set; } //Modifiers 값
-        public EMouseEvents MouseEvent { get; set; }
+        public MouseEvents MouseEvent { get; set; }
 
         public KeyInfo()
         {
             Key = -1;
             Modifier = 0;
-            MouseEvent = EMouseEvents.None;
+            MouseEvent = MouseEvents.None;
         }
 
         public KeyInfo(int key, int modifier, 
-            EMouseEvents mouseEvent = EMouseEvents.None)
+            MouseEvents mouseEvent = MouseEvents.None)
         {
             Key = key;
             Modifier = modifier;
@@ -36,7 +36,7 @@ namespace AutoHotkeyRemaster.Models
             info += GetModifiersInfo(Modifier);
 
             //마우스 이벤트일 경우
-            if (MouseEvent != EMouseEvents.None)
+            if (MouseEvent != MouseEvents.None)
             {
                 info += GetMouseEventExplanation(Key, MouseEvent);
             }
@@ -65,7 +65,7 @@ namespace AutoHotkeyRemaster.Models
         {
             return Key ^ Modifier;
         }
-        private static string GetMouseEventExplanation(int button, EMouseEvents mouseEvent)
+        private static string GetMouseEventExplanation(int button, MouseEvents mouseEvent)
         {
             string explanation = "";
 
@@ -73,9 +73,9 @@ namespace AutoHotkeyRemaster.Models
             if (button == 2) { explanation = "Right Mouse Button"; }
             if (button == 4) { explanation = "Middle Mouse Button"; }
 
-            if (mouseEvent == EMouseEvents.Click) { explanation += "\nClick"; }
-            if (mouseEvent == EMouseEvents.DoubleClick) { explanation += "\nDouble Click"; }
-            if (mouseEvent == EMouseEvents.Down) { explanation += "\nDown"; }
+            if (mouseEvent == MouseEvents.Click) { explanation += "\nClick"; }
+            if (mouseEvent == MouseEvents.DoubleClick) { explanation += "\nDouble Click"; }
+            if (mouseEvent == MouseEvents.Down) { explanation += "\nDown"; }
 
             return explanation;
         }

@@ -8,11 +8,11 @@
 
   <Identity
     Name="76d56d2f-3e2a-472f-adc6-f282be69f97b"
-    Publisher="CN=raki2"
-    Version="1.0.0.0" />
+    Publisher="CN=yujin_shin"
+    Version="1.0.1.0" />
 
   <Properties>
-    <DisplayName>AutoHotkeyRemaster.Package</DisplayName>
+    <DisplayName>Kybly</DisplayName>
     <PublisherDisplayName>yujin_shin</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
@@ -36,7 +36,7 @@
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" />
+        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png"  Square71x71Logo="Images\SmallTile.png" Square310x310Logo="Images\LargeTile.png"/>
         <uap:SplashScreen Image="Images\SplashScreen.png" />
       </uap:VisualElements>
     </Application>

@@ -190,13 +190,13 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         #endregion
 
         #region MOUSE EVENTS
-        public EMouseEvents SelectedMouseEvent { get; set; } = EMouseEvents.Click;
+        public MouseEvents SelectedMouseEvent { get; set; } = MouseEvents.Click;
 
         public bool IsMouseKeySelected
         {
             get
             {
-                if (HotkeyAction != null && HotkeyAction.MouseEvent != EMouseEvents.None)
+                if (HotkeyAction != null && HotkeyAction.MouseEvent != MouseEvents.None)
                 {
                     return true;
                 }
@@ -210,13 +210,13 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         {
             get
             {
-                return SelectedMouseEvent == EMouseEvents.Click;
+                return SelectedMouseEvent == MouseEvents.Click;
             }
             set
             {
                 if (value)
                 {
-                    SelectedMouseEvent = EMouseEvents.Click;
+                    SelectedMouseEvent = MouseEvents.Click;
                     SaveAsync().ContinueWith((t) =>
                     {
                         NotifyOfPropertyChange(() => MouseClick);
@@ -228,13 +228,13 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         {
             get
             {
-                return SelectedMouseEvent == EMouseEvents.Down;
+                return SelectedMouseEvent == MouseEvents.Down;
             }
             set
             {
                 if (value)
                 {
-                    SelectedMouseEvent = EMouseEvents.Down;
+                    SelectedMouseEvent = MouseEvents.Down;
                     SaveAsync().ContinueWith((t) =>
                     {
                         NotifyOfPropertyChange(() => MouseDown);
@@ -246,13 +246,13 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         {
             get
             {
-                return SelectedMouseEvent == EMouseEvents.DoubleClick;
+                return SelectedMouseEvent == MouseEvents.DoubleClick;
             }
             set
             {
                 if (value)
                 {
-                    SelectedMouseEvent = EMouseEvents.DoubleClick;
+                    SelectedMouseEvent = MouseEvents.DoubleClick;
                     SaveAsync().ContinueWith((t) =>
                     {
                         NotifyOfPropertyChange(() => MouseDoubleClick);
@@ -615,9 +615,9 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             CurrentHotkey = message.Hotkey;
 
             //this must be here
-            if (CurrentHotkey.Action.MouseEvent == EMouseEvents.None)
+            if (CurrentHotkey.Action.MouseEvent == MouseEvents.None)
             {
-                SelectedMouseEvent = EMouseEvents.Click;
+                SelectedMouseEvent = MouseEvents.Click;
             }
             else
             {
@@ -647,7 +647,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             }
             else
             {
-                CurrentHotkey.Action.MouseEvent = EMouseEvents.None;
+                CurrentHotkey.Action.MouseEvent = MouseEvents.None;
             }
 
             if (HotkeyEndingKey != -1)
@@ -703,7 +703,12 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 return;
             }
 
-            Key key = e.ImeProcessedKey == Key.None ? e.Key : e.ImeProcessedKey;
+            Key key = e.SystemKey;
+
+            if (key == Key.None)
+            {
+                key = e.ImeProcessedKey == Key.None ? e.Key : e.ImeProcessedKey;
+            }
 
             var name = (sender as TextBox).Name;
 

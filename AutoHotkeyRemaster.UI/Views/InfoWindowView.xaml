@@ -17,6 +17,8 @@
         Topmost="True"
         BorderBrush="White"
         BorderThickness="1"
+        Left="{Binding LeftPosition, Mode=TwoWay}"
+        Top="{Binding TopPosition, Mode=TwoWay}"
         Background="{StaticResource DefaultBackgroundBrush}"
         Title="InfoWindowView" Height="24" MinWidth="80" MaxWidth="120">
 

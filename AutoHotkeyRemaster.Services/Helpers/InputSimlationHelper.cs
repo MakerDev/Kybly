@@ -104,19 +104,19 @@ namespace AutoHotkeyRemaster.Services.Helpers
 
             switch (key.MouseEvent)
             {
-                case EMouseEvents.None:
+                case MouseEvents.None:
                     _inputSimulator.Keyboard.KeyDown((VirtualKeyCode)key.Key);
                     break;
 
-                case EMouseEvents.Click:
+                case MouseEvents.Click:
                     ClickMouse(key.Key);
                     break;
 
-                case EMouseEvents.DoubleClick:
+                case MouseEvents.DoubleClick:
                     DoubleClickMouse(key.Key);
                     break;
 
-                case EMouseEvents.Down:
+                case MouseEvents.Down:
                     DownMouse(key.Key);
                     break;
 
@@ -131,11 +131,11 @@ namespace AutoHotkeyRemaster.Services.Helpers
 
             switch (key.MouseEvent)
             {
-                case EMouseEvents.None:
+                case MouseEvents.None:
                     _inputSimulator.Keyboard.KeyUp((VirtualKeyCode)key.Key);
                     break;
 
-                case EMouseEvents.Down:
+                case MouseEvents.Down:
                     UpMouse(key.Key);
                     break;
 

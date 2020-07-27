@@ -168,8 +168,8 @@ namespace AutoHotkeyRemaster.Services
             _keyboardHooker.StopHookKeyboard();
 
             Debug.WriteLine($"trigger : {hotkey.Trigger}  |  action : {hotkey.Action}");
-            
-            if(isDown)
+
+            if (isDown)
             {
                 InputSimlationHelper.DownKey(hotkey.Action);
             }
@@ -177,7 +177,7 @@ namespace AutoHotkeyRemaster.Services
             {
                 InputSimlationHelper.UpKey(hotkey.Action);
 
-                if(hotkey.EndingAction != null)
+                if (hotkey.EndingAction != null)
                 {
                     InputSimlationHelper.PressKey(hotkey.EndingAction);
                 }
@@ -192,9 +192,12 @@ namespace AutoHotkeyRemaster.Services
 
             if (args.IsPressed)
             {
-                if (keycode == _activationKey)
+                if (keycode == _activationKey )
                 {
-                    ChangeHookState();
+                    if(_profileManager.ProfileCount != 0)
+                    {
+                        ChangeHookState();
+                    }
 
                     return;
                 }
@@ -210,7 +213,7 @@ namespace AutoHotkeyRemaster.Services
 
                 return;
             }
-            
+
             if (keycode == _activationKey || _swtichKeys.ContainsKey(keycode))
                 return;
 
