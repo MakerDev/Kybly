@@ -106,6 +106,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 {
                     return "Cannot edit profile while activated.";
                 }
+
                 return "";
             }
         }
@@ -193,7 +194,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             await _windowManager.ShowDialogAsync(vm);
             await vm.TryCloseAsync();
 
-            DisplayMask = false;
+            if(HookActivated == false)           
+                DisplayMask = false;
         }
 
         public bool CanDeleteProfile
