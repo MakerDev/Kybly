@@ -15,8 +15,8 @@
 
                 <ResourceDictionary Source="/Styles/AppStyles.xaml" />
                 <ResourceDictionary Source="/Styles/CustomSwitch.xaml" />
-
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Steel.xaml" />
+                <ResourceDictionary Source="/Styles/FlatButtonStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
