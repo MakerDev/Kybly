@@ -9,7 +9,6 @@ namespace AutoHotkeyRemaster.WPF.Helpers
 {
     public class JsonSaveFileManager : IJsonSavefileManager
     {
-        //TODO : need to change in UWP. Should extract interface and use DI?
         public static string SavefileFolder { get; private set; }
             = Path.Combine(Environment.CurrentDirectory, "savefiles");
 

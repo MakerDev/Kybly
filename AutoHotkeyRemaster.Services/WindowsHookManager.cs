@@ -48,7 +48,7 @@ namespace AutoHotkeyRemaster.Services
             _profileSwitchKeyTable = profileSwitchKeyTable;
 
             _applicationModel.ActivationKeyChange += OnActivationKeyChanged;
-            _keyboardHooker.KeyHooked += HandleHookedEvent;
+            _keyboardHooker.KeyHooked += HandleHookedEventAsync;
 
             _keyboardHooker.StartHook(_activationKey, null);
         }
@@ -57,27 +57,27 @@ namespace AutoHotkeyRemaster.Services
         public void Shutdown()
         {
             _keyboardHooker.StopHook();
-            _keyboardHooker.KeyHooked -= HandleHookedEvent;
+            _keyboardHooker.KeyHooked -= HandleHookedEventAsync;
             _applicationModel.ActivationKeyChange -= OnActivationKeyChanged;
             //For sure
             InputSimlationHelper.UpAllModifiers();
             InputSimlationHelper.UpAllModifiers();
         }
 
-        private void ChangeHookState()
+        private async Task ChangeHookStateAsync()
         {
             if (HookState == HookState.UnHooking)
             {
                 HookState = HookState.Hooking;
 
-                Activate(_lastHookedProfileNum);
+                await ActivateAsync(_lastHookedProfileNum);
 
                 return;
             }
 
             HookState = HookState.UnHooking;
 
-            Deactivate();
+            await Deactivate();
 
             return;
         }
@@ -87,7 +87,7 @@ namespace AutoHotkeyRemaster.Services
         /// On the first activation, activates default profile. (profile1)
         /// </summary>
         /// <returns>Activated profile</returns>
-        private void Activate(int profileNum)
+        private async Task ActivateAsync(int profileNum)
         {
             _currentHookingProfile = _profileManager.FindProfileOrDefault(profileNum);
 
@@ -110,14 +110,14 @@ namespace AutoHotkeyRemaster.Services
 
             _keyboardHooker.StartHook(registeredKeys);
 
-            _eventAggregator.PublishOnUIThreadAsync(new HookStateChangeEvent
+            await _eventAggregator.PublishOnUIThreadAsync(new HookStateChangeEvent
             {
                 HookState = HookState.Hooking,
                 HotkeyProfile = _currentHookingProfile
             });
         }
-        //TODO : Change PublishOnUIThreadAsync to be awaited
-        private void Deactivate()
+
+        private async Task Deactivate()
         {
             _keyboardHooker.StopHook();
 
@@ -131,7 +131,7 @@ namespace AutoHotkeyRemaster.Services
             //Only enables activation key            
             _keyboardHooker.StartHook(_activationKey, null);
 
-            _eventAggregator.PublishOnUIThreadAsync(new HookStateChangeEvent
+            await _eventAggregator.PublishOnUIThreadAsync(new HookStateChangeEvent
             {
                 HookState = HookState.UnHooking,
             });
@@ -157,10 +157,10 @@ namespace AutoHotkeyRemaster.Services
             return registeredKeys;
         }
 
-        private void SwtichProfile(int toProfileNum)
+        private async Task SwtichProfileAsync(int toProfileNum)
         {
-            Deactivate();
-            Activate(toProfileNum);
+            await Deactivate();
+            await ActivateAsync(toProfileNum);
         }
 
         private void ProcessHotkeyAction(Hotkey hotkey, bool isDown)
@@ -187,7 +187,8 @@ namespace AutoHotkeyRemaster.Services
             _keyboardHooker.StartHookKeyboard();
         }
 
-        private void HandleHookedEvent(KeyHookedArgs args)
+        //As this is kinda like a event handler, allow this to be async void
+        private async void HandleHookedEventAsync(KeyHookedArgs args)
         {
             int keycode = args.VkCode;
 
@@ -197,7 +198,7 @@ namespace AutoHotkeyRemaster.Services
                 {
                     if(_profileManager.ProfileCount != 0)
                     {
-                        ChangeHookState();
+                        await ChangeHookStateAsync();
                     }
 
                     return;
@@ -205,7 +206,7 @@ namespace AutoHotkeyRemaster.Services
 
                 if (_swtichKeys.ContainsKey(keycode))
                 {
-                    SwtichProfile(_swtichKeys[keycode]);
+                    await SwtichProfileAsync(_swtichKeys[keycode]);
 
                     return;
                 }
