@@ -271,7 +271,7 @@
 
                                 <TextBlock 
                                         Style="{StaticResource DefaultFontStyle}"
-                                        Margin="21 0 0 0"
+                                        Margin="3 0 0 0"
                                         VerticalAlignment="Center" 
                                         Text="KYBLY" />
                             </StackPanel>

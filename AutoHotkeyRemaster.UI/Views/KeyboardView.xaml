@@ -39,7 +39,7 @@
                             </Trigger>
                             
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#FF0076D7" />
+                                <Setter Property="Background" Value="#5abaed" />
                             </Trigger>
 
                             <Trigger Property="IsChecked" Value="True">
@@ -58,13 +58,25 @@
 
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
-                                    <Condition Property="IsChecked" Value="True" />
+                                    <Condition Property="IsPressed" Value="True" />
+                                    <Condition Property="Tag" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.Setters>
+                                    <Setter Property="Background" Value="#5abaed" />
+                                </MultiTrigger.Setters>
+                            </MultiTrigger>
+
+                            <!--<MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True" />
                                     <Condition Property="Tag" Value="True" />
                                 </MultiTrigger.Conditions>
                                 <MultiTrigger.Setters>
                                     <Setter Property="Background" Value="#bfbfbf" />
                                 </MultiTrigger.Setters>
-                            </MultiTrigger>
+                            </MultiTrigger>-->
+
+
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
