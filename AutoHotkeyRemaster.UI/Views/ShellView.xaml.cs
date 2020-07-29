@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using AutoHotkeyRemaster.WPF.ViewModels;
+using MahApps.Metro.Controls;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -16,6 +17,10 @@ namespace AutoHotkeyRemaster.WPF.Views
     {
         private readonly Storyboard _openProfilePanelStoryboard = new Storyboard();
         private System.Windows.Forms.NotifyIcon _notiIcon = new System.Windows.Forms.NotifyIcon();
+        private bool _pausingHook = false;
+        private System.Windows.Forms.ToolStripMenuItem _pauseMenuItem;
+        private ShellViewModel _viewModel;
+
 
         public ShellView()
         {
@@ -52,11 +57,47 @@ namespace AutoHotkeyRemaster.WPF.Views
 
             var contextMenu = new System.Windows.Forms.ContextMenuStrip();
 
-            contextMenu.Items.Add("Setting", null, (s, e) => OpenWindow());
-            contextMenu.Items.Add("Exit", null, (s, e) => Close());
-            _notiIcon.ContextMenuStrip = contextMenu;
+            _pauseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            _pauseMenuItem.Text = "Pause Hook";
+            _pauseMenuItem.Click += OnPauseItemClicked;
+            
+            _notiIcon.ContextMenuStrip = ResetTooltipContextMenu();
+
+            _viewModel = this.DataContext as ShellViewModel;
 
             base.OnActivated(e);
+        }
+
+        private System.Windows.Forms.ContextMenuStrip ResetTooltipContextMenu()
+        {
+            var contextMenu = new System.Windows.Forms.ContextMenuStrip();
+
+            contextMenu.Items.Clear();
+
+            contextMenu.Items.Add(_pauseMenuItem);
+            contextMenu.Items.Add("Setting", null, (s, e) => OpenWindow());
+            contextMenu.Items.Add("Exit", null, (s, e) => Close());
+
+            return contextMenu;
+        }
+
+        //HACK : Allow accessing to VM 
+        private void OnPauseItemClicked(object sender, EventArgs e)
+        {
+            if (_pausingHook)
+            {
+                _pauseMenuItem.Text = "Pause Hook";
+                _viewModel.ResumeHook();
+            }
+            else
+            {
+                _pauseMenuItem.Text = "Resume Hook";
+                _viewModel.PauseHook();
+            }
+
+            _notiIcon.ContextMenuStrip = ResetTooltipContextMenu();
+
+            _pausingHook = !_pausingHook;
         }
 
         protected override void OnClosing(CancelEventArgs e)

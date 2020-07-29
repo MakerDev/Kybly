@@ -242,6 +242,16 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             return Task.CompletedTask;
         }
 
+        public void PauseHook()
+        {
+            _windowsHookManager.PauseHook();
+        }
+
+        public void ResumeHook()
+        {
+            _windowsHookManager.ResumeHook();
+        }
+
         protected override async Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
             _windowsHookManager.Shutdown();

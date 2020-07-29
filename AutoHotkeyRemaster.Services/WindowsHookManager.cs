@@ -64,6 +64,16 @@ namespace AutoHotkeyRemaster.Services
             InputSimlationHelper.UpAllModifiers();
         }
 
+        public void PauseHook()
+        {
+            _keyboardHooker.StopHookKeyboard();
+        }
+
+        public void ResumeHook()
+        {
+            _keyboardHooker.StartHookKeyboard();
+        }
+
         private async Task ChangeHookStateAsync()
         {
             if (HookState == HookState.UnHooking)
@@ -77,7 +87,7 @@ namespace AutoHotkeyRemaster.Services
 
             HookState = HookState.UnHooking;
 
-            await Deactivate();
+            await DeactivateAsync();
 
             return;
         }
@@ -117,7 +127,7 @@ namespace AutoHotkeyRemaster.Services
             });
         }
 
-        private async Task Deactivate()
+        private async Task DeactivateAsync()
         {
             _keyboardHooker.StopHook();
 
@@ -159,7 +169,7 @@ namespace AutoHotkeyRemaster.Services
 
         private async Task SwtichProfileAsync(int toProfileNum)
         {
-            await Deactivate();
+            await DeactivateAsync();
             await ActivateAsync(toProfileNum);
         }
 
