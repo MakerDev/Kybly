@@ -55,13 +55,16 @@
                                     <Setter Property="Background" TargetName="border"
                                         Value="{StaticResource SelectedItemBackground}" />
                                 </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" TargetName="border"
+                                            Value="#5e5e5e"/>
+                                </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
             </Style>
-            <Style x:Key="SwitchButtonStyle" 
-                   TargetType="Button">
+            <Style x:Key="SwitchButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderBrush" Value="Transparent" />
                 <Setter Property="Template">
@@ -86,6 +89,42 @@
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="True">
                                     <Setter Property="Background" Value="#5e5e5e"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="DefaultToggleStyle" 
+                   TargetType="ToggleButton">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Border x:Name="border"
+                                Height="60"                                                 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True">
+
+                                <ContentPresenter 
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" TargetName="border"
+                                        Value="{StaticResource SelectedItemBackground}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" TargetName="border"
+                                        Value="{StaticResource SelectedItemBackground}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background"  TargetName="border"
+                                            Value="#5e5e5e"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -156,10 +195,9 @@
                     <!--Main Panel-->
                     <StackPanel x:Name="MainPanel" Grid.Row="0" Grid.Column="0" >
                         <!--// Grid for the Menu Toggle Button //-->
-                        <Grid Height="49"
-                          Margin="0 0 0 10">
+                        <Grid Height="60">
                             <!--// Menu title text //-->
-                            <TextBlock  Grid.Row="1"
+                            <!--<TextBlock  Grid.Row="1"
                                     Grid.Column="0"
                                     Margin="71,0,0,0"
                                     Text="KYBLY"                                                                   
@@ -169,58 +207,75 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center" 
                                     >
-                            </TextBlock>
+                            </TextBlock>-->
 
                             <!--// Toggle Button //-->
-                            <ToggleButton x:Name="ToggleButton"
-                                      Grid.Column="0"
-                                      VerticalAlignment="Center"
-                                      HorizontalAlignment="Left"
-                                      Margin="18,0,0,0"
-                                      Height="30"
-                                      Width="30"
-                                      BorderThickness="0"
-                                      Style="{StaticResource ToggleBtnStyle}" 
-                                      Unchecked="ToggleMenuBtnUnchecked" 
-                                      Checked="ToggleMenuBtnChecked">
+                            <StackPanel                                 
+                                Orientation="Horizontal"
+                                Width="230"
+                                Height="60"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                                
+                                <ToggleButton 
+                                    x:Name="ToggleButton"
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    Background="Transparent"
+                                    Width="65"
+                                    Height="60"
+                                    BorderThickness="0"
+                                    Style="{StaticResource DefaultToggleStyle}"
+                                    VerticalAlignment="Center"
+                                    Unchecked="ToggleMenuBtnUnchecked" 
+                                    Checked="ToggleMenuBtnChecked">
 
-                                <!--// Toggle button default background image //-->
-                                <ToggleButton.Background>
-                                    <ImageBrush ImageSource="../Resources/Icons/ToggleDefault.png"
-                                            Stretch="None"/>
-                                </ToggleButton.Background>
 
-                                <!--// Toggle Button - Checked, Unchecked events //-->
-                                <ToggleButton.Triggers>
-                                    <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                                        <BeginStoryboard>
-                                            <Storyboard x:Name="HideStackPanel">
-                                                <DoubleAnimation                                                  
+                                    <Image          
+                                        VerticalAlignment="Center"
+                                        Margin="0 0 0 00"
+                                        Source="/Resources/Icons/ToggleDefault.png" 
+                                        Height="30" Width="30" />
+
+                                    <!--// Toggle Button - Checked, Unchecked events //-->
+                                    <ToggleButton.Triggers>
+                                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                            <BeginStoryboard>
+                                                <Storyboard x:Name="HideStackPanel">
+                                                    <DoubleAnimation                                                  
                                                     Storyboard.TargetName="NavPanel"
                                                     Storyboard.TargetProperty="Width"
                                                     BeginTime="0:0:0"                                                
                                                     To="65"
                                                     Duration="0:0:0.2">
-                                                </DoubleAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
 
-                                    <EventTrigger RoutedEvent="ToggleButton.Checked">
-                                        <BeginStoryboard>
-                                            <Storyboard x:Name="ShowStackPanel">
-                                                <DoubleAnimation                                              
+                                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                            <BeginStoryboard>
+                                                <Storyboard x:Name="ShowStackPanel">
+                                                    <DoubleAnimation                                              
                                                     Storyboard.TargetName="NavPanel"
                                                     Storyboard.TargetProperty="Width"
                                                     BeginTime="0:0:0"
                                                     From="65" To="230"
                                                     Duration="0:0:0.3">
-                                                </DoubleAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                </ToggleButton.Triggers>
-                            </ToggleButton>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </ToggleButton.Triggers>
+                                </ToggleButton>
+
+                                <TextBlock 
+                                        Style="{StaticResource DefaultFontStyle}"
+                                        Margin="21 0 0 0"
+                                        VerticalAlignment="Center" 
+                                        Text="KYBLY" />
+                            </StackPanel>
+                            
                         </Grid>
 
                         <!--// ListView with menu list items //-->
@@ -247,7 +302,7 @@
                                     <Image 
                                         Margin="8 0 0 0"
                                         Source="/Resources/Icons/KeyboardIcon.png" 
-                                        Height="27" Width="38" />
+                                        Height="27" Width="35" />
 
                                     <TextBlock 
                                         Style="{StaticResource DefaultFontStyle}"
@@ -302,9 +357,9 @@
                                     VerticalAlignment="Center">
 
                                     <Image          
-                                        Margin="13 0 0 0"
+                                        Margin="18 0 0 0"
                                         Source="/Resources/Icons/ProfileSwitchIcon.png" 
-                                        Height="40" Width="40" />
+                                        Height="35" Width="30" />
 
                                     <TextBlock 
                                         Style="{StaticResource DefaultFontStyle}"
@@ -331,9 +386,9 @@
                                     VerticalAlignment="Center">
 
                                     <Image          
-                                    Margin="13 0 0 0"
+                                    Margin="18 0 0 0"
                                     Source="/Resources/Icons/OptionIcon.png" 
-                                    Height="40" Width="40" />
+                                    Height="30" Width="30" />
 
                                     <TextBlock 
                                     Style="{StaticResource DefaultFontStyle}"
@@ -416,15 +471,21 @@
                         <StackPanel                             
                             DockPanel.Dock="Bottom">
                             <Button 
+                                BorderThickness="1"
                                 x:Name="AddNewProfile"
                                 Height="40"
                                 FontSize="16"
-                                Content="New Profile" />
+                                FontWeight="Light"            
+                                Style="{StaticResource FlatButtonStyle}"
+                                Content="New Profile" BorderBrush="#FF6C6C6C" />
 
                             <Button 
                                 x:Name="DeleteProfile"
-                                Margin="0 1 0 5"
+                                BorderThickness="1"
                                 Height="40"
+                                BorderBrush="#FF6C6C6C"
+                                Style="{StaticResource FlatButtonStyle}"
+                                FontWeight="Light"
                                 Visibility="{Binding CanDeleteProfile, 
                                     Converter={StaticResource BooleanToVisibilityConverter}}"
                                 Content="Delete Profile"                                

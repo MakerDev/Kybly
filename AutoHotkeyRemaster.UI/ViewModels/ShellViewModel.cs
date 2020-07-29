@@ -111,7 +111,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             }
         }
 
-
         public ShellViewModel(ProfileManager profileManager, IEventAggregator eventAggregator, IWindowManager windowManager,
             ApplicationModel application, KeyboardViewModel keyboardViewModel, WindowsHookManager windowsHookManager,
             HotkeyEditViewModel hotkeyEditViewModel, OptionsViewModel optionsViewModel, IAsyncJsonFileManager jsonSavefileManager,

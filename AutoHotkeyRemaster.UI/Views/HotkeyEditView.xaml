@@ -17,6 +17,17 @@
                BasedOn="{StaticResource DefaultFontStyle}">
             <Setter Property="FontSize" Value="15"/>
         </Style>
+
+        <Style x:Key="FlatSelectKeyToggleStyle" 
+               TargetType="ToggleButton" BasedOn="{StaticResource FlatToggleButtonStyle}">
+            <Setter Property="Content" Value="Select Key"/>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Selecting..." />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+               
     </UserControl.Resources>
 
     <UserControl.Background>
@@ -39,7 +50,7 @@
             Orientation="Horizontal">
             <StackPanel 
                 Visibility="Visible"
-                Margin="20 0 0 0"
+                Margin="20 0 20 0"
                 Width="250">
                 <StackPanel x:Name="ProfileInfo">
 
@@ -176,7 +187,7 @@
                     
                     <TextBlock 
                         Style="{StaticResource ExplanationTextBlockStyle}"
-                        Margin="0 20 0 0"
+                        Margin="0 15 0 0"
                         HorizontalAlignment="Left"
                         Text="Click"/>
 
@@ -220,7 +231,7 @@
             </StackPanel>
 
             <StackPanel 
-                    x:Name="MediaKeyPanel" Width="130">
+                    x:Name="MediaKeyPanel" Width="150">
 
                 <TextBlock Style="{StaticResource TitleTextBlock}"
                            Text="Media"/>
@@ -287,7 +298,7 @@
             </StackPanel>
 
             <StackPanel 
-                    x:Name="BrowserPanel" Width="130">
+                    x:Name="BrowserPanel" Width="150">
 
                 <TextBlock Style="{StaticResource TitleTextBlock}"
                            Text="Browser"/>
@@ -395,10 +406,9 @@
                     x:Name="ActionKeySelectButton"
                     Width="140" Height="30"
                     Margin="0 10 0 0"
-                    Style="{StaticResource FlatToggleButtonStyle}"
+                    Style="{StaticResource FlatSelectKeyToggleStyle}"
                     Checked="OnSelectKeyChecked"
-                    Unchecked="OnSelectKeyUnChecked"
-                    Content="Select Key" />
+                    Unchecked="OnSelectKeyUnChecked" />
 
                 <TextBlock 
                     Style="{StaticResource  DefaultFontStyle}"
@@ -425,10 +435,9 @@
                     x:Name="EndingKeySelectKeyButton"
                     Width="140" Height="30"
                     Margin="0 10 0 0"
-                    Style="{StaticResource FlatToggleButtonStyle}"
+                    Style="{StaticResource FlatSelectKeyToggleStyle}"
                     Checked="OnSelectKeyChecked"
-                    Unchecked="OnSelectKeyUnChecked"
-                    Content="Select Key" />
+                    Unchecked="OnSelectKeyUnChecked" />
 
                 <Button 
                     x:Name="ClearAction"
@@ -436,8 +445,7 @@
                     Style="{StaticResource FlatButtonStyle}"
                     Width="140"
                     Height="28"
-                    Content="Clear"
-                    />
+                    Content="Clear all" />
 
                 <StackPanel 
                     x:Name="DetailAndOkButtons"

@@ -41,7 +41,7 @@
                    BasedOn="{StaticResource DefaultFontStyle}">
         <Setter Property="FontSize" Value="28"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="Margin" Value="0 0 0 30"/>
+        <Setter Property="Margin" Value="0 0 0 15"/>
     </Style>
 
 

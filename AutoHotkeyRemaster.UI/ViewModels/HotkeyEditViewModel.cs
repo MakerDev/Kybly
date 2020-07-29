@@ -15,7 +15,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
     public class HotkeyEditViewModel : Screen,
         IHandle<ProfileChangedEvent>, IHandle<KeySelectedEvent>, IHandle<ProfileDeletedEvent>, IHandle<ProfileNameChangedEvent>
     {
-        public enum ESelectKeyTarget
+        public enum SelectingTargets
         {
             ActionKey,
             EndingKey,
@@ -530,7 +530,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         #endregion
 
 
-        private ESelectKeyTarget _selectKeyTarget;
+        private SelectingTargets _selectKeyTarget;
 
         public bool IsSelectingKey
         {
@@ -552,7 +552,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             }
         }
 
-        public void StartSelectingKey(ESelectKeyTarget selectKeyTarget)
+        public void StartSelectingKey(SelectingTargets selectKeyTarget)
         {
             IsSelectingKey = true;
             _selectKeyTarget = selectKeyTarget;
@@ -613,15 +613,15 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             {
                 switch (_selectKeyTarget)
                 {
-                    case ESelectKeyTarget.ActionKey:
+                    case SelectingTargets.ActionKey:
                         HotkeyActionKey = message.Hotkey.Trigger.Key;
                         break;
 
-                    case ESelectKeyTarget.EndingKey:
+                    case SelectingTargets.EndingKey:
                         HotkeyEndingKey = message.Hotkey.Trigger.Key;
                         break;
 
-                    case ESelectKeyTarget.ProfileSwitchKey:
+                    case SelectingTargets.ProfileSwitchKey:
                         break;
 
                     default:

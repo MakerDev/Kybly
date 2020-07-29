@@ -40,15 +40,15 @@ namespace AutoHotkeyRemaster.WPF.Views
                 _currentOnSelectKeyButton.IsChecked = false;
             }
 
-            HotkeyEditViewModel.ESelectKeyTarget target;
+            HotkeyEditViewModel.SelectingTargets target;
 
-            if (toggleButton.Name.Contains(HotkeyEditViewModel.ESelectKeyTarget.ActionKey.ToString()))
+            if (toggleButton.Name.Contains(HotkeyEditViewModel.SelectingTargets.ActionKey.ToString()))
             {
-                target = HotkeyEditViewModel.ESelectKeyTarget.ActionKey;
+                target = HotkeyEditViewModel.SelectingTargets.ActionKey;
             }
             else
             {
-                target = HotkeyEditViewModel.ESelectKeyTarget.EndingKey;
+                target = HotkeyEditViewModel.SelectingTargets.EndingKey;
             }
 
             _hotkeyEditViewModel.StartSelectingKey(target);

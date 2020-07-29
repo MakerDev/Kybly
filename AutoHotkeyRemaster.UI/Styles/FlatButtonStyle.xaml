@@ -48,7 +48,9 @@
                             Padding="{TemplateBinding Padding}"
                             SnapsToDevicePixels="True">
 
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        <ContentPresenter 
+                            Content="{TemplateBinding Content}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
