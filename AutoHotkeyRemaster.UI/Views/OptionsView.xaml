@@ -4,13 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
+             xmlns:custom="clr-namespace:AutoHotkeyRemaster.WPF.Views.CustomControls"
              xmlns:vm="clr-namespace:AutoHotkeyRemaster.WPF.ViewModels"
              xmlns:local="clr-namespace:AutoHotkeyRemaster.WPF.Views"
-             cal:Bind.AtDesignTime="True"
-             d:DataContext="{d:DesignInstance Type=vm:OptionsViewModel, IsDesignTimeCreatable=False}"
+             d:DataContext="{d:DesignInstance Type=vm:OptionsViewModel, 
+                IsDesignTimeCreatable=False}"
              mc:Ignorable="d" 
              Background="#494949"
              Height="800" Width="300">
+    <UserControl.Resources>
+        <Style x:Key="NumericTextboxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="#797979"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="0 10 0 10"/>
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+    </UserControl.Resources>
+    
     <StackPanel
         Margin="15 0 0 0">
         <TextBlock 
@@ -43,6 +56,33 @@
             IsChecked="{Binding MinimizeOnStartUp}"
             Style="{StaticResource CustomSwitchStyle}" />
 
+        <TextBlock 
+            Text="Mouse Timing Settings" 
+            Style="{StaticResource DefaultFontStyle}" 
+            FontSize="18"
+            Margin="-5 25 0 10" />
+
+        <TextBlock Text="Mouse Down Timing (miliseconds)"
+                   Style="{StaticResource DefaultFontStyle}"
+                   FontSize="15" />
+
+        <TextBox          
+            Text="{Binding MouseDownDelayMiliseconds, 
+                Converter={StaticResource IntegerToStringConverter}}"
+            Style="{StaticResource NumericTextboxStyle}"
+            PreviewTextInput="OnPreviewTextInput" />
+
+
+        <TextBlock Text="Mouse Up Timing (miliseconds)"
+                   Style="{StaticResource DefaultFontStyle}"
+                   FontSize="15" />
+        
+        <TextBox 
+            Style="{StaticResource NumericTextboxStyle}"
+            Text="{Binding MouseUpDelayMiliseconds, 
+                Converter={StaticResource IntegerToStringConverter}}"
+            PreviewTextInput="OnPreviewTextInput" />
+        
         <TextBlock 
             Style="{StaticResource DefaultFontStyle}"
             FontSize="15"

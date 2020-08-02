@@ -21,7 +21,8 @@ namespace AutoHotkeyRemaster.WPF.Views
         private System.Windows.Forms.ToolStripMenuItem _pauseMenuItem;
         private ShellViewModel _viewModel;
 
-
+        //TODO : KeyboardView와 HotkeyEditView를 하나의 컨테이너 안에 두고, Stackpanel로 OptionsView와 Horizaontal로 두면
+        //Options만 따로 VM을 바인딩하지 않아도 됨.
         public ShellView()
         {
             InitializeComponent();
@@ -39,9 +40,11 @@ namespace AutoHotkeyRemaster.WPF.Views
 
             NavPanel.Width = 65;
             OptionsPanel.Width = 0;
+
+            SetNotifyIcon();
         }
 
-        protected override void OnActivated(EventArgs e)
+        private void SetNotifyIcon()
         {
             //Set tray icon.
             _notiIcon.Icon = Properties.Resources.KyblyIcon;
@@ -60,9 +63,12 @@ namespace AutoHotkeyRemaster.WPF.Views
             _pauseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             _pauseMenuItem.Text = "Pause Hook";
             _pauseMenuItem.Click += OnPauseItemClicked;
-            
-            _notiIcon.ContextMenuStrip = ResetTooltipContextMenu();
 
+            _notiIcon.ContextMenuStrip = ResetTooltipContextMenu();
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
             _viewModel = this.DataContext as ShellViewModel;
 
             base.OnActivated(e);

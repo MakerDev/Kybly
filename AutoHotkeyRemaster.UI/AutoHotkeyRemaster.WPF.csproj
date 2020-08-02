@@ -23,12 +23,6 @@
     <DefineConstants>TRACE;WINDOWS_WPF</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Commands\**" />
-    <EmbeddedResource Remove="Commands\**" />
-    <None Remove="Commands\**" />
-    <Page Remove="Commands\**" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="Properties\KyblyIcon.ico" />
     <None Remove="Properties\KyblyIcon.png" />
     <None Remove="Resources\Icons\AppIcons\Icon.png" />

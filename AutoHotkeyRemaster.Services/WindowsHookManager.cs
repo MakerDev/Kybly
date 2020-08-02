@@ -31,6 +31,7 @@ namespace AutoHotkeyRemaster.Services
         private readonly ProfileManager _profileManager;
         private readonly ProfileSwitchKeyTableManager _profileSwitchKeyTable;
         private readonly WindowsKeyboardHooker _keyboardHooker = new WindowsKeyboardHooker();
+        private readonly Options _options;
 
         private int _activationKey => _applicationModel.Options.ActivationKey;
         private readonly Dictionary<int, int> _swtichKeys = new Dictionary<int, int>(); //Key : switch keycode, Value : profile to switch
@@ -49,6 +50,7 @@ namespace AutoHotkeyRemaster.Services
 
             _applicationModel.ActivationKeyChange += OnActivationKeyChanged;
             _keyboardHooker.KeyHooked += HandleHookedEventAsync;
+            _options = _applicationModel.Options;
 
             _keyboardHooker.StartHook(_activationKey, null);
         }
@@ -91,7 +93,6 @@ namespace AutoHotkeyRemaster.Services
 
             return;
         }
-
 
         /// <summary>
         /// On the first activation, activates default profile. (profile1)
@@ -181,12 +182,12 @@ namespace AutoHotkeyRemaster.Services
 
             if (isDown)
             {
-                InputSimlationHelper.DownKey(hotkey.Action);
+                InputSimlationHelper.DownKey(hotkey.Action, _options.MouseDownDelayMiliseconds);
             }
             else
             {
                 //TODO : Insert Thread.Sleep
-                InputSimlationHelper.UpKey(hotkey.Action);
+                InputSimlationHelper.UpKey(hotkey.Action, _options.MouseUpDelayMiliseconds);
 
                 if (hotkey.EndingAction != null)
                 {

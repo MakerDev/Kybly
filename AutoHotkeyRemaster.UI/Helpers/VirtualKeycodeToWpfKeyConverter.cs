@@ -70,7 +70,7 @@ namespace AutoHotkeyRemaster.WPF.Helpers
 
             string result = KeyInterop.KeyFromVirtualKey(keycode).ToString();
 
-            if(result.StartsWith("Oem"))
+            if (result.StartsWith("Oem"))
             {
                 result = GetCharFromKey(keycode).ToString();
             }

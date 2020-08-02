@@ -193,7 +193,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             await _windowManager.ShowDialogAsync(vm);
             await vm.TryCloseAsync();
 
-            if(HookActivated == false)           
+            if (HookActivated == false)
                 DisplayMask = false;
         }
 

@@ -47,6 +47,35 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                     .ContinueWith((task) => NotifyOfPropertyChange(() => MinimizeOnStartUp));
             }
         }
+
+        public int MouseUpDelayMiliseconds
+        {
+            get
+            {
+                return _options.MouseUpDelayMiliseconds;
+            }
+            set
+            {
+                _options.MouseUpDelayMiliseconds = value;
+                _jsonSavefileManager.SaveAsync(_options, "options")
+                    .ContinueWith((task) => NotifyOfPropertyChange(() => MouseUpDelayMiliseconds));
+            }
+        }
+
+        public int MouseDownDelayMiliseconds
+        {
+            get
+            {
+                return _options.MouseDownDelayMiliseconds;
+            }
+            set
+            {
+                _options.MouseDownDelayMiliseconds = value;
+                _jsonSavefileManager.SaveAsync(_options, "options")
+                    .ContinueWith((task) => NotifyOfPropertyChange(() => MouseDownDelayMiliseconds));
+            }
+        }
+
         public OptionsViewModel(ApplicationModel applicationModel, IAsyncJsonFileManager jsonSavefileManager)
         {
             _options = applicationModel.Options;

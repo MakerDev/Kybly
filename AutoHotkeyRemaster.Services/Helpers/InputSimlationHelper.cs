@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using WindowsInput;
 using WindowsInput.Native;
 
@@ -10,7 +12,6 @@ namespace AutoHotkeyRemaster.Services.Helpers
     public static class InputSimlationHelper
     {
         private static InputSimulator _inputSimulator = new InputSimulator();
-
 
         public static void DownMouse(int mouseKey)
         {
@@ -96,54 +97,58 @@ namespace AutoHotkeyRemaster.Services.Helpers
             }
         }
 
-        public static void DownKey(KeyInfo key)
+        public static void DownKey(KeyInfo key, int mouseDownMiliseconds = 0)
         {
             var modifiers = GetModifierList(key.Modifier);
 
             DownModifiers(modifiers);
 
-            switch (key.MouseEvent)
+            if (key.MouseEvent == MouseEvents.None)
             {
-                case MouseEvents.None:
-                    _inputSimulator.Keyboard.KeyDown((VirtualKeyCode)key.Key);
-                    break;
-
-                case MouseEvents.Click:
-                    ClickMouse(key.Key);
-                    break;
-
-                case MouseEvents.DoubleClick:
-                    DoubleClickMouse(key.Key);
-                    break;
-
-                case MouseEvents.Down:
-                    DownMouse(key.Key);
-                    break;
-
-                default:
-                    break;
+                _inputSimulator.Keyboard.KeyDown((VirtualKeyCode)key.Key);
+                return;
             }
+
+            Task.Delay(mouseDownMiliseconds).ContinueWith((t) =>
+            {
+                switch (key.MouseEvent)
+                {
+                    case MouseEvents.Click:
+                        ClickMouse(key.Key);
+                        break;
+
+                    case MouseEvents.DoubleClick:
+                        DoubleClickMouse(key.Key);
+                        break;
+
+                    case MouseEvents.Down:
+                        DownMouse(key.Key);
+                        break;
+
+                    default:
+                        break;
+                }
+            }).ConfigureAwait(false);
         }
 
-        public static void UpKey(KeyInfo key)
+        public static void UpKey(KeyInfo key, int mouseDownMiliseconds = 0)
         {
             var modifiers = GetModifierList(key.Modifier);
 
-            switch (key.MouseEvent)
+            if (key.MouseEvent == MouseEvents.None)
             {
-                case MouseEvents.None:
-                    _inputSimulator.Keyboard.KeyUp((VirtualKeyCode)key.Key);
-                    break;
-
-                case MouseEvents.Down:
-                    UpMouse(key.Key);
-                    break;
-
-                default:
-                    break;
+                _inputSimulator.Keyboard.KeyUp((VirtualKeyCode)key.Key);
+                return;
+            }
+            else if (key.MouseEvent == MouseEvents.Down)
+            {
+                UpMouse(key.Key);
             }
 
-            UpModifiers(modifiers);
+            Task.Delay(mouseDownMiliseconds).ContinueWith((t) =>
+            {
+                UpModifiers(modifiers);
+            }).ConfigureAwait(false);
         }
 
         public static void PressKey(KeyInfo key)

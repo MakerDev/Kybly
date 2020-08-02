@@ -26,6 +26,7 @@
             <converters:InstanceToStringConverter x:Key="InstanceToStringConverter" />
             <converters:ReferenceToVisibilityConverter x:Key="ReferenceToVisibilityConverter"/>
             <converters:KeycodeToStringConverter x:Key="KeycodeToStringConverter" />
+            <converters:IntegerToStringConverter x:Key="IntegerToStringConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
