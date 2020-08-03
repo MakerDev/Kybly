@@ -15,21 +15,21 @@
                 <ControlTemplate TargetType="ToggleButton">
                     <StackPanel Orientation="Horizontal">
                         <Grid>
-                            <Border x:Name="backgroundBorder" Width="36" Height="15" Background="LightGray" CornerRadius="8" Margin="5,0"/>
-                            <Border x:Name="button" Height="16" Width="16" CornerRadius="12.5" HorizontalAlignment="Left"/>
+                            <Border x:Name="backgroundBorder" Width="38" Height="16" BorderThickness="2" BorderBrush="White" Background="Transparent" CornerRadius="7" />
+                            <Border x:Name="button" Height="9" Width="9" CornerRadius="12.5" Margin="4 0 0 0" HorizontalAlignment="Left"/>
                         </Grid>
                         <ContentPresenter x:Name="content" Content="{TemplateBinding Content}" VerticalAlignment="Center"/>
                     </StackPanel>
                     <ControlTemplate.Resources>
                         <Storyboard x:Key="right">
-                            <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="button" Duration="0:0:0.4" To="28,0,0,0" >
+                            <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="button" Duration="0:0:0.4" To="25,0,0,0" >
                                 <ThicknessAnimation.EasingFunction>
                                     <CircleEase EasingMode="EaseOut"/>
                                 </ThicknessAnimation.EasingFunction>
                             </ThicknessAnimation>
                         </Storyboard>
                         <Storyboard x:Key="left">
-                            <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="button" Duration="0:0:0.4"  To="0,0,0,0" >
+                            <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="button" Duration="0:0:0.4"  To="4,0,0,0" >
                                 <ThicknessAnimation.EasingFunction>
                                     <CircleEase EasingMode="EaseOut"/>
                                 </ThicknessAnimation.EasingFunction>
@@ -46,7 +46,7 @@
                                 <RemoveStoryboard BeginStoryboardName="leftt"></RemoveStoryboard>
                                 <BeginStoryboard Storyboard="{StaticResource right}" x:Name="rightt" ></BeginStoryboard>
                             </Trigger.ExitActions>
-                            <Setter TargetName="button" Property="Background" Value="White"></Setter>
+                            <Setter TargetName="button" Property="Background" Value="White"/>
                         </Trigger>
                         
                         <Trigger Property="IsChecked" Value="true">
@@ -56,6 +56,7 @@
                             </Trigger.ExitActions>
                             <Setter TargetName="button" Property="Background" Value="White" />
                             <Setter TargetName="backgroundBorder" Property="Background" Value="#FF0078D7"/>
+                            <Setter TargetName="backgroundBorder" Property="BorderBrush" Value="#FF0078D7" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
