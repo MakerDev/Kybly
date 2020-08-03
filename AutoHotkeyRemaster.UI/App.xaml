@@ -27,6 +27,7 @@
             <converters:ReferenceToVisibilityConverter x:Key="ReferenceToVisibilityConverter"/>
             <converters:KeycodeToStringConverter x:Key="KeycodeToStringConverter" />
             <converters:IntegerToStringConverter x:Key="IntegerToStringConverter" />
+            <converters:BooleanToWindowStateConverter x:Key="BooleanToWindowStateConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

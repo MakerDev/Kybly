@@ -1,4 +1,6 @@
-﻿using AutoHotkeyRemaster.WPF.ViewModels;
+﻿using AutoHotkeyRemaster.WPF.Events;
+using AutoHotkeyRemaster.WPF.ViewModels;
+using Caliburn.Micro;
 using MahApps.Metro.Controls;
 using System;
 using System.ComponentModel;
@@ -18,7 +20,10 @@ namespace AutoHotkeyRemaster.WPF.Views
         private readonly Storyboard _openProfilePanelStoryboard = new Storyboard();
         private System.Windows.Forms.NotifyIcon _notiIcon = new System.Windows.Forms.NotifyIcon();
         private bool _pausingHook = false;
+
         private System.Windows.Forms.ToolStripMenuItem _pauseMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _hideOrOpenInfoWindowItme;        
+        
         private ShellViewModel _viewModel;
 
         //TODO : KeyboardView와 HotkeyEditView를 하나의 컨테이너 안에 두고, Stackpanel로 OptionsView와 Horizaontal로 두면
@@ -64,7 +69,23 @@ namespace AutoHotkeyRemaster.WPF.Views
             _pauseMenuItem.Text = "Pause Hook";
             _pauseMenuItem.Click += OnPauseItemClicked;
 
+            _hideOrOpenInfoWindowItme = new System.Windows.Forms.ToolStripMenuItem();
+            _hideOrOpenInfoWindowItme.Text = "On/Off Infowindow";
+            _hideOrOpenInfoWindowItme.Click += HideOrOpenInfoWindow;
+
             _notiIcon.ContextMenuStrip = ResetTooltipContextMenu();
+        }
+
+        IEventAggregator _eventAggregator = null;
+
+        private async void HideOrOpenInfoWindow(object sender, EventArgs e)
+        {
+            if(_eventAggregator == null)
+            {
+                _eventAggregator = IoC.Get<IEventAggregator>();
+            }
+
+            await _eventAggregator.PublishOnUIThreadAsync(new InfoWindowStateChangedEvent());
         }
 
         protected override void OnActivated(EventArgs e)
@@ -80,6 +101,7 @@ namespace AutoHotkeyRemaster.WPF.Views
 
             contextMenu.Items.Clear();
 
+            contextMenu.Items.Add(_hideOrOpenInfoWindowItme);
             contextMenu.Items.Add(_pauseMenuItem);
             contextMenu.Items.Add("Setting", null, (s, e) => OpenWindow());
             contextMenu.Items.Add("Exit", null, (s, e) => Close());

@@ -1,20 +1,35 @@
 ﻿using AutoHotkeyRemaster.Services;
 using AutoHotkeyRemaster.Services.Events;
 using AutoHotkeyRemaster.Services.Helpers;
+using AutoHotkeyRemaster.WPF.Events;
 using Caliburn.Micro;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AutoHotkeyRemaster.WPF.ViewModels
 {
-    public class InfoWindowViewModel : Screen, IHandle<HookStateChangeEvent>
+    public class InfoWindowViewModel : Screen, IHandle<HookStateChangeEvent>, IHandle<InfoWindowStateChangedEvent>
     {
         private string _hookingProfileName = "DEACTIVATED";
+        private bool _isVisible = true;
         private readonly Options _options;
         private readonly IAsyncJsonFileManager _jsonFileManager;
 
         public int LeftPosition { get; set; } = 50;
         public int TopPosition { get; set; } = 50;
+        public bool IsVisible
+        {
+            get
+            {
+                return _isVisible;
+            }
+
+            set
+            {
+                _isVisible = value;
+                NotifyOfPropertyChange(() => IsVisible);
+            }
+        }
 
         public string HookingProfileName
         {
@@ -65,6 +80,13 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             }
 
             await base.OnDeactivateAsync(close, cancellationToken);
+        }
+
+        public Task HandleAsync(InfoWindowStateChangedEvent message, CancellationToken cancellationToken)
+        {
+            IsVisible = !IsVisible;
+
+            return Task.CompletedTask;
         }
     }
 }

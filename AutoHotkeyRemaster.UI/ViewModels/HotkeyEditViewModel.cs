@@ -1,5 +1,6 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services;
+using AutoHotkeyRemaster.Services.Events;
 using AutoHotkeyRemaster.WPF.Events;
 using AutoHotkeyRemaster.WPF.Views.CustomControls;
 using Caliburn.Micro;
@@ -13,7 +14,9 @@ using WindowsInput.Native;
 namespace AutoHotkeyRemaster.WPF.ViewModels
 {
     public class HotkeyEditViewModel : Screen,
-        IHandle<ProfileChangedEvent>, IHandle<KeySelectedEvent>, IHandle<ProfileDeletedEvent>, IHandle<ProfileNameChangedEvent>
+        IHandle<ProfileChangedEvent>, IHandle<KeySelectedEvent>, 
+        IHandle<ProfileDeletedEvent>, IHandle<ProfileNameChangedEvent>
+        ,IHandle<HookStateChangeEvent>
     {
         public enum SelectingTargets
         {
@@ -54,6 +57,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             }
         }
 
+        private bool _canEdit = true;
         public bool CanEdit
         {
             get
@@ -63,7 +67,12 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                     return false;
                 }
 
-                return true;
+                return _canEdit;
+            }
+            set
+            {
+                _canEdit = value;
+                NotifyOfPropertyChange(() => CanEdit);
             }
         }
 
@@ -655,6 +664,21 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             return Task.CompletedTask;
         }
 
+        public Task HandleAsync(HookStateChangeEvent message, CancellationToken cancellationToken)
+        {
+            if(message.HookState == HookState.Hooking)
+            {
+                CanEdit = false;
+            }
+            else
+            {
+                CanEdit = true;
+            }
+
+            return Task.CompletedTask;
+        }
+
+
         public async Task SaveAsync()
         {
             CurrentHotkey.Action = HotkeyAction;
@@ -822,5 +846,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
             return true;
         }
+
     }
 }
