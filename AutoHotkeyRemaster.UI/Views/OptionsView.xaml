@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
+             xmlns:behaviors="clr-namespace:AutoHotkeyRemaster.WPF.Behaviors"
              xmlns:custom="clr-namespace:AutoHotkeyRemaster.WPF.Views.CustomControls"
              xmlns:vm="clr-namespace:AutoHotkeyRemaster.WPF.ViewModels"
              xmlns:local="clr-namespace:AutoHotkeyRemaster.WPF.Views"
@@ -19,8 +20,11 @@
             <Setter Property="Height" Value="25"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="Margin" Value="0 10 0 10"/>
+            <Setter Property="behaviors:NumericValidationBehavior.OnlyAllowNumeric" 
+                    Value="True" />
             <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
         </Style>
     </UserControl.Resources>
     
@@ -69,8 +73,7 @@
         <TextBox          
             Text="{Binding MouseDownDelayMiliseconds, 
                 Converter={StaticResource IntegerToStringConverter}}"
-            Style="{StaticResource NumericTextboxStyle}"
-            PreviewTextInput="OnPreviewTextInput" />
+            Style="{StaticResource NumericTextboxStyle}" />
 
 
         <TextBlock Text="Mouse Up Timing (miliseconds)"
@@ -80,8 +83,7 @@
         <TextBox 
             Style="{StaticResource NumericTextboxStyle}"
             Text="{Binding MouseUpDelayMiliseconds, 
-                Converter={StaticResource IntegerToStringConverter}}"
-            PreviewTextInput="OnPreviewTextInput" />
+                Converter={StaticResource IntegerToStringConverter}}" />
         
         <TextBlock 
             Style="{StaticResource DefaultFontStyle}"
