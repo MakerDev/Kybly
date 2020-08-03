@@ -137,18 +137,19 @@ namespace AutoHotkeyRemaster.Services.Helpers
 
             if (key.MouseEvent == MouseEvents.None)
             {
+                UpModifiers(modifiers);
                 _inputSimulator.Keyboard.KeyUp((VirtualKeyCode)key.Key);
                 return;
             }
             else if (key.MouseEvent == MouseEvents.Down)
             {
                 UpMouse(key.Key);
-            }
 
-            Task.Delay(mouseDownMiliseconds).ContinueWith((t) =>
-            {
-                UpModifiers(modifiers);
-            }).ConfigureAwait(false);
+                Task.Delay(mouseDownMiliseconds).ContinueWith((t) =>
+                {
+                    UpModifiers(modifiers);
+                }).ConfigureAwait(false);
+            }
         }
 
         public static void PressKey(KeyInfo key)

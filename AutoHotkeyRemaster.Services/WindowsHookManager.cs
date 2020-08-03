@@ -186,7 +186,6 @@ namespace AutoHotkeyRemaster.Services
             }
             else
             {
-                //TODO : Insert Thread.Sleep
                 InputSimlationHelper.UpKey(hotkey.Action, _options.MouseUpDelayMiliseconds);
 
                 if (hotkey.EndingAction != null)

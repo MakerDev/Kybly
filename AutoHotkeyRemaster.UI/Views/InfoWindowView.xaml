@@ -17,12 +17,11 @@
         Topmost="True"
         BorderBrush="White"
         BorderThickness="1"
-        WindowState="{Binding IsVisible, FallbackValue=Normal, 
-            Converter={StaticResource BooleanToWindowStateConverter}}"
         Left="{Binding LeftPosition, Mode=TwoWay}"
         Top="{Binding TopPosition, Mode=TwoWay}"
         Background="{StaticResource DefaultBackgroundBrush}"
         Title="InfoWindowView" Height="24" MinWidth="80" MaxWidth="120">
+    
 
     <TextBlock 
         Style="{StaticResource DefaultFontStyle}"

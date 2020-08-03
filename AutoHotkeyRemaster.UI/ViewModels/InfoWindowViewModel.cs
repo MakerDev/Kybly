@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AutoHotkeyRemaster.WPF.ViewModels
 {
-    public class InfoWindowViewModel : Screen, IHandle<HookStateChangeEvent>, IHandle<InfoWindowStateChangedEvent>
+    public class InfoWindowViewModel : Screen, IHandle<HookStateChangeEvent>
     {
         private string _hookingProfileName = "DEACTIVATED";
         private bool _isVisible = true;
@@ -41,7 +41,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             }
         }
 
-        public InfoWindowViewModel(IEventAggregator eventAggregator, ApplicationModel applicationModel, IAsyncJsonFileManager jsonFileManager)
+        public InfoWindowViewModel(IEventAggregator eventAggregator, 
+            ApplicationModel applicationModel, IAsyncJsonFileManager jsonFileManager)
         {
             eventAggregator.SubscribeOnUIThread(this);
             _options = applicationModel.Options;
@@ -80,13 +81,6 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             }
 
             await base.OnDeactivateAsync(close, cancellationToken);
-        }
-
-        public Task HandleAsync(InfoWindowStateChangedEvent message, CancellationToken cancellationToken)
-        {
-            IsVisible = !IsVisible;
-
-            return Task.CompletedTask;
         }
     }
 }
