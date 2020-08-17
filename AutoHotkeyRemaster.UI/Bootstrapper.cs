@@ -1,6 +1,7 @@
 ﻿using AutoHotkeyRemaster.Models;
 using AutoHotkeyRemaster.Services;
 using AutoHotkeyRemaster.Services.Helpers;
+using AutoHotkeyRemaster.Services.Interfaces;
 using AutoHotkeyRemaster.WPF.Helpers;
 using AutoHotkeyRemaster.WPF.ViewModels;
 using Caliburn.Micro;
@@ -27,7 +28,6 @@ namespace AutoHotkeyRemaster.WPF
 
         protected override void Configure()
         {
-            //Instance는 우리가 미리 생성한 instance를 등록하는 것-싱글턴처럼 동작
             _container.Instance(_container);
 
             //HACK : AutoHotkeyRemaster.Package에서 WINDOWS_UWP 상수를 정의할 수 없어서 이렇게 처리
