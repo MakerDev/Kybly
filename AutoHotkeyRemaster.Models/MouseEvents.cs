@@ -5,6 +5,6 @@
         None = 0,
         Click = 128,
         DoubleClick = 256,
-        Down = 512, 
+        Down = 512,
     }
 }

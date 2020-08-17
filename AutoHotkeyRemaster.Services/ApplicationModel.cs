@@ -1,9 +1,4 @@
-﻿using AutoHotkeyRemaster.Models.Helpers;
-using AutoHotkeyRemaster.Services;
-using AutoHotkeyRemaster.Services.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AutoHotkeyRemaster.Services.Helpers;
 using System.Threading.Tasks;
 
 namespace AutoHotkeyRemaster.Services
@@ -29,11 +24,12 @@ namespace AutoHotkeyRemaster.Services
         private readonly ProfileSwitchKeyTableManager _switchKeyTable;
         private readonly IAsyncJsonFileManager _jsonSavefileManager;
 
-        
+
         public ApplicationState ApplicationState
         {
             get { return _applicationState; }
-            set {
+            set
+            {
                 _applicationState = value;
                 ApplicationStateChange(value);
             }
@@ -54,7 +50,7 @@ namespace AutoHotkeyRemaster.Services
 
         public bool SetActivationKey(int key)
         {
-            if(_switchKeyTable.HasKey(key))
+            if (_switchKeyTable.HasKey(key))
             {
                 return false;
             }

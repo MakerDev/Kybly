@@ -1,10 +1,7 @@
 ﻿using AutoHotkeyRemaster.Models;
-using AutoHotkeyRemaster.Models.Helpers;
 using AutoHotkeyRemaster.Services.Helpers;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace AutoHotkeyRemaster.Services
 {

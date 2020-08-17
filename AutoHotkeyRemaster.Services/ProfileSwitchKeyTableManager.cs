@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+﻿using AutoHotkeyRemaster.Models;
+using AutoHotkeyRemaster.Services.Helpers;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoHotkeyRemaster.Models;
-using AutoHotkeyRemaster.Models.Helpers;
-using AutoHotkeyRemaster.Services.Helpers;
-using Caliburn.Micro;
 
 namespace AutoHotkeyRemaster.Services
 {

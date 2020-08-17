@@ -23,7 +23,7 @@ namespace AutoHotkeyRemaster.WPF.Views
 
         public Task HandleAsync(InfoWindowStateChangedEvent message, CancellationToken cancellationToken)
         {
-            if(_isHidden)
+            if (_isHidden)
             {
                 Show();
             }
@@ -41,6 +41,6 @@ namespace AutoHotkeyRemaster.WPF.Views
         {
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
-        }       
+        }
     }
 }

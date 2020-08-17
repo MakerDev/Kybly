@@ -22,8 +22,8 @@ namespace AutoHotkeyRemaster.WPF.Views
         private bool _pausingHook = false;
 
         private System.Windows.Forms.ToolStripMenuItem _pauseMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem _hideOrOpenInfoWindowItme;        
-        
+        private System.Windows.Forms.ToolStripMenuItem _hideOrOpenInfoWindowItme;
+
         private ShellViewModel _viewModel;
 
         //TODO : KeyboardView와 HotkeyEditView를 하나의 컨테이너 안에 두고, Stackpanel로 OptionsView와 Horizaontal로 두면
@@ -32,6 +32,23 @@ namespace AutoHotkeyRemaster.WPF.Views
         {
             InitializeComponent();
 
+            SetProfilePanelAnimation();
+
+            NavPanel.Width = 65;
+            OptionsPanel.Width = 0;
+
+            SetNotifyIcon();
+        }
+
+        //As all componets's sizes are set for FHD 100% scale, 
+        //program will look too big on 150% scale setting.
+        private void ResizeToLocalMachineScale()
+        {
+
+        }
+
+        private void SetProfilePanelAnimation()
+        {
             DoubleAnimation openProfilePanelAnimation = new DoubleAnimation
             {
                 To = 230 + 250,
@@ -42,11 +59,6 @@ namespace AutoHotkeyRemaster.WPF.Views
             Storyboard.SetTargetProperty(openProfilePanelAnimation, new PropertyPath(Grid.WidthProperty));
 
             _openProfilePanelStoryboard.Children.Add(openProfilePanelAnimation);
-
-            NavPanel.Width = 65;
-            OptionsPanel.Width = 0;
-
-            SetNotifyIcon();
         }
 
         private void SetNotifyIcon()
@@ -80,7 +92,7 @@ namespace AutoHotkeyRemaster.WPF.Views
 
         private async void HideOrOpenInfoWindow(object sender, EventArgs e)
         {
-            if(_eventAggregator == null)
+            if (_eventAggregator == null)
             {
                 _eventAggregator = IoC.Get<IEventAggregator>();
             }

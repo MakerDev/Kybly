@@ -1,16 +1,7 @@
-﻿using AutoHotkeyRemaster.Models.Helpers;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Text;
-using System.Text.Json;
-using System.Xml.Linq;
-
-namespace AutoHotkeyRemaster.Services
+﻿namespace AutoHotkeyRemaster.Services
 {
     public class Options
-    {        
+    {
         private const int VK_ESC = 27;
 
         public int LeftPosition { get; set; } = 50;

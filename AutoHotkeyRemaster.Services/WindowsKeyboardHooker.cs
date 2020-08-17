@@ -1,11 +1,8 @@
 ﻿using AutoHotkeyRemaster.Models;
-using AutoHotkeyRemaster.Services.Events;
-using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace AutoHotkeyRemaster.Services
 {
@@ -85,7 +82,7 @@ namespace AutoHotkeyRemaster.Services
         }
 
         public void StartHook(Dictionary<int, KeyInfo> registeredKeys)
-        {            
+        {
             _registeredKeys = registeredKeys;
 
             foreach (var trigger in _registeredKeys.Keys)
@@ -103,7 +100,7 @@ namespace AutoHotkeyRemaster.Services
             _registeredKeys.Clear();
             _isAlreadyPressed.Clear();
         }
-        
+
 
         //To avoid multiple hook registering. In this case, hotkey chaining occurs
         private bool _isHookingKeyboard = false;

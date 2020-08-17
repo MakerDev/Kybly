@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -22,9 +19,9 @@ namespace AutoHotkeyRemaster.WPF.Behaviors
 
         // Using a DependencyProperty as the backing store for OnlyAllowNumeric.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty OnlyAllowNumericProperty =
-            DependencyProperty.RegisterAttached("OnlyAllowNumeric", 
+            DependencyProperty.RegisterAttached("OnlyAllowNumeric",
                 typeof(bool),
-                typeof(NumericValidationBehavior), 
+                typeof(NumericValidationBehavior),
                 new PropertyMetadata(false, propertyChangedCallback: OnAllowNumericChanged));
 
         private static void OnAllowNumericChanged(DependencyObject view, DependencyPropertyChangedEventArgs e)
@@ -36,7 +33,7 @@ namespace AutoHotkeyRemaster.WPF.Behaviors
                 return;
             }
 
-            if((bool)e.NewValue)
+            if ((bool)e.NewValue)
             {
                 textBox.PreviewTextInput += OnPreviewTextInput;
             }

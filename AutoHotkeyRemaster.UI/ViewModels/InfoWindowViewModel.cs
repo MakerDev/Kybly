@@ -1,7 +1,6 @@
 ﻿using AutoHotkeyRemaster.Services;
 using AutoHotkeyRemaster.Services.Events;
 using AutoHotkeyRemaster.Services.Helpers;
-using AutoHotkeyRemaster.WPF.Events;
 using Caliburn.Micro;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,7 +40,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             }
         }
 
-        public InfoWindowViewModel(IEventAggregator eventAggregator, 
+        public InfoWindowViewModel(IEventAggregator eventAggregator,
             ApplicationModel applicationModel, IAsyncJsonFileManager jsonFileManager)
         {
             eventAggregator.SubscribeOnUIThread(this);

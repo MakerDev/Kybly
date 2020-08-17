@@ -14,9 +14,9 @@ using WindowsInput.Native;
 namespace AutoHotkeyRemaster.WPF.ViewModels
 {
     public class HotkeyEditViewModel : Screen,
-        IHandle<ProfileChangedEvent>, IHandle<KeySelectedEvent>, 
+        IHandle<ProfileChangedEvent>, IHandle<KeySelectedEvent>,
         IHandle<ProfileDeletedEvent>, IHandle<ProfileNameChangedEvent>
-        ,IHandle<HookStateChangeEvent>
+        , IHandle<HookStateChangeEvent>
     {
         public enum SelectingTargets
         {
@@ -666,7 +666,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
         public Task HandleAsync(HookStateChangeEvent message, CancellationToken cancellationToken)
         {
-            if(message.HookState == HookState.Hooking)
+            if (message.HookState == HookState.Hooking)
             {
                 CanEdit = false;
             }
@@ -733,6 +733,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 HotkeyActionKey = -1;
             else
                 HotkeyEndingKey = -1;
+
+            NotifyAllSpecialKeysChanged();
         }
 
         public void OnPreviewKeyDown(object sender, KeyEventArgs e)

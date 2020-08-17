@@ -2,13 +2,9 @@
 using AutoHotkeyRemaster.Services.Events;
 using AutoHotkeyRemaster.Services.Helpers;
 using Caliburn.Micro;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
-using WindowsInput;
-using WindowsInput.Native;
 
 namespace AutoHotkeyRemaster.Services
 {
@@ -204,9 +200,9 @@ namespace AutoHotkeyRemaster.Services
 
             if (args.IsPressed)
             {
-                if (keycode == _activationKey )
+                if (keycode == _activationKey)
                 {
-                    if(_profileManager.ProfileCount != 0)
+                    if (_profileManager.ProfileCount != 0)
                     {
                         await ChangeHookStateAsync();
                     }

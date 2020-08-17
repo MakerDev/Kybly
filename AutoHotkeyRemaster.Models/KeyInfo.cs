@@ -21,7 +21,7 @@ namespace AutoHotkeyRemaster.Models
             MouseEvent = MouseEvents.None;
         }
 
-        public KeyInfo(int key, int modifier, 
+        public KeyInfo(int key, int modifier,
             MouseEvents mouseEvent = MouseEvents.None)
         {
             Key = key;

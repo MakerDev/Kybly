@@ -87,8 +87,8 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
         {
             e.Handled = true;
 
-            Key key = e.ImeProcessedKey == Key.None ? e.Key : e.ImeProcessedKey;
-            int activationKey = KeyInterop.VirtualKeyFromKey(key);
+            var key = e.ImeProcessedKey == Key.None ? e.Key : e.ImeProcessedKey;
+            var activationKey = KeyInterop.VirtualKeyFromKey(key);
 
             if (_applicationModel.SetActivationKey(activationKey))
             {
@@ -98,8 +98,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
                 return;
             }
 
-            CustomMessageDialog dialog =
-                new CustomMessageDialog("This key is already registered in switchkey table!");
+            CustomMessageDialog dialog = new CustomMessageDialog("This key is already registered in switchkey table!");
             dialog.ShowDialog();
         }
     }

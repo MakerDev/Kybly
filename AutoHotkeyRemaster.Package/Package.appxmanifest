@@ -7,13 +7,13 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="76d56d2f-3e2a-472f-adc6-f282be69f97b"
-    Publisher="CN=yujin_shin"
-    Version="1.0.1.0" />
+    Name="28206YujinShin.Kybly"
+    Publisher="CN=506249B0-9B9E-4136-B3E9-7DFC6AA36645"
+    Version="1.0.5.0" />
 
   <Properties>
     <DisplayName>Kybly</DisplayName>
-    <PublisherDisplayName>yujin_shin</PublisherDisplayName>
+    <PublisherDisplayName>YujinShin</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
 
