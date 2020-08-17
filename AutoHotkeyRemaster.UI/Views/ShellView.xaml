@@ -8,6 +8,7 @@
             xmlns:vm="clr-namespace:AutoHotkeyRemaster.WPF.ViewModels"
             xmlns:custom="clr-namespace:AutoHotkeyRemaster.WPF.Views.CustomControls"
             xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+            x:Name="_mainWindow"
             cal:Bind.AtDesignTime="True"
             d:DataContext="{d:DesignInstance Type=vm:ShellViewModel, IsDesignTimeCreatable=False}"
             mc:Ignorable="d"

@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 
@@ -38,13 +39,26 @@ namespace AutoHotkeyRemaster.WPF.Views
             OptionsPanel.Width = 0;
 
             SetNotifyIcon();
+
+            Loaded += (s, e) => ResizeToLocalMachineScale();
         }
 
         //As all componets's sizes are set for FHD 100% scale, 
         //program will look too big on 150% scale setting.
         private void ResizeToLocalMachineScale()
         {
+            double scaling = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice.M11;
 
+            if (scaling <= 1)
+            {
+                return;
+            }
+
+            double ratioToAdjust = 1 / scaling;
+
+            _mainWindow.Width *= ratioToAdjust;
+            _mainWindow.Height *= ratioToAdjust;
+            _mainWindow.LayoutTransform = new ScaleTransform(ratioToAdjust, ratioToAdjust, 0, 0);
         }
 
         private void SetProfilePanelAnimation()

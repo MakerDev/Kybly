@@ -274,6 +274,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             foreach (var profile in _profileManager.Profiles)
             {
                 var profileModel = new ProfileStateModel(profile, _jsonSavefileManager);
+
                 profileModel.PropertyChanged += OnProfileModelPropertyChanged;
                 ProfileStates.Add(profileModel);
             }
