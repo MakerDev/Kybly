@@ -1,4 +1,5 @@
 ﻿using AutoHotkeyRemaster.Services.Helpers;
+using AutoHotkeyRemaster.Services.Interfaces;
 using System.Threading.Tasks;
 
 namespace AutoHotkeyRemaster.Services

@@ -109,7 +109,7 @@
                     Converter={StaticResource ReferenceToInvertedVisibilityConverter}}"/>
 
         <Grid 
-            x:Name="xGridKeyButtons" Margin="0,-76,0,0">
+            x:Name="_gridKeyButtons" Margin="0,-76,0,0">
             <RadioButton x:Name="xBtn27" 
                 Style="{StaticResource Keyboard}"  Checked="OnChecked"
                 HorizontalAlignment="Left" 

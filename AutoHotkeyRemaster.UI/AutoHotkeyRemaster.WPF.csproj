@@ -9,6 +9,11 @@
     <UpgradeBackupLocation />
     <ApplicationIcon>KyblyIcon.ico</ApplicationIcon>
     <Platforms>AnyCPU;x64</Platforms>
+    <PackageId>AutoHotkeyRemaster.WPF</PackageId>
+    <Authors>AutoHotkeyRemaster.WPF</Authors>
+    <Product>AutoHotkeyRemaster.WPF</Product>
+    <Description></Description>
+    <AssemblyName>Kybly</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;WINDOWS_WPF</DefineConstants>
@@ -22,6 +27,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <DefineConstants>TRACE;WINDOWS_WPF</DefineConstants>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Helpers\JsonSaveFileManager.cs" />
+  </ItemGroup>
   <ItemGroup>
     <None Remove="Properties\KyblyIcon.ico" />
     <None Remove="Properties\KyblyIcon.png" />

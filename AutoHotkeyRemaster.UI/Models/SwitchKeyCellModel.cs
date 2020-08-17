@@ -49,6 +49,7 @@ namespace AutoHotkeyRemaster.WPF.Models
 
             int result = _profileSwitchKeyTableManager.SetSwitchKeyByIndex(_fromIdx, _toIdx, vkCode);
 
+            //Use WindowManager rather than directly access to view
             CustomMessageDialog customMessageDialog;
 
             switch (result)
@@ -56,14 +57,13 @@ namespace AutoHotkeyRemaster.WPF.Models
                 case -2:
                     customMessageDialog
                         = new CustomMessageDialog($"{key} is already reserved for activation key.");
-
                     customMessageDialog.ShowDialog();
+
                     break;
 
                 case -1:
                     customMessageDialog
                         = new CustomMessageDialog($"{key} is already used for other switch key.");
-
                     customMessageDialog.ShowDialog();
 
                     break;
@@ -71,7 +71,6 @@ namespace AutoHotkeyRemaster.WPF.Models
                 case 0:
                     customMessageDialog
                         = new CustomMessageDialog($"{key} is already registerd as a hotkey of this profile");
-
                     customMessageDialog.ShowDialog();
 
                     break;

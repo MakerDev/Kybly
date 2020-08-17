@@ -1,4 +1,4 @@
-﻿namespace AutoHotkeyRemaster.Services
+﻿namespace AutoHotkeyRemaster.Services.Interfaces
 {
     public interface IJsonSavefileManager
     {

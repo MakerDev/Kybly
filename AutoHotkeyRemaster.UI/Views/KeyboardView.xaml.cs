@@ -16,9 +16,8 @@ namespace AutoHotkeyRemaster.WPF.Views
     /// </summary>
     public partial class KeyboardView : UserControl, IHandle<ProfileChangedEvent>, IHandle<SelectingKeyEvent>, IHandle<ProfileDeletedEvent>
     {
-        private KeyboardViewModel _keyboardViewModel = null;
         private readonly Dictionary<int, RadioButton> _keyButtonPairs = new Dictionary<int, RadioButton>();
-
+        private KeyboardViewModel _keyboardViewModel = null;
         private bool _isSelectingKey = false;
         private ToggleButton _selectedButton = null;
 
@@ -32,19 +31,6 @@ namespace AutoHotkeyRemaster.WPF.Views
             RegisterButtons();
         }
 
-        private void RegisterButtons()
-        {
-            var children = xGridKeyButtons.Children;
-
-            foreach (var item in children)
-            {
-                RadioButton button = item as RadioButton;
-                int keycode = KeyConversionHelper.ExtractFromElementName((button.Name));
-
-                _keyButtonPairs.Add(keycode, button);
-            }
-        }
-
         public Task HandleAsync(ProfileChangedEvent message, CancellationToken cancellationToken)
         {
             if (_keyboardViewModel == null)
@@ -52,19 +38,26 @@ namespace AutoHotkeyRemaster.WPF.Views
                 _keyboardViewModel = (KeyboardViewModel)DataContext;
             }
 
-            ResetButton();
+            ResetButtons();
 
             return Task.CompletedTask;
         }
 
         public Task HandleAsync(ProfileDeletedEvent message, CancellationToken cancellationToken)
         {
-            ResetButton();
+            ResetButtons();
 
             return Task.CompletedTask;
         }
 
-        private void ResetButton()
+        public Task HandleAsync(SelectingKeyEvent message, CancellationToken cancellationToken)
+        {
+            _isSelectingKey = message.IsSelecting;
+
+            return Task.CompletedTask;
+        }
+
+        private void ResetButtons()
         {
             var keyHotkeyPair = _keyboardViewModel.TriggerHotkeyPairs;
 
@@ -81,13 +74,6 @@ namespace AutoHotkeyRemaster.WPF.Views
 
                 _keyButtonPairs[keycode].IsChecked = false;
             }
-        }
-
-        public Task HandleAsync(SelectingKeyEvent message, CancellationToken cancellationToken)
-        {
-            _isSelectingKey = message.IsSelecting;
-
-            return Task.CompletedTask;
         }
 
         private void OnChecked(object sender, RoutedEventArgs e)
@@ -113,5 +99,17 @@ namespace AutoHotkeyRemaster.WPF.Views
             _selectedButton = button;
         }
 
+        private void RegisterButtons()
+        {
+            var children = _gridKeyButtons.Children;
+
+            foreach (var item in children)
+            {
+                var button = item as RadioButton;
+                var keycode = KeyConversionHelper.ExtractFromElementName((button.Name));
+
+                _keyButtonPairs.Add(keycode, button);
+            }
+        }
     }
 }
