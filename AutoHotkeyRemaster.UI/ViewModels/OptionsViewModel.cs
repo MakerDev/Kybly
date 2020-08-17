@@ -1,4 +1,5 @@
-﻿using AutoHotkeyRemaster.Services;
+﻿using AutoHotkeyRemaster.Models;
+using AutoHotkeyRemaster.Services;
 using AutoHotkeyRemaster.Services.Helpers;
 using AutoHotkeyRemaster.WPF.Views.CustomControls;
 using Caliburn.Micro;
@@ -29,7 +30,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             set
             {
                 _options.SaveLastInfoWindowPosition = value;
-                _jsonSavefileManager.SaveAsync(_options, "options")
+                _jsonSavefileManager.SaveAsync(_options, AppConstants.OPTION_SAVE_NAME)
                     .ContinueWith((task) => NotifyOfPropertyChange(() => SaveInfoWindowPosition));
             }
         }
@@ -43,7 +44,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             set
             {
                 _options.MinimizeOnStartUp = value;
-                _jsonSavefileManager.SaveAsync(_options, "options")
+                _jsonSavefileManager.SaveAsync(_options, AppConstants.OPTION_SAVE_NAME)
                     .ContinueWith((task) => NotifyOfPropertyChange(() => MinimizeOnStartUp));
             }
         }
@@ -57,7 +58,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             set
             {
                 _options.MouseUpDelayMiliseconds = value;
-                _jsonSavefileManager.SaveAsync(_options, "options")
+                _jsonSavefileManager.SaveAsync(_options, AppConstants.OPTION_SAVE_NAME)
                     .ContinueWith((task) => NotifyOfPropertyChange(() => MouseUpDelayMiliseconds));
             }
         }
@@ -71,7 +72,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             set
             {
                 _options.MouseDownDelayMiliseconds = value;
-                _jsonSavefileManager.SaveAsync(_options, "options")
+                _jsonSavefileManager.SaveAsync(_options, AppConstants.OPTION_SAVE_NAME)
                     .ContinueWith((task) => NotifyOfPropertyChange(() => MouseDownDelayMiliseconds));
             }
         }
@@ -92,7 +93,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
             if (_applicationModel.SetActivationKey(activationKey))
             {
-                await _jsonSavefileManager.SaveAsync(_options, "options");
+                await _jsonSavefileManager.SaveAsync(_options, AppConstants.OPTION_SAVE_NAME);
                 NotifyOfPropertyChange(() => ActivationKey);
 
                 return;

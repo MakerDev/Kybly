@@ -36,6 +36,10 @@ namespace AutoHotkeyRemaster.WPF.Helpers
                 return null;
 
             string jsonString = await FileIO.ReadTextAsync((StorageFile)item);
+
+            if (string.IsNullOrEmpty(jsonString))
+                return null;
+
             T instance = JsonSerializer.Deserialize<T>(jsonString);
 
             return instance;

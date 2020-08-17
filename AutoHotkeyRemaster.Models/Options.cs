@@ -1,4 +1,4 @@
-﻿namespace AutoHotkeyRemaster.Services
+﻿namespace AutoHotkeyRemaster.Models
 {
     public class Options
     {

@@ -1,4 +1,5 @@
-﻿using AutoHotkeyRemaster.Services;
+﻿using AutoHotkeyRemaster.Models;
+using AutoHotkeyRemaster.Services;
 using AutoHotkeyRemaster.Services.Events;
 using AutoHotkeyRemaster.Services.Helpers;
 using Caliburn.Micro;

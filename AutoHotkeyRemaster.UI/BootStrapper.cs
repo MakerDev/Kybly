@@ -31,7 +31,7 @@ namespace AutoHotkeyRemaster.WPF
             _container.Instance(_container);
 
             //HACK : AutoHotkeyRemaster.Package에서 WINDOWS_UWP 상수를 정의할 수 없어서 이렇게 처리
-#if WINDOWS_WPF
+#if WINDOWS_WP
             _container.Singleton<IAsyncJsonFileManager, AsyncJsonSavefileManager>();
 #else
             _container.Singleton<IAsyncJsonFileManager, UWPAsyncFileManager>();
@@ -59,7 +59,8 @@ namespace AutoHotkeyRemaster.WPF
         //HACK : All async initialization goes here. 
         protected override async void OnStartup(object sender, StartupEventArgs e)
         {
-            var asyncInitRequiredClasses = Assembly.GetAssembly(typeof(IAsyncInitializationRequired))
+            var asyncInitRequiredClasses = Assembly
+                .GetAssembly(typeof(IAsyncInitializationRequired))
                 .GetTypes()
                 .Where(type => type.IsClass)
                 .Where(type => typeof(IAsyncInitializationRequired).IsAssignableFrom(type))

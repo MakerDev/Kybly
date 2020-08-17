@@ -1,4 +1,5 @@
-﻿using AutoHotkeyRemaster.Services.Helpers;
+﻿using AutoHotkeyRemaster.Models;
+using AutoHotkeyRemaster.Services.Helpers;
 using AutoHotkeyRemaster.Services.Interfaces;
 using System.Threading.Tasks;
 
@@ -44,7 +45,7 @@ namespace AutoHotkeyRemaster.Services
 
         public async Task InitializeAsync()
         {
-            Options = await _jsonSavefileManager.LoadAsync<Options>("options").ConfigureAwait(false);
+            Options = await _jsonSavefileManager.LoadAsync<Options>(AppConstants.OPTION_SAVE_NAME).ConfigureAwait(false);
 
             if (Options == null) Options = new Options();
         }
