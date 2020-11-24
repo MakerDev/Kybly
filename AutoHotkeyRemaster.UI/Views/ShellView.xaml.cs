@@ -25,6 +25,8 @@ namespace AutoHotkeyRemaster.WPF.Views
         private System.Windows.Forms.ToolStripMenuItem _pauseMenuItem;
         private System.Windows.Forms.ToolStripMenuItem _hideOrOpenInfoWindowItme;
 
+        IEventAggregator _eventAggregator = null;
+
         private ShellViewModel _viewModel;
 
         //TODO : KeyboardView와 HotkeyEditView를 하나의 컨테이너 안에 두고, Stackpanel로 OptionsView와 Horizaontal로 두면
@@ -102,7 +104,6 @@ namespace AutoHotkeyRemaster.WPF.Views
             _notiIcon.ContextMenuStrip = ResetTooltipContextMenu();
         }
 
-        IEventAggregator _eventAggregator = null;
 
         private async void HideOrOpenInfoWindow(object sender, EventArgs e)
         {

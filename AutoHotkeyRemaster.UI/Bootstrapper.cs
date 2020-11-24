@@ -59,7 +59,8 @@ namespace AutoHotkeyRemaster.WPF
         //HACK : All async initialization goes here. 
         protected override async void OnStartup(object sender, StartupEventArgs e)
         {
-            var asyncInitRequiredClasses = Assembly.GetAssembly(typeof(IAsyncInitializationRequired))
+            var asyncInitRequiredClasses = Assembly
+                .GetAssembly(typeof(IAsyncInitializationRequired))
                 .GetTypes()
                 .Where(type => type.IsClass)
                 .Where(type => typeof(IAsyncInitializationRequired).IsAssignableFrom(type))

@@ -17,16 +17,18 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 {
     public class ShellViewModel : Conductor<object>.Collection.AllActive, IHandle<HookStateChangeEvent>
     {
-        private readonly ProfileManager _profileManager;
-        private readonly IEventAggregator _eventAggregator;
-        private readonly IWindowManager _windowManager;
         private readonly ApplicationModel _application;
+        private readonly ProfileManager _profileManager;
         private readonly KeyboardViewModel _keyboardViewModel;
         private readonly WindowsHookManager _windowsHookManager;
         private readonly HotkeyEditViewModel _hotkeyEditViewModel;
         private readonly OptionsViewModel _optionsViewModel;
-        private readonly IAsyncJsonFileManager _jsonSavefileManager;
         private readonly InfoWindowViewModel _infoWindowViewModel;
+
+        private readonly IEventAggregator _eventAggregator;
+        private readonly IWindowManager _windowManager;
+        private readonly IAsyncJsonFileManager _jsonSavefileManager;
+
         private ProfileStateModel _selectedProfile;
         public ProfileStateModel SelectedProfile
         {

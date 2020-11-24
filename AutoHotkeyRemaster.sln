@@ -13,7 +13,7 @@ Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "AutoHotkeyRemaster.Package"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A299D26B-3E1D-4249-8A17-0A593D722E34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHotkeyRemaster.WPF.Tests", "AutoHotkeyRemaster.WPF.Tests\AutoHotkeyRemaster.WPF.Tests.csproj", "{0AD1CCA6-95C6-47BC-A4B6-CEB6C7D449C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoHotkeyRemaster.WPF.Tests", "AutoHotkeyRemaster.WPF.Tests\AutoHotkeyRemaster.WPF.Tests.csproj", "{0AD1CCA6-95C6-47BC-A4B6-CEB6C7D449C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,8 +75,8 @@ Global
 		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Debug|ARM.Build.0 = Debug|Any CPU
 		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Debug|ARM64.ActiveCfg = Debug|Any CPU
 		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Debug|x64.Build.0 = Debug|Any CPU
+		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Debug|x64.ActiveCfg = Debug|x64
+		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Debug|x64.Build.0 = Debug|x64
 		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Debug|x86.Build.0 = Debug|Any CPU
 		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Release|Any CPU.ActiveCfg = Release|x64
@@ -85,8 +85,8 @@ Global
 		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Release|ARM.Build.0 = Release|Any CPU
 		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Release|ARM64.ActiveCfg = Release|Any CPU
 		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Release|ARM64.Build.0 = Release|Any CPU
-		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Release|x64.ActiveCfg = Debug|Any CPU
-		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Release|x64.Build.0 = Debug|Any CPU
+		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Release|x64.ActiveCfg = Debug|x64
+		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Release|x64.Build.0 = Debug|x64
 		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Release|x86.ActiveCfg = Release|Any CPU
 		{A29B6AED-BCD5-4FAC-8A65-8B17DE48B72B}.Release|x86.Build.0 = Release|Any CPU
 		{362D6E45-F06D-47AD-B0A5-504B65C9D170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

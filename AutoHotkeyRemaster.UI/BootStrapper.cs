@@ -31,7 +31,7 @@ namespace AutoHotkeyRemaster.WPF
             _container.Instance(_container);
 
             //HACK : AutoHotkeyRemaster.Package에서 WINDOWS_UWP 상수를 정의할 수 없어서 이렇게 처리
-#if WINDOWS_WP
+#if WINDOWS_WPF
             _container.Singleton<IAsyncJsonFileManager, AsyncJsonSavefileManager>();
 #else
             _container.Singleton<IAsyncJsonFileManager, UWPAsyncFileManager>();
