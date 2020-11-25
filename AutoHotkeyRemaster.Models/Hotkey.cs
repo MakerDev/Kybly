@@ -1,8 +1,14 @@
-﻿namespace AutoHotkeyRemaster.Models
+﻿using AutoHotkeyRemaster.Models.MacroFeatures;
+using System.Collections.Generic;
+
+namespace AutoHotkeyRemaster.Models
 {
     public class Hotkey
     {
         public string Explanation { get; set; } = "";
+
+        public HotkeyActionType HotkeyActionType { get; set; } = HotkeyActionType.Hotkey;
+        public MacroAction MacroAction { get; set; } 
 
         public KeyInfo Trigger { get; set; }
         public KeyInfo Action { get; set; }

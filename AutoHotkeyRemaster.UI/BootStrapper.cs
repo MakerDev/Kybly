@@ -1,9 +1,12 @@
 ﻿using AutoHotkeyRemaster.Models;
+using AutoHotkeyRemaster.Models.Helpers;
+using AutoHotkeyRemaster.Models.MacroFeatures;
 using AutoHotkeyRemaster.Services;
 using AutoHotkeyRemaster.Services.Helpers;
 using AutoHotkeyRemaster.Services.Interfaces;
 using AutoHotkeyRemaster.WPF.Helpers;
 using AutoHotkeyRemaster.WPF.ViewModels;
+using AutoHotkeyRemaster.WPF.Views;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -77,6 +80,28 @@ namespace AutoHotkeyRemaster.WPF
             await Task.WhenAll(initTasks);
 
             await DisplayRootViewFor<ShellViewModel>();
+
+            GlobalCommands.OpenActionEditorAsync = OpenMacroEditor;
+        }
+
+        public async Task<MacroAction> OpenMacroEditor(string macroName)
+        {
+            MacroAction result = null;
+            var windowManager = _container.GetInstance<IWindowManager>();
+
+
+            if (macroName == nameof(FileChangeAction))
+            {
+                var newAction = new FileChangeAction();
+                var vm = IoC.Get<FileNameChangerEditorWindowViewModel>();
+                vm.FileChangeAction = newAction;
+                result = newAction;
+
+                await windowManager.ShowDialogAsync(vm);
+                await vm.TryCloseAsync();
+            }
+
+            return result;
         }
 
         //아래들은 프레임워크에 컨테이너를 ServiceLocator로 등록하는 과정이라고 보면 될듯.

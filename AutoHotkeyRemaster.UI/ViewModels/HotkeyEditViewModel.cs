@@ -35,11 +35,14 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             set
             {
                 _currentProfile = value;
-
+                MacroEditViewModel.CurrentProfile = value;
                 NotifyOfPropertyChange(() => CanEdit);
                 NotifyOfPropertyChange(() => CurrentProfile);
+                NotifyOfPropertyChange(() => CanSwitchMode);
             }
         }
+
+        public MacroEditViewModel MacroEditViewModel { get; set; }
 
 
         private string _profileName;
@@ -73,6 +76,30 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             {
                 _canEdit = value;
                 NotifyOfPropertyChange(() => CanEdit);
+            }
+        }
+
+        public bool CanSwitchMode
+        {
+            get
+            {
+                return CurrentProfile != null;
+            }
+        }
+
+        private bool _isMacroMode = false;
+
+        public bool IsMacroMode
+        {
+            get
+            {
+                return _isMacroMode;
+            }
+            set
+            {
+                _isMacroMode = value;
+                MacroEditViewModel.IsMacroMode = value;
+                NotifyOfPropertyChange(() => IsMacroMode);
             }
         }
 
@@ -577,6 +604,10 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             _profileManager = profileManager;
             _eventAggregator = eventAggregator;
 
+
+            MacroEditViewModel = IoC.Get<MacroEditViewModel>();
+            MacroEditViewModel.HotkeyEditViewModel = this;
+
             _eventAggregator.SubscribeOnUIThread(this);
         }
 
@@ -766,7 +797,7 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
             }
         }
 
-        private async Task SaveOrEditAsync(Hotkey hotkey)
+        public async Task SaveOrEditAsync(Hotkey hotkey)
         {
             int result = CurrentProfile.AddOrEditHotkeyIfExisting(hotkey);
 
@@ -843,11 +874,13 @@ namespace AutoHotkeyRemaster.WPF.ViewModels
 
         private bool IsActionSet()
         {
-            if (HotkeyAction.Modifier == 0 && HotkeyAction.Key == -1 && HotkeyEndingKey == -1)
+            if (HotkeyAction.Modifier == 0 
+                && HotkeyAction.Key == -1 
+                && HotkeyEndingKey == -1
+                && CurrentHotkey.MacroAction == null)
                 return false;
 
             return true;
         }
-
     }
 }

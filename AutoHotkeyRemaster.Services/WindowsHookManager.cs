@@ -174,20 +174,27 @@ namespace AutoHotkeyRemaster.Services
         {
             _keyboardHooker.StopHookKeyboard();
 
-            Debug.WriteLine($"trigger : {hotkey.Trigger}  |  action : {hotkey.Action}");
-
-            if (isDown)
+            if (hotkey.HotkeyActionType == HotkeyActionType.Hotkey)
             {
-                InputSimlationHelper.DownKey(hotkey.Action, _options.MouseDownDelayMiliseconds);
-            }
-            else
-            {
-                InputSimlationHelper.UpKey(hotkey.Action, _options.MouseUpDelayMiliseconds);
+                Debug.WriteLine($"trigger : {hotkey.Trigger}  |  action : {hotkey.Action}");
 
-                if (hotkey.EndingAction != null)
+                if (isDown)
                 {
-                    InputSimlationHelper.PressKey(hotkey.EndingAction);
+                    InputSimlationHelper.DownKey(hotkey.Action, _options.MouseDownDelayMiliseconds);
                 }
+                else
+                {
+                    InputSimlationHelper.UpKey(hotkey.Action, _options.MouseUpDelayMiliseconds);
+
+                    if (hotkey.EndingAction != null)
+                    {
+                        InputSimlationHelper.PressKey(hotkey.EndingAction);
+                    }
+                }
+            }
+            else if (isDown)
+            {
+                hotkey.MacroAction?.Run();
             }
 
             _keyboardHooker.StartHookKeyboard();
@@ -227,6 +234,7 @@ namespace AutoHotkeyRemaster.Services
 
             ProcessHotkeyAction(_profileHotkeys[keycode], false);
         }
+
         private void OnActivationKeyChanged()
         {
             //Changing activation key means that current state is UnHooking
